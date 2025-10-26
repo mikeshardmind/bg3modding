@@ -1,0 +1,106 @@
+{
+  "FileVersion": 1,
+  "Progressions": [
+    {
+      "UUID": "42344f07-6c59-44e0-80b8-4c702dfe16e1",
+      "Strings": [
+        {
+          "Action": "Remove",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        },
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,3,0)"]
+        },
+        {
+          "Action": "Insert",
+          "Function": "PassivesAdded",
+          "Strings": ["PactOfTheBlade_Hex", "AgonizingBlast"]
+        }
+      ]
+    },
+    {
+      "UUID": "bbdbe45e-8324-4f26-bad3-93c23f30b241",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)", "ActionResource(Interrupt_SanguineOffering,1,0)"]
+        }
+      ]
+    },
+    {
+      "UUID": "de02b23c-aa61-4dd3-b9ec-fbfe8334d06f",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        }
+      ]
+    },
+    {
+      "UUID": "d76aecc7-8989-44f8-b257-08e05919a9f0",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        }
+      ]
+    },
+    {
+      "UUID": "e366bf3c-be18-4e07-8910-ea6ce41ae037",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)", "ActionResource(Interrupt_SanguineOffering,1,0)"]
+        }
+      ]
+    },
+    {
+      "UUID": "9d79b51e-1f02-4a84-b2a9-3f865170f54a",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        }
+      ]
+    },
+    {
+      "UUID": "9d79b51e-1f02-4a84-b2a9-3f865170f54a",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        }
+      ]
+    },
+    {
+      "UUID": "4adced8f-2e8a-4be8-826c-da30173dcad0",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        }
+      ]
+    },
+    {
+      "UUID": "fa789c58-e977-48db-b1ff-92a3d07c66a9",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Function": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        }
+      ]
+    }
+
+  ]
+}
