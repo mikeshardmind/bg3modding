@@ -38,12 +38,13 @@ These changes are not done to make the game easier again.
 All playtesting will be done in an environment intended to be more difficult
 than a non-single save honor mode run.
 
-The goal is for all changes to make the game feel more good without making any
-strategy become a new outlier, in either direction, strong or weak.
+The goal is for all changes to make the game and character progression
+specifically feel nicer without making any strategy become a new outlier,
+in either direction, strong or weak.
 
-Many changes may move existing stragies more toward the norm.
+Many changes may move existing strategies more toward the norm.
 
-Strategies that are specifically exploits (vendor scams) may be invalidated without
+Strategies that are specifically exploits (ie. vendor scams) may be invalidated without
 the same level of consideration.
 
 It is okay if different strategies peak at different content levels.
