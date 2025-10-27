@@ -1,0 +1,31 @@
+
+new entry "Shout_PactOfTheBlade_HeavyCrossbow"
+
+
+new entry "Shout_PactOfTheBlade_LightCrossbow"
+
+
+new entry "Shout_PactOfTheBlade_HandCrossbow"
+
+
+new entry "Shout_PactOfTheBlade_Longbow"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_PactOfTheBlade"
+data "SpellContainerID" "Shout_PactOfTheBlade_Ranged"
+data "Icon" "Item_WPN_HUM_Longbow_A_0"
+data "DisplayName" "h088ba36agadf1g4e68gabdag9907ed36d8db;1"
+data "Description" "h85935312g689ag4f21g966bge40fead02d82;1"
+data "SpellProperties" "TARGET:IF(ClassLevelHigherOrEqualThan(1,'Warlock') and not ClassLevelHigherOrEqualThan(7,'Warlock')):SummonInInventory(86e3d864-309c-4c17-ba38-877ce487d481,Permanent,1,true,true,true,,,PactBlade,PACT_BLADE,IMPROVED_PACT_WEAPON_1);TARGET:IF(ClassLevelHigherOrEqualThan(7,'Warlock') and not ClassLevelHigherOrEqualThan(12,'Warlock')):SummonInInventory(86e3d864-309c-4c17-ba38-877ce487d481,Permanent,1,true,true,true,,,PactBlade,PACT_BLADE,IMPROVED_PACT_WEAPON_2);TARGET:IF(ClassLevelHigherOrEqualThan(12,'Warlock')):SummonInInventory(86e3d864-309c-4c17-ba38-877ce487d481,Permanent,1,true,true,true,,,PactBlade,PACT_BLADE,IMPROVED_PACT_WEAPON_3)"
+data "SpellFlags" "UNUSED_D"
+
+new entry "Shout_PactOfTheBlade_Shortbow"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_PactOfTheBlade"
+data "SpellContainerID" "Shout_PactOfTheBlade_Ranged"
+data "Icon" "Item_WPN_HUM_Shortbow_A_0"
+data "DisplayName" "h419267efgc6afg4ea9gbfe1gb8daf6a488e0;1"
+data "Description" "h0f328d2cgc587g4684gb3dcg508932715a28;1"
+data "SpellProperties" "TARGET:IF(ClassLevelHigherOrEqualThan(1,'Warlock') and not ClassLevelHigherOrEqualThan(7,'Warlock')):SummonInInventory(c5403c1d-f372-43e1-927a-9189e9e3545d,Permanent,1,true,true,true,,,PactBlade,PACT_BLADE,IMPROVED_PACT_WEAPON_1);TARGET:IF(ClassLevelHigherOrEqualThan(7,'Warlock') and not ClassLevelHigherOrEqualThan(12,'Warlock')):SummonInInventory(c5403c1d-f372-43e1-927a-9189e9e3545d,Permanent,1,true,true,true,,,PactBlade,PACT_BLADE,IMPROVED_PACT_WEAPON_2);TARGET:IF(ClassLevelHigherOrEqualThan(12,'Warlock')):SummonInInventory(c5403c1d-f372-43e1-927a-9189e9e3545d,Permanent,1,true,true,true,,,PactBlade,PACT_BLADE,IMPROVED_PACT_WEAPON_3)"
+data "SpellFlags" "UNUSED_D"
