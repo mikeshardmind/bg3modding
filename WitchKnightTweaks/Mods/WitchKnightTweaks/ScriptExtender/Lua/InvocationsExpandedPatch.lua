@@ -33,9 +33,13 @@ if Ext.Mod.IsModLoaded("67fbbd53-7c7d-4cfa-9409-6d737b4d92a9") then
 
     for spell_name, spell_properties in pairs(replacements) do
 
-      local spell = Ext.Stats.Get(name)
+      local spell = Ext.Stats.Get(spell_name)
       if spell ~= nil then
+        -- Need to find out if this is user error or if
+        -- https://github.com/Norbyte/bg3se/issues/322#issuecomment-1963644841
+        -- is outdated before I make noise over there.
         spell:SetRawAttribute("SpellProperties", spell_properties)
+        spell:Sync()
       end
     end
 
