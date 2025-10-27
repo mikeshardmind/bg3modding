@@ -1,5 +1,5 @@
 {
     "RequiredVersion": 2,
     "ModTable": "WitchKnightTweaks",
-    "FeatureFlags": []
+    "FeatureFlags": ["Lua"]
 }

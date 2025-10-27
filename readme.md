@@ -65,10 +65,9 @@ and with the intent of better matching existing design principles in bg3
   matching [source material](https://www.gmbinder.com/share/-M0i_wbRAX8qAz1OIjbF).
 - Lv 3: Gain pact weapon bind/summon abilities.
 - Lv 3: Gain a warlock invocation
-- lv 5: Gain a warlock invocation, Increase Sanguine Offering charges usable per turn by 1
+- lv 5: Gain a warlock invocation
 - lv 7: Gain a warlock invocation
-- lv 9: Gain a warlock invocation
-- lv 11: Increase Sanguine Offering charges usable per turn by 1
+- lv 12: Gain a warlock invocation
 
 Note that any invocations that rely on warlock level, including those added by other mods,
 will not treat witch knight levels as warlock levels, as they are not.
@@ -91,8 +90,11 @@ had been multiclassed with hexblade but a little weaker
 
 ### Compatability
 
-This replaces the subclass progression for all odd levels of witch knight.
-No other modifications are
+There's a patch for invocations expanded to understand witch knight levels as
+warlock levels, however it assumes you will not multiclass warlock.
+If you multiclass warlock, it will use *only* your warlock levels.
+
+The changes above are made with the compatability framework.
 
 
 
