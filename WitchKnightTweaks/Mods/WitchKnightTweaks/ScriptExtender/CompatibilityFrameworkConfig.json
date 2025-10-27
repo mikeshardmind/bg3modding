@@ -2,105 +2,121 @@
   "FileVersion": 1,
   "Progressions": [
     {
+      "Comment": "Witch Knight Level 3 sanguine charges",
       "UUID": "42344f07-6c59-44e0-80b8-4c702dfe16e1",
       "Strings": [
         {
           "Action": "Remove",
-          "Function": "Boosts",
+          "Type": "Boosts",
           "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
         },
         {
           "Action": "Insert",
-          "Function": "Boosts",
+          "Type": "Boosts",
           "Strings": ["ActionResource(SanguineOfferingCharge,3,0)"]
-        },
-        {
-          "Action": "Insert",
-          "Function": "PassivesAdded",
-          "Strings": ["PactOfTheBlade_Hex", "AgonizingBlast"]
         }
       ]
     },
     {
+      "Comment": "Witch Knight odd level (5-19 inclusive) sanguine charges",
+      "UUIDs": [
+        "bbdbe45e-8324-4f26-bad3-93c23f30b241",
+        "de02b23c-aa61-4dd3-b9ec-fbfe8334d06f",
+        "d76aecc7-8989-44f8-b257-08e05919a9f0",
+        "e366bf3c-be18-4e07-8910-ea6ce41ae037",
+        "9d79b51e-1f02-4a84-b2a9-3f865170f54a",
+        "9d79b51e-1f02-4a84-b2a9-3f865170f54a",
+        "4adced8f-2e8a-4be8-826c-da30173dcad0",
+        "fa789c58-e977-48db-b1ff-92a3d07c66a9"
+      ],
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Type": "Boosts",
+          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+        }
+      ]
+    },
+    {
+      "Comment": "Witch Knight Level 3 warlock features",
+      "UUID": "42344f07-6c59-44e0-80b8-4c702dfe16e1",
+      "Strings": [
+        {
+          "Action": "Insert",
+          "Type": "PassivesAdded",
+          "Strings": ["PactOfTheBlade_Hex"]
+        }
+      ],
+      "Selectors": [
+        {
+          "Action": "Insert",
+          "Function": "SelectPassives",
+          "Params": {
+            "Guid": "333fb1b0-9398-4ca8-953e-6c0f9a59bbed",
+            "Amount": "1",
+            "SelectorId":  "WarlockInvocations"
+          }
+        }
+      ]
+    },
+    {
+      "Comment": "Witch Knight Level 5 warlock features",
       "UUID": "bbdbe45e-8324-4f26-bad3-93c23f30b241",
-      "Strings": [
+      "Selectors": [
         {
           "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)", "ActionResource(Interrupt_SanguineOffering,1,0)"]
+          "Function": "SelectPassives",
+          "Params": {
+            "Guid": "8adab8f9-e360-4f79-851b-2c7e050ca23d",
+            "Amount": "1",
+            "SelectorId":  "WarlockInvocations"
+          }
         }
       ]
     },
     {
+      "Comment": "Witch Knight Level 7 warlock features",
       "UUID": "de02b23c-aa61-4dd3-b9ec-fbfe8334d06f",
-      "Strings": [
+      "Selectors": [
         {
           "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+          "Function": "SelectPassives",
+          "Params": {
+            "Guid": "39efef92-9987-46e2-8c43-54052c1be535",
+            "Amount": "1",
+            "SelectorId":  "WarlockInvocations"
+          }
         }
       ]
     },
     {
-      "UUID": "d76aecc7-8989-44f8-b257-08e05919a9f0",
-      "Strings": [
+      "Comment": "Witch Knight Level 12 warlock features",
+      "UUID": "38ef63c6-8cc8-4195-971e-7cad284ec8b1",
+      "Selectors": [
         {
           "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+          "Function": "SelectPassives",
+          "Params": {
+            "Guid": "ab56f79f-95ec-48e5-bd83-e80ba9afc844",
+            "Amount": "1",
+            "SelectorId":  "WarlockInvocations"
+          }
         }
       ]
     },
     {
-      "UUID": "e366bf3c-be18-4e07-8910-ea6ce41ae037",
+      "Comment": "Witch Knight lv 5 & 11 extra sanguine interrupts (may upset balance, playtest)",
+      "UUIDs": [
+        "bbdbe45e-8324-4f26-bad3-93c23f30b241",
+        "e366bf3c-be18-4e07-8910-ea6ce41ae037"
+      ],
       "Strings": [
         {
           "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)", "ActionResource(Interrupt_SanguineOffering,1,0)"]
-        }
-      ]
-    },
-    {
-      "UUID": "9d79b51e-1f02-4a84-b2a9-3f865170f54a",
-      "Strings": [
-        {
-          "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
-        }
-      ]
-    },
-    {
-      "UUID": "9d79b51e-1f02-4a84-b2a9-3f865170f54a",
-      "Strings": [
-        {
-          "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
-        }
-      ]
-    },
-    {
-      "UUID": "4adced8f-2e8a-4be8-826c-da30173dcad0",
-      "Strings": [
-        {
-          "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
-        }
-      ]
-    },
-    {
-      "UUID": "fa789c58-e977-48db-b1ff-92a3d07c66a9",
-      "Strings": [
-        {
-          "Action": "Insert",
-          "Function": "Boosts",
-          "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
+          "Type": "Boosts",
+          "Strings": ["ActionResource(Interrupt_SanguineOffering,1,0)"]
         }
       ]
     }
-
   ]
 }
