@@ -1,34 +1,30 @@
-bow_pattern = "IF\\(ClassLevelHigherOrEqualThan\\((\\d+),'Warlock'\\) and not ClassLevelHigherOrEqualThan\\((\\d+),'Warlock'\\)\\):([^;]*);"
-bow_substitution = "$&;IF((HasPassive('LHB_SanguineOffering_Unlock') or HasPassive('LHB_GreaterSanguineOffering_Unlock')) and ClassLevelHigherOrEqualThan($2,'Fighter') and not ClassLevelHigherOrEqualThan($1,'Fighter')) and not ClassLevelHigherOrEqualThan($2,'Fighter') and not ClassLevelHigherOrEqualThan(1,'Warlock'):$3;"
+
+local replacements = {
+  ["Shout_PactOfTheBlade_Bind"] = {
+    before = "ApplyEquipmentStatus(MainHand, PACT_BLADE,100, -1);TARGET:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and ClassLevelHigherOrEqualThan(1,'Warlock') and not ClassLevelHigherOrEqualThan(7,'Warlock')):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_1,100, -1);TARGET:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and ClassLevelHigherOrEqualThan(7,'Warlock') and not ClassLevelHigherOrEqualThan(12,'Warlock')):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_2,100, -1);TARGET:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and ClassLevelHigherOrEqualThan(12,'Warlock')):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_3,100, -1)",
+    append = ";Target:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and (HasPassive('LHB_SanguineOffering_Unlock') or HasPassive('LHB_GreaterSanguineOffering_Unlock')) and ClassLevelHigherOrEqualThan(1,'Fighter') and not ClassLevelHigherOrEqualThan(7,'Fighter') and not ClassLevelHigherOrEqualThan(1,'Warlock'):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_1,100, -1);Target:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and (HasPassive('LHB_SanguineOffering_Unlock') or HasPassive('LHB_GreaterSanguineOffering_Unlock')) and ClassLevelHigherOrEqualThan(7,'Fighter') and not ClassLevelHigherOrEqualThan(12,'Fighter') and not ClassLevelHigherOrEqualThan(1,'Warlock'):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_2,100, -1);Target:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and (HasPassive('LHB_SanguineOffering_Unlock') or HasPassive('LHB_GreaterSanguineOffering_Unlock')) and ClassLevelHigherOrEqualThan(12,'Fighter') and not ClassLevelHigherOrEqualThan(99,'Fighter') and not ClassLevelHigherOrEqualThan(1,'Warlock'):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_3,100, -1)"
+
+  }
+}
 
 --[[
-  So, lua doesn't have regex....
-  May use https://gitlab.com/demurgos/hre/-/tree/master
-  Haxe's ability to generate good lua code: https://haxe.org/manual/target-lua-getting-started.html
-  I'm aware of gsub, but I really don't want to trust all spellprops from all mods people may
-  load are well formed.
+local spell = Ext.Stats.Get("Shout_PactOfTheBlade_Bind")
+_D(spell.SpellProperties)
 ]]--
-
-bows = {
-  "Shout_PactOfTheBlade_HeavyCrossbow",
-  "Shout_PactOfTheBlade_LightCrossbow",
-  "Shout_PactOfTheBlade_HandCrossbow",
-  "Shout_PactOfTheBlade_Longbow"
-}
 
 
 if Ext.Mod.IsModLoaded("67fbbd53-7c7d-4cfa-9409-6d737b4d92a9") then
 
   local function OnStatsLoaded()
 
-    for _, s in ipairs(bows) do
+    for name, data in pairs(replacements) do
 
-      local spell = Ext.Stats.Get(s)
+      local spell = Ext.Stats.Get(name)
       if spell ~= nil then
 
         local properties = spell.SpellProperties
 
-        for _, spellprop in ipars(properties) do
+        for _, spellprop in ipairs(properties) do
 
           local spellfunctors = spellprop.Functors
 
@@ -36,19 +32,24 @@ if Ext.Mod.IsModLoaded("67fbbd53-7c7d-4cfa-9409-6d737b4d92a9") then
 
             for _, func in ipairs(spellfunctors) do
               local conds = func.StatsConditions
-              if conds ~= nil then
-
+              if conds == data.before then
+                func.StatsConditions = func.StatsConditions .. data.append
               end
             end
 
           end
         end
-
-        spell.SpellProperties = properties
-
       end
     end
   end
 
   Ext.Events.StatsLoaded:Subscribe(OnStatsLoaded)
 end
+
+--[[
+local a = "ApplyEquipmentStatus(MainHand, PACT_BLADE,100, -1);TARGET:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and ClassLevelHigherOrEqualThan(1,'Warlock') and not ClassLevelHigherOrEqualThan(7,'Warlock')):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_1,100, -1);TARGET:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and ClassLevelHigherOrEqualThan(7,'Warlock') and not ClassLevelHigherOrEqualThan(12,'Warlock')):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_2,100, -1);TARGET:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and ClassLevelHigherOrEqualThan(12,'Warlock')):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_3,100, -1)"
+local b = ";Target:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and (HasPassive('LHB_SanguineOffering_Unlock') or HasPassive('LHB_GreaterSanguineOffering_Unlock')) and ClassLevelHigherOrEqualThan(1,'Fighter') and not ClassLevelHigherOrEqualThan(7,'Fighter') and not ClassLevelHigherOrEqualThan(1,'Warlock'):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_1,100, -1);Target:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and (HasPassive('LHB_SanguineOffering_Unlock') or HasPassive('LHB_GreaterSanguineOffering_Unlock')) and ClassLevelHigherOrEqualThan(7,'Fighter') and not ClassLevelHigherOrEqualThan(12,'Fighter') and not ClassLevelHigherOrEqualThan(1,'Warlock'):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_2,100, -1);Target:IF(HasPassive('ImprovedPactWeapon') and not HasWeaponProperty(WeaponProperties.Magical, GetActiveWeapon()) and (HasPassive('LHB_SanguineOffering_Unlock') or HasPassive('LHB_GreaterSanguineOffering_Unlock')) and ClassLevelHigherOrEqualThan(12,'Fighter') and not ClassLevelHigherOrEqualThan(99,'Fighter') and not ClassLevelHigherOrEqualThan(1,'Warlock'):ApplyEquipmentStatus(MainHand, IMPROVED_PACT_WEAPON_3,100, -1)"
+local c = a .. b
+local spell = Ext.Stats.Get("Shout_PactOfTheBlade_Bind")
+spell:SetRawAttribute("SpellProperties", c)
+]]--
