@@ -103,20 +103,6 @@
           }
         }
       ]
-    },
-    {
-      "Comment": "Witch Knight lv 5 & 11 extra sanguine interrupts (may upset balance, playtest)",
-      "UUIDs": [
-        "bbdbe45e-8324-4f26-bad3-93c23f30b241",
-        "e366bf3c-be18-4e07-8910-ea6ce41ae037"
-      ],
-      "Strings": [
-        {
-          "Action": "Insert",
-          "Type": "Boosts",
-          "Strings": ["ActionResource(Interrupt_SanguineOffering,1,0)"]
-        }
-      ]
     }
   ]
 }
