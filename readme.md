@@ -1,4 +1,4 @@
-# Some Bg3 mods and tweaks
+# Yes, you can use this
 
 Mod Permissions/Licensing:
 
@@ -29,20 +29,49 @@ Tweaks here will be structured across mods in a way that you can easily pick and
 choose which rebalancing choices of mine you agree with for your own use and use
 only those.
 
+# Balance context
+
+All changes here are done with the intent of use within the context of a
+more comprehensive set of overhauls that increase game difficulty.
+These changes are not done to make the game easier again.
+
+All playtesting will be done in an environment intended to be more difficult
+than a non-single save honor mode run.
+
+The goal is for all changes to make the game feel more good without making any
+strategy become a new outlier, in either direction, strong or weak.
+
+Many changes may move existing stragies more toward the norm.
+
+Strategies that are specifically exploits (vendor scams) may be invalidated without
+the same level of consideration.
+
+It is okay if different strategies peak at different content levels.
+
+
+# Details of mods below
+
 
 ## WitchKnightTweaks
 
 This is just some balance changes to
 [Lumaterian's Witch Knight subclass mod](https://www.nexusmods.com/baldursgate3/mods/7984)
-that are made with limitations of the vanilla game's implementation of warlock spell slots.
+that are made with limitations of the vanilla game's implementation of warlock spell slots,
+and with the intent of better matching existing design principles in bg3
 
 ### Changes
 
 - Sanguine Offering Charges are 1 per Witch knight level,
   matching [source material](https://www.gmbinder.com/share/-M0i_wbRAX8qAz1OIjbF).
 - Lv 3: Gain pact weapon bind/summon abilities.
-- Lv 3: Gain agonizing blast
-- lv 5 (only if you also have the Invocations expanded mod): Gain improved pact weapon.
+- Lv 3: Gain a warlock invocation
+- lv 5: Gain a warlock invocation, Increase Sanguine Offering charges usable per turn by 1
+- lv 7: Gain a warlock invocation
+- lv 9: Gain a warlock invocation
+- lv 11: Increase Sanguine Offering charges usable per turn by 1
+
+Note that any invocations that rely on warlock level, including those added by other mods,
+will not treat witch knight levels as warlock levels, as they are not.
 
 ### Rationale
 
@@ -57,12 +86,13 @@ This mod does not attempt to prevent you from multiclassing with warlock after h
 but doing so will only weaken the build again due to base game implementation.
 
 This leaves the Witch Knight closer to existing as if it's tabletop counterpart
-had been multiclassed with hexblade but a little weaker, as it only gains 1 invocation
-(pre 2024 pacts as invocations) and no increased spell slot advancement.
+had been multiclassed with hexblade but a little weaker
+(in theory, the changes still need playtesting)
 
 ### Compatability
 
-Unknown at this time.
+This replaces the subclass progression for all odd levels of witch knight.
+No other modifications are
 
 
 
