@@ -29,6 +29,8 @@ Tweaks here will be structured across mods in a way that you can easily pick and
 choose which rebalancing choices of mine you agree with for your own use and use
 only those.
 
+This also contains configuration files for various other mods, and details on them.
+
 # Balance context
 
 All changes here are done with the intent of use within the context of a
@@ -98,6 +100,8 @@ Notes for Invocations Exanded Mod:
 - Improved pact weapon will *not* function without actual warlock levels.
 
 
+# Planned mods
+
 ## YetAnotherSpellRebalanceMod
 
 TODO
@@ -110,5 +114,45 @@ TODO
 
 Better default lv 1 choices for companions, TODO
 
+
+# Configurations
+
+## Expansion
+
+Has a modified xp curve based on being level 2 for the helm fight, and level 3 at the beach.
+
+This is a curve based on https://thinkdm.org/2021/10/30/xp-valley/ with some of the
+xp needed to reach levels 2 and 3
+shifted to being needed to reach levels 6 and 7
+
+If you'd like to create your own curve with similar justifications, but different shifts, below's
+a lazy bit of python with rationale
+
+```py
+# This is the base game per level values needed to advance, for comparison:
+# base_progression = [300, 600, 1800, 3800, 6500, 8000, 9000, 12000, 14000, 20000, 24000, 20000, 20000, 25000, 30000, 30000, 40000, 40000, 50000]
+# See article here for details on ThinkDM's shifting of level xp to curve with CR:xp reward ratio
+# https://thinkdm.org/2021/10/30/xp-valley/
+# This is in the format of a PHB xp table
+think_dm_raw = [0, 300, 1100, 2500, 5000, 9000, 14500, 21500, 31000, 43000, 58000, 77000, 100000, 125000, 155000, 187500, 225000, 270000, 315000, 355000]
+# get this in per lv increments
+tdm_per_lv = [think_dm_raw[i] - think_dm_raw[i-1] for i in range(1, 20)]
+# don't allow freeing Us to reach lv 2 before Lae'zel
+OUR_XP_TO2 = 30
+# somewhat arbitrary. high enough that it can't be be reached before helm, low enough that you get it even skipping any combat xp in it.
+OUR_XP_TO3 = 150
+difficulty_mod_curve = [OUR_XP_TO2, OUR_XP_TO3, *tdm_per_lv[2:]]
+difficulty_mod_curve[5] += tdm_per_lv[0] - OUR_XP_TO2
+difficulty_mod_curve[6] += tdm_per_lv[1] - OUR_XP_TO3
+# [20, 150, 1400, 2500, 4000, 5780, 7650, 9500, 12000, 15000, 19000, 23000, 25000, 30000, 32500, 37500, 45000, 45000, 40000]
+
+# there's an oddity in the think dm table where lvs 17 -> 18 and 18 -> 19 each take more xp than 19 -> 20
+# It's the only place this happens, and I don't think I want to mimmick that, so:
+# (this makes lv 18 arrive 5000 total xp earlier, lv 19 and 20 arrive at same total xp)
+difficulty_mod_curve.sort()
+# [20, 150, 1400, 2500, 4000, 5780, 7650, 9500, 12000, 15000, 19000, 23000, 25000, 30000, 32500, 37500, 40000, 45000, 45000]
+# format needed for expansion mod config:
+exp_cfg_keys = {f"Level{i}": v for i, v in enumerate(difficulty_mod_curve, 1)}
+```
 
 [^1]: [If you're now looking at charitable organizations, MSF is one I personally give to](https://www.msf.org)

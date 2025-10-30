@@ -1,0 +1,57 @@
+{
+  "Levels": {
+    "DisableXPDataModification": true,
+    "HpPerLevel20+": false,
+    "Level20+": 50000,
+    "MaxLevel": 20,
+    "Level1": 30,
+    "Level2": 150,
+    "Level3": 1400,
+    "Level4": 2500,
+    "Level5": 4000,
+    "Level6": 5770,
+    "Level7": 7650,
+    "Level8": 9500,
+    "Level9": 12000,
+    "Level10": 15000,
+    "Level11": 19000,
+    "Level12": 23000,
+    "Level13": 25000,
+    "Level14": 30000,
+    "Level15": 32500,
+    "Level16": 37500,
+    "Level17": 40000,
+    "Level18": 45000,
+    "Level19": 45000
+  },
+  "boons": {
+    "BaseClassEpicBoons": false,
+    "CustomClassEpicBoons": false
+  },
+  "feats": {
+    "BaseClassFeatSelection": true,
+    "BaseClassFeats": "None",
+    "CustomClassFeatSelection": true,
+    "CustomClassFeats": "None"
+  },
+  "misc": {
+    "ExpansionBladesinger": false,
+    "ExpansionBladesingerIcon": false,
+    "Sorcerer11thSubclass": false,
+    "WizardBladesinger": false
+  },
+  "optional_features": {
+    "Barbarian": true,
+    "Bard": true,
+    "Cleric": true,
+    "Druid": true,
+    "Fighter": true,
+    "Monk": true,
+    "Paladin": true,
+    "Ranger": true,
+    "Rogue": true,
+    "Sorcerer": true,
+    "Warlock": true,
+    "Wizard": true
+  }
+}
