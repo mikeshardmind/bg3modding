@@ -64,26 +64,27 @@ and with the intent of better matching existing design principles in bg3
 
 - Sanguine Offering Charges are 1 per Witch knight level,
   matching [source material](https://www.gmbinder.com/share/-M0i_wbRAX8qAz1OIjbF).
-- Lv 3: Gain pact weapon bind/summon abilities.
-- Lv 3: Gain a warlock invocation
-- lv 5: Gain a warlock invocation
-- lv 7: Gain a warlock invocation
-- lv 12: Gain a warlock invocation
-
-Note that any invocations that rely on warlock level, including those added by other mods,
-will not treat witch knight levels as warlock levels, as they are not.
+- Lv 3: Gain pact weapon bind/summon abilities and the armor of shadows warlock invocation
+- lv 12: Gain the lifedrinker warlock invocation
 
 ### Rationale
 
 Because of the base game's implementation of warlock spell slots,
 both Witch knight and Warlock are punished if you multiclass these two together.
 
-The primary reason for this multiclass would be for invocations and increased
-warlock spell slot levels, And this multiclass is also the primary reason
-to play witch knight over eldritch knight.
+I don't particularly want to over-buff in compensation of this, and have only given some
+melee focused warlock invocations at specific levels. I may make more tweaks later, but allowing
+choice of invocation was too finicky, and also allowed what I would consider certain options that are
+unacceptable to give while retaining full base fighter feature scaling.
 
 This mod does not attempt to prevent you from multiclassing with warlock after having it,
-but doing so will only weaken the build again due to base game implementation.
+but doing so will likely weaken the build again due to base game implementation unless you
+have a very specific build idea in mind
+
+If you want to multiclass warlock/fighter,
+the base game's battle master or the
+5e fighter sublass combined mod's implementation of Brute fighter
+will provide strictly better numerical power.
 
 This leaves the Witch Knight closer to existing as if it's tabletop counterpart
 had been multiclassed with hexblade but a little weaker
@@ -95,9 +96,6 @@ Modifies progression via compatability framework.
 
 Notes for Invocations Exanded Mod:
 - Improved pact weapon will *not* function without actual warlock levels.
-- I may make a compatability patch for this later, but the compatability framework
-  doesn't seem to support modifying spell properties,
-  which are the part that needs adjustment. so this would have to done in a more fragile manner.
 
 
 ## YetAnotherSpellRebalanceMod
