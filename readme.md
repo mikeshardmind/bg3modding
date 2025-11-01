@@ -66,8 +66,7 @@ and with the intent of better matching existing design principles in bg3
 
 - Sanguine Offering Charges are 1 per Witch knight level,
   matching [source material](https://www.gmbinder.com/share/-M0i_wbRAX8qAz1OIjbF).
-- Lv 3: Gain pact weapon bind/summon abilities and the armor of shadows warlock invocation
-- lv 12: Gain the lifedrinker warlock invocation
+- Lv 3: Gain pact weapon bind/summon abilities
 
 ### Rationale
 

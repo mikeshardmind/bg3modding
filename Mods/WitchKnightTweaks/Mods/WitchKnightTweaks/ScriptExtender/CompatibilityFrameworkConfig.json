@@ -44,18 +44,7 @@
         {
           "Action": "Insert",
           "Type": "PassivesAdded",
-          "Strings": ["PactOfTheBlade_Hex", "ArmorOfShadows"]
-        }
-      ]
-    },
-    {
-      "Comment": "Witch Knight Level 12 warlock features (compensation buff)",
-      "UUID": "38ef63c6-8cc8-4195-971e-7cad284ec8b1",
-      "Strings": [
-        {
-          "Action": "Insert",
-          "Type": "PassivesAdded",
-          "Strings": ["Lifedrinker"]
+          "Strings": ["PactOfTheBlade_Hex"]
         }
       ]
     }
