@@ -1,0 +1,12 @@
+// https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf
+
+new entry "UA_FightingStyle_Mariner"
+type "PassiveData"
+data "DisplayName" "heba6eafbg842cg4242g9215g7bcdc643d52f;1"
+data "Description" "hacd63138g0ae8g4344gbaaeg46332292d5fc;1"
+data "DescriptionParams" "Distance(3)"
+data "Icon" "PassiveFeature_Athlete_StandUp"
+data "Properties" "Highlighted"
+data "BoostContext" "OnEquip;OnCreate"
+data "BoostConditions" "not HasHeavyArmor(context.Source) and not HasShieldEquipped(context.Source)"
+data "Boosts" "ActionResource(Movement, 3, 0);AC(1);JumpMaxDistanceMultiplier(1.5)"

@@ -1,0 +1,69 @@
+// https://media.wizards.com/2019/dnd/downloads/UA-ClassFeatures.pdf
+
+// Blind Fighting would go here if I didnt object to further enabling darkness strategies.
+// Take the extra warlock levels or eldritch adept if you want devilsight.
+
+new entry "UA_FightingStyle_Interception"
+type "PassiveData"
+data "DisplayName" "h0c3365adg4886g476dgaefcg8936a8c52ae2;1"
+data "Description" "h47772a46g6ab5g43fdg999fg66701da7c282;1"
+data "DescriptionParams" "Distance(1.5)"
+data "TooltipUseCosts" "ReactionActionPoint:1"
+data "Icon" "PassiveFeature_FightingStyle_Protection"
+data "Properties" "Highlighted"
+data "Boosts" "UnlockInterrupt(UA_FightingStyle_Interception_Interrupt)"
+
+new entry "UA_FightingStyle_Interception_Interrupt"
+type "InterruptData"
+data "DisplayName" "h0c3365adg4886g476dgaefcg8936a8c52ae2;1"
+data "Description" "h47772a46g6ab5g43fdg999fg66701da7c282;1"
+data "DescriptionParams" "Distance(1.5)"
+data "Icon" "PassiveFeature_FightingStyle_Protection"
+data "InterruptContext" "OnPreDamage"
+data "InterruptContextScope" "Nearby"
+data "Container" "YesNoDecision"
+data "Conditions" "IsAbleToReact(context.Observer) and not Self(context.Source,context.Observer) and not Self(context.Target,context.Observer) and Ally(context.Target, context.Observer) and not DistanceToEntityGreaterThan(2, context.ObserverPosition, context.Target) and not AnyEntityIsItem()"
+data "Properties" "AdjustRoll(OBSERVER_TARGET,-(1d10+ProficiencyBonus));ApplyStatus(OBSERVER_TARGET,INTERRUPT_FIGHTINGSTYLE_INTERCEPTION,100,0)"
+data "Cost" "ReactionActionPoint:1"
+data "InterruptDefaultValue" "Ask;Enabled"
+data "EnableCondition" "not HasStatus('SG_Polymorph')"
+data "EnableContext" "OnStatusApplied;OnEquip"
+
+new entry "UA_FightingStyle_ThrownWeaponFighting"
+type "PassiveData"
+data "DisplayName" "h92170444g12acg4478gab19g746682a1d35a;1"
+data "Description" "h8793b644g1180g4f3cgbac3gff0b3deb7522;1"
+data "Icon" "PassiveFeature_TavernBrawler"
+data "Properties" "Highlighted"
+data "StatsFunctorContext" "OnAttack"
+data "Conditions" "IsRangedUnarmedAttack() and HasDamageEffectFlag(DamageFlags.Hit)"
+data "StatsFunctors" "DealDamage(2);"
+
+// Unarmed Fighting could go here, but I don't think giving fighter/monk multiclasses
+// A more damaging option for fighting style is ideal for balance.
+
+// The only actually class specific ones, lol
+
+new entry "UA_FightingStyle_SuperiorTechnique"
+type "PassiveData"
+data "DisplayName" "h6152a1acge203g4698gb2afgf3554a1dd614;1"
+data "Description" "h54b3996bg81e9g49b8g977eg7399a957edb4;1"
+data "Icon" "PassiveFeature_MartialAdept"
+data "Properties" "Highlighted"
+data "Boosts" "ActionResource(SuperiorityDie,1,0);UnlockInterrupt(Interrupt_Riposte)"
+
+new entry "UA_FightingStyle_DruidicWarrior"
+type "PassiveData"
+data "DisplayName" "h0e895e79g47f5g48eega964ga28755a8761d;1"
+data "Description" "h5ab5ce8fg3577g461bg9f69g297467e281b3;1"
+data "Icon" "Spell_Abjuration_Transmutation_Shillelagh"
+data "Properties" "Highlighted"
+data "Boosts" "UnlockSpell(Shout_Shillelagh,,,,Wisdom);UnlockSpell(Target_Guidance,,,,Charisma)"
+
+new entry "UA_FightingStyle_BlessedWarrior"
+type "PassiveData"
+data "DisplayName" "h4d5e6958g52fdg4ebbga7abgf765c4c9ed17;1"
+data "Description" "h9186b007gbf2fg492ega6b6gbcd8690560ea;1"
+data "Icon" "Spell_Evocation_SacredFlame"
+data "Properties" "Highlighted"
+data "Boosts" "UnlockSpell(Target_SacredFlame,,,,Charisma);UnlockSpell(Target_Guidance,,,,Charisma)"
