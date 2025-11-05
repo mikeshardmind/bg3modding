@@ -54,6 +54,50 @@ It is okay if different strategies peak at different content levels.
 
 # Details of mods below
 
+## UAFightingStyles
+
+Attempts to add fighting styles from Unearthed Arcana
+
+
+From [2015 Underdark Characters UA](https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf)
+
+Implemented fully:
+
+- Close Quarters Shooter
+- Tunnel fighter
+
+
+From [2015 WaterBorneAdeventures UA](https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf)
+
+Implemented fully:
+
+- Mariner
+
+
+From [2019 Class Feature Variants UA](https://media.wizards.com/2019/dnd/downloads/UA-ClassFeatures.pdf)
+
+(Some of this was later included into Tasha's Cauldron of Everything)
+
+
+Implemented fully:
+
+- Interception
+- Thrown Weapon Fighting
+
+
+Partially Implemented:
+
+- Superior Technique: Always gives Riposte.
+- Druidic Warrior: Always gives Guidance and Shillelagh
+- Blessed Warrior: Always gives Guidance and Sacred Flame
+
+
+Not Implemented
+
+- Blind Fighting
+- Unarmed Fighting
+
+I have no current intention on incorporating these in the context of BG3's balance
 
 ## WitchKnightTweaks
 
@@ -103,10 +147,6 @@ had been multiclassed with hexblade but a little weaker
 ### Compatability
 
 Modifies progression via compatability framework.
-
-Notes for Invocations Exanded Mod:
-- Improved pact weapon will *not* function without actual warlock levels.
-
 
 # Planned mods
 
