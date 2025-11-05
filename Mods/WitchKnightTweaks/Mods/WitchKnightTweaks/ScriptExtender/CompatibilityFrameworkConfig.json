@@ -36,17 +36,6 @@
           "Strings": ["ActionResource(SanguineOfferingCharge,1,0)"]
         }
       ]
-    },
-    {
-      "Comment": "Witch Knight Level 3 warlock features (compensation buff)",
-      "UUID": "42344f07-6c59-44e0-80b8-4c702dfe16e1",
-      "Strings": [
-        {
-          "Action": "Insert",
-          "Type": "PassivesAdded",
-          "Strings": ["PactOfTheBlade_Hex"]
-        }
-      ]
     }
   ]
 }

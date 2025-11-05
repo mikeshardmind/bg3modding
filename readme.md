@@ -60,22 +60,31 @@ It is okay if different strategies peak at different content levels.
 This is just some balance changes to
 [Lumaterian's Witch Knight subclass mod](https://www.nexusmods.com/baldursgate3/mods/7984)
 that are made with limitations of the vanilla game's implementation of warlock spell slots,
-and with the intent of better matching existing design principles in bg3
+and with the intent of better matching existing design principles in bg3.
+
+Note: This previously had some minor attempts at compensation buffs such as giving
+specific invocations. This didnt balance well, and I've removed them for now,
+only restoring RAW Sanguine Offering Charges.
+
+I intend to look into finding a good way to handle multiclass warlock spell progression
+instead, but this is not a high priority. It's okay to just not take the multiclass and play
+witch knight for the flavor, it has that in spades and can hold up to
+difficulty increasing mods.
 
 ### Changes
 
 - Sanguine Offering Charges are 1 per Witch knight level,
   matching [source material](https://www.gmbinder.com/share/-M0i_wbRAX8qAz1OIjbF).
-- Lv 3: Gain pact weapon bind/summon abilities
 
-### Rationale
+### Rationale (see above, outdated, but kept for reference of the issues)
 
 Because of the base game's implementation of warlock spell slots,
 both Witch knight and Warlock are punished if you multiclass these two together.
 
-I don't particularly want to over-buff in compensation of this, and have only given some
-melee focused warlock invocations at specific levels. I may make more tweaks later, but allowing
-choice of invocation was too finicky, and also allowed what I would consider certain options that are
+I don't particularly want to over-buff in compensation of this, and (previously, see note above)
+have only given some melee focused warlock invocations at specific levels.
+I may make more tweaks later, but allowing choice of invocation was too finicky,
+and also allowed what I would consider certain options that are
 unacceptable to give while retaining full base fighter feature scaling.
 
 This mod does not attempt to prevent you from multiclassing with warlock after having it,
@@ -101,18 +110,7 @@ Notes for Invocations Exanded Mod:
 
 # Planned mods
 
-## YetAnotherSpellRebalanceMod
-
-TODO
-
-## Shop scam preventions
-
-TODO
-
-## No more rushing to withers
-
-Better default lv 1 choices for companions, TODO
-
+See Issues tab
 
 # Configurations
 
