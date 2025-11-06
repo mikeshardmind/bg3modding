@@ -53,6 +53,10 @@ It is okay if different strategies peak at different content levels.
 
 # Details of mods below
 
+## BaseParameters
+
+carry weight and loot from traders.
+
 ## JustJump
 
 Jump only consumes movement, no bonus action cost.
