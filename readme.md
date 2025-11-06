@@ -20,9 +20,8 @@ You may assume your choice of any of the following licenses:
 - [WTFPL](https://spdx.org/licenses/WTFPL.html)
 
 
-If you like any of what I'm rebalancing/tweaking enough that you're wanting to donate,
-please give to either a charity[^1], or to the original authors whose work
-I am adjusting further with more mods.
+If you like any of what I'm doing here enough that you're wanting to donate,
+please give to a charity[^1] instead.
 
 The main branch will be used for development, specific releases will be tagged.
 Tweaks here will be structured across mods in a way that you can easily pick and
