@@ -54,9 +54,26 @@ It is okay if different strategies peak at different content levels.
 
 # Details of mods below
 
+## JustJump
+
+Jump only consumes movement, no bonus action cost.
+This is a symmetric effect; the same applies to enemies.
+
+## StartingEquip
+
+Players:
+1x Rusty Shortsword
+1x Rusty Dagger
+1x Studded Shield
+1x Light Crossbow
+
+
+Players and companions:
+3x Hospital Surgery Kits (Intended for use with injury mods)
+
 ## UAFightingStyles
 
-Attempts to add fighting styles from Unearthed Arcana
+Add some fighting styles from Unearthed Arcana
 
 
 From [2015 Underdark Characters UA](https://media.wizards.com/2015/downloads/dnd/02_UA_Underdark_Characters.pdf)
@@ -76,7 +93,7 @@ Implemented fully:
 
 From [2019 Class Feature Variants UA](https://media.wizards.com/2019/dnd/downloads/UA-ClassFeatures.pdf)
 
-(Some of this was later included into Tasha's Cauldron of Everything)
+(Some of this was later included in Tasha's Cauldron of Everything)
 
 
 Implemented fully:

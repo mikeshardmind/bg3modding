@@ -1,0 +1,36 @@
+Version 1
+SubGoalCombiner SGC_AND
+
+INITSECTION
+
+NOT DB_mikeshardmind_StartingEquip((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
+
+KBSECTION
+
+IF
+LevelGameplayReady(_Level, _IsEditor)
+AND
+DB_Avatars(_Character)
+AND
+NOT DB_mikeshardmind_StartingEquip(_Character)
+THEN
+TemplateAddTo(TOOL_Hospital_Surgery_Kit_B_55fb2f34-00d7-4149-8b52-e189e05ba0ca, _Character, 3, 0);
+TemplateAddTo(WPN_HUM_Shield_A_0_d2af60ea-1b72-4d25-a188-6d8bc4fe255b, _Character, 1, 0);
+TemplateAddTo(WPN_HUM_Shortsword_A_0_Rusty_A_9d66df2d-8e8f-4798-8684-77b738d26704, _Character, 1, 0);
+TemplateAddTo(WPN_HUM_Dagger_A_0_Rusty_A_6a321455-d00f-4164-ab12-3601fef2ae6e, _Character, 1, 0);
+TemplateAddTo(WPN_HUM_LightCrossbow_A_0_43b7fbf5-7f6e-4e9e-bce7-c679eea44593, _Character, 1, 0);
+DB_mikeshardmind_StartingEquip(_Character);
+
+PROC
+PROC_GLO_PartyMembers_Add((CHARACTER)_Origin,(CHARACTER)_Player)
+AND
+DB_PartOfTheTeam(_Origin)
+AND
+NOT DB_mikeshardmind_StartingEquip(_Origin)
+THEN
+TemplateAddTo(TOOL_Hospital_Surgery_Kit_B_55fb2f34-00d7-4149-8b52-e189e05ba0ca, _Origin, 3, 0);
+DB_mikeshardmind_StartingEquip(_Origin);
+
+EXITSECTION
+
+ENDEXITSECTION
