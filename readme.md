@@ -168,6 +168,13 @@ had been multiclassed with hexblade but a little weaker
 
 Modifies progression via compatability framework.
 
+## ZeroOverrideDialogueFixes
+
+Alternative bugfixes for dialogue not requiring an override.
+
+Currently: Works around the only remaining Nightsong point bug as of patch 8
+Planned: Fixes for Mol Approval & Belongings
+
 # Planned mods
 
 See Issues tab
