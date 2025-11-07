@@ -1,0 +1,41 @@
+Version 1
+SubGoalCombiner SGC_AND
+
+INITSECTION
+
+DB_mikeshardmind_thiefling_tracker(0);
+
+KBSECTION
+
+
+// Can't retroactively fix this, there are too many ways this flag can be set
+// but the thieflings no longer have your items.
+
+// If it goes from not set to set during the dialogue, this other flag should always be set
+// but isn't consistently, track and fix that.
+
+// only safe because only one instance of this dialogue can occur at once.
+
+IF
+DialogStarted((DIALOGRESOURCE)DEN_Thieflings_Pickpocket_001_def4d965-3830-47db-a248-a3119d0780f3, _ID)
+AND
+NOT DB_GlobalFlag(DEN_Thieflings_Event_PlayerRobbed_ec548492-a88e-ae81-ca4d-7970d804ec5b)
+THEN
+DB_mikeshardmind_thiefling_tracker(_ID);
+
+
+IF
+DialogEnded((DIALOGRESOURCE)DEN_Thieflings_Pickpocket_001_def4d965-3830-47db-a248-a3119d0780f3, _ID)
+AND
+DB_mikeshardmind_thiefling_tracker(_ID)
+AND
+DB_GlobalFlag(DEN_Thieflings_Event_PlayerRobbed_ec548492-a88e-ae81-ca4d-7970d804ec5b)
+THEN
+PROC_GlobalSetFlagAndCache(DEN_Thieflings_State_HoldingStolenGoods_b21939d8-362b-cafc-91ee-ad2fa26df511);
+DB_mikeshardmind_thiefling_tracker(0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Act1"

@@ -172,8 +172,10 @@ Modifies progression via compatability framework.
 
 Alternative bugfixes for dialogue not requiring an override.
 
-Currently: Works around the only remaining Nightsong point bug as of patch 8
-Planned: Fixes for Mol Approval & Belongings
+Currently:
+  - Works around the only remaining Nightsong point bug as of patch 8
+  - Ensures that if the *thieflings* rob you, the corresponding flag is set (not retroactive)
+  - Disables tresspassing in the *thiefling* den, because the way it is implemented causes guard interaction loops.
 
 # Planned mods
 
