@@ -3,7 +3,7 @@ SubGoalCombiner SGC_AND
 
 INITSECTION
 
-DB_mikeshardmind_thiefling_tracker(0);
+DB_mikeshardmind_ZODF_Thiefling(0);
 
 KBSECTION
 
