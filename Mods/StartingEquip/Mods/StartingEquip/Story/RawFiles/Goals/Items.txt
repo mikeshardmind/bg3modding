@@ -10,6 +10,8 @@ KBSECTION
 IF
 LevelGameplayReady(_Level, _IsEditor)
 AND
+_Level != "SYS_CC_I"
+AND
 DB_Avatars(_Character)
 AND
 NOT DB_mikeshardmind_StartingEquip(_Character)

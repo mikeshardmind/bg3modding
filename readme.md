@@ -64,6 +64,10 @@ This is a symmetric effect; the same applies to enemies.
 
 ## StartingEquip
 
+This is **not** an overhaul of starting equipment as a whole, this just gives
+a few very basic items to players. With the exception of the shield, these
+are all always found on the nautaloid anyhow.
+
 Players:
 1x Rusty Shortsword
 1x Rusty Dagger
@@ -179,7 +183,9 @@ Currently:
 
 # Planned mods
 
-See Issues tab
+See Issues tab for more details.
+
+Basically anything I feel like I can tweak to improve how the game feels on replay.
 
 # Configurations
 
