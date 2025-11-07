@@ -46,3 +46,4 @@ PROC_GlobalSetFlagAndCache((FLAG)ORI_Shadowheart_State_NightsongPoint_HasEnoughP
 EXITSECTION
 
 ENDEXITSECTION
+ParentTargetEdge "Act2"
