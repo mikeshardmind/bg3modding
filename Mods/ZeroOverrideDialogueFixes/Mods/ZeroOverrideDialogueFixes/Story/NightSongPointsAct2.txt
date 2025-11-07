@@ -3,7 +3,7 @@ SubGoalCombiner SGC_AND
 
 INITSECTION
 
-NOT DB_mikeshardmind_ZODF_Nightsong(0);
+DB_mikeshardmind_ZODF_Nightsong(0);
 
 KBSECTION
 
