@@ -91,7 +91,7 @@ Implemented fully:
 - Tunnel fighter
 
 
-From [2015 WaterBorneAdeventures UA](https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf)
+From [2015 Waterborne Adeventures UA](https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf)
 
 Implemented fully:
 
