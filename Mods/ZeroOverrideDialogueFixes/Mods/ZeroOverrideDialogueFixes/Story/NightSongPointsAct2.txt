@@ -9,7 +9,18 @@ KBSECTION
 
 // Rather than patch the dialogue file with an override
 // We're going to hit the "or" condition, rather than
-// "and" when in the faulty "and" condition
+// "and" when in the and condition without enough approval
+
+// There's actually a reasonable interpretation that the vanilla behavior is
+// intended. Real world cult deprogramming is tricky, because
+// even if someone trusts you broadly, if you've previously poked into
+// their relation to the cult without a major breakthrough,
+// they are less inclined to trust you on matters relating to the cult.
+
+// However, the game does not ever explore this angle after the fact,
+// and so while the interpretation exists, the game has not earned that,
+// and I am treating it as an oversight on the developer's part.
+
 
 IF
 EnteredTrigger((CHARACTER)S_Player_ShadowHeart_3ed74f06-3c60-42dc-83f6-f034cb47c679, (TRIGGER)S_SHA_NightsongPrison_SUB_0a302268-dd92-4462-99e5-ca7491815ec0)
