@@ -50,7 +50,7 @@ the same level of consideration.
 
 It is okay if different strategies peak at different content levels.
 
-# Compatability and uninstallation of mods
+# Compatability and mid playthrough modlist changes.
 
 It is intended that all changes are as minimally invasive and as compatible as
 reasonably possible.
@@ -60,6 +60,10 @@ is the UA fighting styles mod, and only on characters that have taken one
 of those fighting styles.
 
 All other mods are fully safe to remove midplaythrough at this time.
+
+All mods here are safe to add midplaythrough.
+If loading StartingEquip mid playthrough, any already recruited companions
+will not recieve the 3 injury kits.
 
 
 # Details of mods below
@@ -94,6 +98,10 @@ Players:
 
 Players and companions:
 3x Hospital Surgery Kits (Intended for use with injury mods)
+
+This may recieve further changes in the future to give fewer things more dynamically
+based on proficiency, but will not give anything beyond basic weapony
+(not even +1 stuff)
 
 ## UAFightingStyles
 
