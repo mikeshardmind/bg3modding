@@ -70,8 +70,8 @@ will not recieve the 3 injury kits.
 
 ## BaseParameters
 
-carry weight and loot from traders. Mostly just for me, use if you want, but
-this one in particular isn't going in the releases tab.
+carry weight and loot from traders. Mostly just for me, use if you want,
+unlikely to support any changes to this.
 
 ## JustJump
 
