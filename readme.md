@@ -21,7 +21,7 @@ You may assume your choice of any of the following licenses:
 
 
 If you like any of what I'm doing here enough that you're wanting to donate,
-please give to a charity[^1] instead.
+please give to a charitable cause[^1] instead.
 
 The main branch will be used for development, specific releases will be tagged.
 Tweaks here will be structured across mods in a way that you can easily pick and
@@ -50,23 +50,40 @@ the same level of consideration.
 
 It is okay if different strategies peak at different content levels.
 
+# Compatability and uninstallation of mods
+
+It is intended that all changes are as minimally invasive and as compatible as
+reasonably possible.
+
+Currently, the only mod that will require a respec to level 1 to remove
+is the UA fighting styles mod, and only on characters that have taken one
+of those fighting styles.
+
+All other mods are fully safe to remove midplaythrough at this time.
+
 
 # Details of mods below
 
 ## BaseParameters
 
-carry weight and loot from traders.
+carry weight and loot from traders. Mostly just for me, use if you want, but
+this one in particular isn't going in the releases tab.
 
 ## JustJump
 
 Jump only consumes movement, no bonus action cost.
 This is a symmetric effect; the same applies to enemies.
 
+Warning: This will make your game harder
+
+It is *more* impactful for enemies, as they won't waste their bonus action
+with questionable AI choices, and will only evaluate it off of the positioning.
+
 ## StartingEquip
 
 This is **not** an overhaul of starting equipment as a whole, this just gives
-a few very basic items to players. With the exception of the shield, these
-are all always found on the nautaloid anyhow.
+a few very basic items to players. With the exception of the shield,
+equivalent equipment is always found on the nautaloid anyhow.
 
 Players:
 1x Rusty Shortsword
@@ -123,6 +140,43 @@ Not Implemented
 
 I have no current intention on incorporating these in the context of BG3's balance
 
+The partially implemented ones that as written would give a choice of features,
+give the strongest features they could in BG3's balance context.
+
+I haven't seen a way to add a sub selector to a selector, if anyone knows how
+to implement this, I'd happily update to support the subselection.
+
+I do not want to flood the fighting style selection with each combination.
+
+This may require a respec if you got those features
+elsewhere previously to not get something useless.
+
+Close Quarters Shooter, Mariner, and Thrown weapon fighting are added to the
+swords bard list.
+
+These are flavorful choices that should not significantly change where
+swords bard exists in BG3's balance context
+
+It's already going to be one of the strongest unless you use a mod that makes
+ranged slashing flourish work more like tabletop.
+
+If you do that, Two weapon fighting (on it's base list) is stronger than
+anything here.
+
+### Compatability
+
+Uses the compatability framework to add to the fighting style lists.
+
+May result in multiple implementations of the same fighting style if
+used with other mods that add fighting styles.
+
+If you run into this in practice, feel free to open an issue,
+I intend to make this mod configurable later anyhow,
+allowing for users to go in either direction,
+restricting the fighting styles more
+or opening them up if they don't care about the class restrictions.
+
+
 ## WitchKnightTweaks
 
 This is just some balance changes to
@@ -172,6 +226,11 @@ had been multiclassed with hexblade but a little weaker
 
 Modifies progression via compatability framework.
 
+Does not check that the progression is as expected, if Lumaterian changes
+the base mod to be as written, you no longer should load this mod.
+
+In the event that happens, this mod is safe to remove mid-playthrough.
+
 ## ZeroOverrideDialogueFixes
 
 Alternative bugfixes for dialogue not requiring an override.
@@ -220,4 +279,4 @@ tdm_per_lv[:2] = [30, sum(tdm_per_lv[:2]) -30]
 exp_cfg_keys = {f"Level{i}": v for i, v in enumerate(tdm_per_lv, 1)}
 ```
 
-[^1]: [If you're now looking at charitable organizations, MSF is one I personally give to](https://www.msf.org)
+[^1]: If you're looking to donate to a good cause that I'd support, I personally donate to [MSF (AKA Doctors Without Borders)](https://www.msf.org)
