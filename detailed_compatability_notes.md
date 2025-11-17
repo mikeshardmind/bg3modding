@@ -58,29 +58,3 @@ Progression modification via Compatability framework.
 Mod won't crash without SE+compat framework, but the progression won't be modified.
 
 
-# ZeroOverrideDialogueFixes
-
-The entire thing is osiris DB/flag manipulation.
-
-Without a mod significantly changing how those values are used,
-it's unlikely to conflict with anything.
-
-The nightsong point fix
-(and there's an argument that it's not actually bugged in vanilla....)
-
-Modifies these:
-
-Global Counter: ORI_Shadowheart_NightsongPoints
-Global Flag: ORI_Shadowheart_State_NightsongPoint_HasEnoughPoints_82893505-534a-461a-8dd5-0f4677dad6ce
-
-temporarily and conditionally.
-
-The thiefling fixes conditionally set:
-
-Global Flag: DEN_Thieflings_Event_PlayerRobbed_ec548492-a88e-ae81-ca4d-7970d804ec5b
-
-and also interact with the crime system to disable the crimes that are unique to the tiefling hideout,
-because of some unfortunate implementations that result in being stopped for the same
-crime until every party member has individually been adressed by the guards.
-
-murder, theft, etc are still dealt with normally.
