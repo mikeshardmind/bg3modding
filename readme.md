@@ -113,7 +113,7 @@ From [2015 Underdark Characters UA](https://media.wizards.com/2015/downloads/dnd
 Implemented fully:
 
 - Close Quarters Shooter
-- Tunnel fighter
+- Tunnel fighter\*
 
 
 From [2015 Waterborne Adventures UA](https://media.wizards.com/2015/downloads/dnd/UA_Waterborne_v3.pdf)
@@ -150,6 +150,13 @@ I have no current intention on incorporating these in the context of BG3's balan
 
 The partially implemented ones that as written would give a choice of features,
 give the strongest features they could in BG3's balance context.
+
+  \*Tunnel fighter is considered "Fully implemented",
+  but it has been modified for BG3's balance context. Rather than making all
+  opportinity attacks not use a reaction, it gives an additional reaction.
+
+  This interacts better with other mods that implement things as reactions that
+  are essentially augmented opportunity attacks.
 
 I haven't seen a way to add a sub selector to a selector, if anyone knows how
 to implement this, I'd happily update to support the subselection.
