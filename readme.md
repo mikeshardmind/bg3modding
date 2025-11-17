@@ -246,15 +246,6 @@ the base mod to be as written, you no longer should load this mod.
 
 In the event that happens, this mod is safe to remove mid-playthrough.
 
-## ZeroOverrideDialogueFixes
-
-Alternative bugfixes for dialogue not requiring an override.
-
-Currently:
-  - Works around the only remaining Nightsong point bug as of patch 8 (tested and working)
-  - Ensures that if the *thieflings* rob you, the corresponding flag is set (not retroactive) (Needs more extensive testing)
-  - Disables tresspassing in the *thiefling* den, because the way it is implemented causes guard interaction loops. (tested and working)
-
 # Planned mods
 
 See Issues tab for more details.
