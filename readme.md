@@ -248,6 +248,9 @@ In the event that happens, this mod is safe to remove mid-playthrough.
 
 # Planned mods
 
+- Spell and feat rebalances (Yes, Yet another one of those...)
+- Merged list sorter (I'd like my feats and fighting styles in order...)
+
 See Issues tab for more details.
 
 Basically anything I feel like I can tweak to improve how the game feels on replay.
