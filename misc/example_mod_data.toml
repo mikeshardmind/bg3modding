@@ -1,0 +1,51 @@
+
+
+[26922ba9-6018-5252-075d-7ff2ba6ed879]
+name = "ImpUI_P8_Fork"
+affinity = 1
+
+[171cfb95-2e00-dc2a-03f6-f672b4650d95]
+name = "HybridUI"
+affinity = 2
+
+[67fbbd53-7c7d-4cfa-9409-6d737b4d92a9]
+name = "CompatibilityFramework"
+affinity = 100000
+
+[96bc14a7-733e-4bea-859d-3695d745efc1]
+name = "Mazzle_Lib"
+affinity = 3
+
+[ad95bd1c-1a80-45fb-b73b-9eea1f8e58d0]
+name = "Mazzle's EZ-Documentation"
+affinity = 3
+
+[a17a3a3d-5c16-404a-910a-68ae9e47f247]
+name = "Absolute's Laboratory"
+requires = ["96bc14a7-733e-4bea-859d-3695d745efc1", "755a8a72-407f-4f0d-9a33-274ac0f0b53d"]
+
+[755a8a72-407f-4f0d-9a33-274ac0f0b53d]
+name = "Mod Configuration Menu"
+affinity = 2
+
+[7a3e31e4-502b-43d7-915c-53c58860fa30]
+name = "Spells Extra - Library"
+affinity = 3
+
+[1dda404b-591b-4883-82b9-d2be6a2a0327]
+name = "Witch Knight"
+affinity = 3
+requires = ["7a3e31e4-502b-43d7-915c-53c58860fa30"]
+patched_by = ["f9947a46-7f23-4edf-82bb-9f81730c48f3"]
+
+[f9947a46-7f23-4edf-82bb-9f81730c48f3]
+name = "Witch Knight Tweaks"
+patches = ["Witch Knight"]
+affinity = -100
+
+[e75484e2-0821-4135-b1f6-58863c955cb9]
+name = "[Beta]Rebalancing patches"
+patches = [
+    "1dda404b-591b-4883-82b9-d2be6a2a0327",
+    "5eSpells",
+]

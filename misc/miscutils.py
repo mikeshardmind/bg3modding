@@ -1,0 +1,161 @@
+#   Copyright 2020-present Michael Hall
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+from __future__ import annotations
+
+from collections.abc import Generator, Iterator
+import heapq
+
+import typing as t
+
+
+class CanHashAndCompareLT(t.Protocol):
+    def __hash__(self) -> int: ...
+
+    def __lt__(self, other: t.Any, /) -> bool: ...
+
+
+class CanHashAndCompareGT(t.Protocol):
+    def __hash__(self) -> int: ...
+
+    def __gt__(self, other: t.Any, /) -> bool: ...
+
+
+type CanHashAndCompare = CanHashAndCompareLT | CanHashAndCompareGT
+
+
+class CycleDetected[T: CanHashAndCompare](Exception):
+    @property
+    def cycle(self) -> list[T]:
+        return self.args[0]
+
+
+class NodeData[T: CanHashAndCompare]:
+    __slots__ = ("dependants", "ndependencies", "node")
+
+    def __init__(self, node: T) -> None:
+        self.node: T = node
+        self.ndependencies: int = 0
+        self.dependants: list[T] = []
+
+    def __init_subclass__(cls) -> t.Never:
+        msg = "Don't subclass this"
+        raise RuntimeError(msg)
+
+    def __lt__(self, other: t.Self) -> bool:  # falback for tuple sorting
+        return True
+
+    __final__ = True
+
+
+#: TODO: document the 3 uses I have for the below as examples
+class DepSorter[T: CanHashAndCompare]:
+    """Provides a topological sort that attempts to preserve logical priority
+    (provided by comparison)
+
+    If the set of nodes in a given graph has a strict total order
+    via direct comparison (<), the resulting
+    topological order for that graph is deterministic.
+
+    Nodes may be added multiple times.
+    Directed Edges are accumulated from all input information.
+    """
+
+    def __init__(self, *edges: tuple[T, T]) -> None:
+        self._nodemap: dict[T, NodeData[T]] = {}
+        self.__iterating: bool = False
+
+        for edge in edges:
+            self.add_dependants(*edge)
+
+    def add_dependencies(self, node: T, *dependencies: T) -> None:
+        if self.__iterating:
+            raise RuntimeError
+
+        node_data = self._nodemap.setdefault(node, NodeData(node))
+
+        for dep in dependencies:
+            dep_node_data = self._nodemap.setdefault(dep, NodeData(dep))
+            node_data.ndependencies += 1
+            dep_node_data.dependants.append(node)
+
+    def add_dependants(self, node: T, *dependants: T) -> None:
+        if self.__iterating:
+            raise RuntimeError
+
+        node_data = self._nodemap.setdefault(node, NodeData(node))
+
+        for dep in dependants:
+            dep_node_data = self._nodemap.setdefault(dep, NodeData(dep))
+            dep_node_data.ndependencies += 1
+            node_data.dependants.append(dep)
+
+    def _find_cycle(self) -> list[T] | None:
+        graph = self._nodemap
+        # Cheaper than a queue since we need to iterate anyhow
+        queued: list[Iterator[T]] = []
+        seen: set[T] = set()
+        # Let's not recurse without TCO
+        stack: list[T] = []
+        node_depth: dict[T, int] = {}
+
+        for node in graph:
+            if node in seen:
+                continue
+
+            while True:
+                if node in seen:
+                    if node in node_depth:
+                        return [*stack[node_depth[node] :], node]
+                else:
+                    seen.add(node)
+                    iterator = iter(graph[node].dependants)
+                    queued.append(iterator)
+                    node_depth[node] = len(stack)
+                    stack.append(node)
+
+                while stack:
+                    if (node := next(queued[-1], None)) is not None:
+                        break
+                    del node_depth[stack.pop()]
+                    queued.pop()
+                else:
+                    break
+        return None
+
+    def __iter__(self) -> Generator[T, None, None]:
+        if self.__iterating:
+            raise RuntimeError
+
+        self.__iterating = True
+
+        if cycle := self._find_cycle():
+            raise CycleDetected(cycle)
+
+        return self.__iter()
+
+    def __iter(self) -> Generator[T, None, None]:
+        ready = [(n, i) for n, i in self._nodemap.items() if not i.ndependencies]
+        heapq.heapify(ready)
+        while ready:
+            next_node, info = heapq.heappop(ready)
+            info.ndependencies = -1
+
+            yield next_node
+
+            for dep in info.dependants:
+                dep_info = self._nodemap[dep]
+                dep_info.ndependencies -= 1
+                if not dep_info.ndependencies:
+                    heapq.heappush(ready, (dep, dep_info))
