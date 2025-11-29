@@ -1,0 +1,12 @@
+<Function Type="Functor" Name="DealDamage" RequiredArgs="1">
+    <Arg Name="Damage" Type="Lua" />
+    <Arg Name="DamageType" Type="DamageTypeOrDealDamageWeaponDamageType" />
+    <Arg Name="Magical" Type="Magical" />
+    <Arg Name="Nonlethal" Type="Nonlethal" />
+    <Arg Name="CoinMultiplier" Type="Int" />
+    <Arg Name="Tooltip" Type="Guid" />
+    <Arg Name="IgnoreDamageBonus" Type="Boolean" /> <!--No DamageBonus-->
+    <Arg Name="IgnoreOnDamage" Type="Boolean" /> <!-- This one prevents it being a damage rider source -->
+    <Arg Name="ConsumeCoin" Type="Boolean" /> <!--Consumes all coins, Luma-->
+    <Arg Name="IgnoreImmune" Type="Boolean" /> <!--Ignore Resistance, Immune and Damage reduction, Siaell-->
+</Function>
