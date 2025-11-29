@@ -35,9 +35,7 @@ data "DisplayName" "h92170444g12acg4478gab19g746682a1d35a;1"
 data "Description" "h8793b644g1180g4f3cgbac3gff0b3deb7522;1"
 data "Icon" "PassiveFeature_TavernBrawler"
 data "Properties" "Highlighted"
-data "StatsFunctorContext" "OnAttack"
-data "Conditions" "IsRangedUnarmedAttack() and HasDamageEffectFlag(DamageFlags.Hit)"
-data "StatsFunctors" "DealDamage(2);"
+data "Boosts" "IF(IsRangedUnarmedAttack()):DamageBonus(2)"
 
 // Unarmed Fighting could go here, but I don't think giving fighter/monk multiclasses
 // A more damaging option for fighting style is ideal for balance.
