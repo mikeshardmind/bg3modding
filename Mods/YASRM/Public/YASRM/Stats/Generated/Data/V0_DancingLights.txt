@@ -1,0 +1,73 @@
+// Remove concentration Requirement
+// Make last until long rest, but make them unique entities
+// There's a surprising amount of larian inheritence jank on this one
+// see comments on each below
+// Also noticed some weirdness with verbal intent and animations
+// Might choose to change more on animations in future.
+
+new entry "Target_DancingLights"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_DancingLights"
+data "SpellProperties" "GROUND:Summon(2064328c-a090-454f-b3b8-b488bbe64567, -1,,,,DANCING_LIGHTS)"
+data "AIFlags" "UseAsSupportingActionOnly"
+data "TooltipStatusApply" "ApplyStatus(DANCING_LIGHTS,100,-1)"
+data "SpellAnimationIntentType" "Peaceful"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsSpell;HasHighGroundRangeExtension;CannotTargetItems"
+data "HitAnimationType" "MagicalNonDamage"
+
+// Make sure players can't flood an area with lighting effects
+// if it wasn't for performance concerns, I actually wouldn't restrict this
+
+new entry "DANCING_LIGHTS"
+type "StatusData"
+data "StatusType" "BOOST"
+using "DANCING_LIGHTS"
+data "IsUnique" "1"
+
+// Remove concentration from player wild shape version
+
+new entry "Target_DancingLights_DeepRothe"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_DancingLights_DeepRothe"
+data "SpellFlags" ""
+
+// Interesting inheritence issues? Hope I didnt miss any when searching.
+// Remove the AI flag UseAsSupportingActionOnly added in base
+// Looks like there's actually a dedicated status for this that should be applied?
+
+new entry "Target_SHA_SeluneBlessing_Moonfire"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_SHA_SeluneBlessing_Moonfire"
+data "AIFlags" ""
+data "TooltipStatusApply" "ApplyStatus(MAG_SHA_SELUNE_BLESSING_MOONMOTE_AURA,100,10)"
+
+// This appears to be unused, to be safe, I'm unmodifying it, especially when considering the
+// next one....
+
+new entry "Target_LOW_CastPortal"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_LOW_CastPortal"
+data "SpellProperties" "GROUND:Summon(2064328c-a090-454f-b3b8-b488bbe64567, 10,,,,DANCING_LIGHTS)"
+data "AIFlags" ""
+data "TooltipStatusApply" "ApplyStatus(DANCING_LIGHTS,100,10)"
+
+// This isn't cast via AI, but directly via Anubis script.
+// Unfortunately, there's no check that it's a valid cast in the associated script,
+// and it doesn't end up triggering the normal uniqueness handling.
+// This is a hillarious issue, and a case of inheritence overuse
+// which I find ammusing for personal reasons
+// but much less funny in actual gameplay.
+
+new entry "Target_LOW_EastwayWizards_DancingLights"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_LOW_EastwayWizards_DancingLights"
+data "SpellProperties" "GROUND:Summon(2064328c-a090-454f-b3b8-b488bbe64567, 10,,,,DANCING_LIGHTS)"
+data "AIFlags" ""
+data "TooltipStatusApply" "ApplyStatus(DANCING_LIGHTS,100,10)"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsConcentration;IsSpell;HasHighGroundRangeExtension;CannotTargetItems"
+data "VerbalIntent" "Utility"
