@@ -1,0 +1,29 @@
+// uses modified cantrip scaling, remaining a d4
+// changed to a charisma save
+// lasts until end of target's next turn (or end of combat) instead of on next attack roll.
+// applys a -2 penalty rather than Disadvantage
+// applying for a full turn is too strong for tabletop,
+// but works well with the way enemy actions work in CRPG form,
+// especially with the use of most difficulty increasing mods.
+
+new entry "Target_ViciousMockery"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_ViciousMockery"
+data "SpellRoll" "not SavingThrow(Ability.Charisma, SourceSpellDC())"
+data "SpellSuccess" "ApplyStatus(VICIOUSMOCKERY,100,1);DealDamage(LevelMapValue(YASRM_D4Cantrip)+2,Psychic,Magical)"
+data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D4Cantrip)+2)/2,Psychic,Magical);IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL,100,0)"
+data "Description" "h37242afcgfda9g4c1bg93aege165fedb3c36;1"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D4Cantrip)+2,Psychic)"
+data "TooltipAttackSave" "Charisma"
+
+new entry "VICIOUSMOCKERY"
+type "StatusData"
+data "StatusType" "BOOST"
+using "VICIOUSMOCKERY"
+data "TickType" "EndTurn"
+data "Boosts" "RollBonus(Attack,-2)"
+data "RemoveEvents" "OnTurn;OnCombatEnded"
+data "RemoveConditions" ""
+data "Description" "ha5df747ag7290g4789ga0aeg3befd81dc916;1"
+data "StatusPropertyFlags" "InitiateCombat;BringIntoCombat"
