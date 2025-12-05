@@ -1,0 +1,15 @@
+// Blade ward
+// Scales with proficiency bonus
+// Ticks at start of turn
+
+new entry "Shout_BladeWard"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_BladeWard"
+data "SpellProperties" "ApplyStatus(BLADE_WARD,100,ProficiencyBonus)"
+
+new entry "BLADE_WARD"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BLADE_WARD"
+data "TickType" "StartTurn"

@@ -1,0 +1,8 @@
+// No cooldown, no tutorial block
+
+new entry "Target_MageHand"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_MageHand"
+data "Cooldown" ""
+data "RequirementConditions" ""

@@ -1,0 +1,9 @@
+// Bone Chill AKA Chill touch (okay, why Larian?)
+// Modified cantrip scaling
+
+new entry "Target_ChillTouch"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_ChillTouch"
+data "SpellSuccess" "ApplyStatus(CHILL_TOUCH,100,1);DealDamage(LevelMapValue(YASRM_D8Cantrip)+2, Necrotic,Magical)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Necrotic)"
