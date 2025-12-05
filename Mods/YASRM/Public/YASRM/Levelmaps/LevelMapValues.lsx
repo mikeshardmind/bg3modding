@@ -26,7 +26,7 @@
                     <attribute id="Level1" type="LSString" value="1d4"/>
                     <attribute id="Level2" type="LSString" value="1d4"/>
                     <attribute id="Level3" type="LSString" value="1d4"/>
-                    <attribute id="Level4" type="LSString" value="1d6"/>
+                    <attribute id="Level4" type="LSString" value="1d4"/>
                     <attribute id="Level5" type="LSString" value="2d6"/>
                     <attribute id="Level6" type="LSString" value="2d6"/>
                     <attribute id="Level7" type="LSString" value="2d6"/>
@@ -44,7 +44,7 @@
                     <attribute id="Level1" type="LSString" value="1d6"/>
                     <attribute id="Level2" type="LSString" value="1d6"/>
                     <attribute id="Level3" type="LSString" value="1d6"/>
-                    <attribute id="Level4" type="LSString" value="1d8"/>
+                    <attribute id="Level4" type="LSString" value="1d6"/>
                     <attribute id="Level5" type="LSString" value="2d8"/>
                     <attribute id="Level6" type="LSString" value="2d8"/>
                     <attribute id="Level7" type="LSString" value="2d8"/>
@@ -62,7 +62,7 @@
                     <attribute id="Level1" type="LSString" value="1d8"/>
                     <attribute id="Level2" type="LSString" value="1d8"/>
                     <attribute id="Level3" type="LSString" value="1d8"/>
-                    <attribute id="Level4" type="LSString" value="1d10"/>
+                    <attribute id="Level4" type="LSString" value="1d8"/>
                     <attribute id="Level5" type="LSString" value="2d10"/>
                     <attribute id="Level6" type="LSString" value="2d10"/>
                     <attribute id="Level7" type="LSString" value="2d10"/>
@@ -80,7 +80,7 @@
                     <attribute id="Level1" type="LSString" value="1d10"/>
                     <attribute id="Level2" type="LSString" value="1d10"/>
                     <attribute id="Level3" type="LSString" value="1d10"/>
-                    <attribute id="Level4" type="LSString" value="1d12"/>
+                    <attribute id="Level4" type="LSString" value="1d10"/>
                     <attribute id="Level5" type="LSString" value="2d12"/>
                     <attribute id="Level6" type="LSString" value="2d12"/>
                     <attribute id="Level7" type="LSString" value="2d12"/>
