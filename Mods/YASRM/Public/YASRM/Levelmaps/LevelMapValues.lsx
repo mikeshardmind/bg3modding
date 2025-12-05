@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="8" build="612"/>
+    <region id="LevelMapValues">
+        <node id="root">
+            <children>
+                <node id="LevelMapSeries">
+                    <attribute id="Level1" type="LSString" value="1d4"/>
+                    <attribute id="Level2" type="LSString" value="1d4"/>
+                    <attribute id="Level3" type="LSString" value="1d4"/>
+                    <attribute id="Level4" type="LSString" value="1d4"/>
+                    <attribute id="Level5" type="LSString" value="2d4"/>
+                    <attribute id="Level6" type="LSString" value="2d4"/>
+                    <attribute id="Level7" type="LSString" value="2d4"/>
+                    <attribute id="Level8" type="LSString" value="2d4"/>
+                    <attribute id="Level9" type="LSString" value="2d4"/>
+                    <attribute id="Level10" type="LSString" value="3d4"/>
+                    <attribute id="Level11" type="LSString" value="3d4"/>
+                    <attribute id="Level12" type="LSString" value="3d4"/>
+                    <attribute id="Level13" type="LSString" value="3d4"/>
+                    <attribute id="Level14" type="LSString" value="4d4"/>
+                    <attribute id="Name" type="FixedString" value="YASRM_D4Cantrip"/>
+                    <attribute id="UUID" type="guid" value="21cecf9d-1b18-48ca-8894-bf301ed591ff"/>
+                </node>
+                <node id="LevelMapSeries">
+                    <attribute id="Level1" type="LSString" value="1d4"/>
+                    <attribute id="Level2" type="LSString" value="1d4"/>
+                    <attribute id="Level3" type="LSString" value="1d4"/>
+                    <attribute id="Level4" type="LSString" value="1d6"/>
+                    <attribute id="Level5" type="LSString" value="2d6"/>
+                    <attribute id="Level6" type="LSString" value="2d6"/>
+                    <attribute id="Level7" type="LSString" value="2d6"/>
+                    <attribute id="Level8" type="LSString" value="2d6"/>
+                    <attribute id="Level9" type="LSString" value="2d6"/>
+                    <attribute id="Level10" type="LSString" value="3d6"/>
+                    <attribute id="Level11" type="LSString" value="3d6"/>
+                    <attribute id="Level12" type="LSString" value="3d6"/>
+                    <attribute id="Level13" type="LSString" value="3d6"/>
+                    <attribute id="Level14" type="LSString" value="4d6"/>
+                    <attribute id="Name" type="FixedString" value="YASRM_D6Cantrip"/>
+                    <attribute id="UUID" type="guid" value="721004a4-50bb-488c-95c9-43a2c7d8b992"/>
+                </node>
+                <node id="LevelMapSeries">
+                    <attribute id="Level1" type="LSString" value="1d6"/>
+                    <attribute id="Level2" type="LSString" value="1d6"/>
+                    <attribute id="Level3" type="LSString" value="1d6"/>
+                    <attribute id="Level4" type="LSString" value="1d8"/>
+                    <attribute id="Level5" type="LSString" value="2d8"/>
+                    <attribute id="Level6" type="LSString" value="2d8"/>
+                    <attribute id="Level7" type="LSString" value="2d8"/>
+                    <attribute id="Level8" type="LSString" value="2d8"/>
+                    <attribute id="Level9" type="LSString" value="2d8"/>
+                    <attribute id="Level10" type="LSString" value="3d8"/>
+                    <attribute id="Level11" type="LSString" value="3d8"/>
+                    <attribute id="Level12" type="LSString" value="3d8"/>
+                    <attribute id="Level13" type="LSString" value="3d8"/>
+                    <attribute id="Level14" type="LSString" value="4d8"/>
+                    <attribute id="Name" type="FixedString" value="YASRM_D8Cantrip"/>
+                    <attribute id="UUID" type="guid" value="4196d193-70b4-44ef-8822-14d5395677d0"/>
+                </node>
+                <node id="LevelMapSeries">
+                    <attribute id="Level1" type="LSString" value="1d8"/>
+                    <attribute id="Level2" type="LSString" value="1d8"/>
+                    <attribute id="Level3" type="LSString" value="1d8"/>
+                    <attribute id="Level4" type="LSString" value="1d10"/>
+                    <attribute id="Level5" type="LSString" value="2d10"/>
+                    <attribute id="Level6" type="LSString" value="2d10"/>
+                    <attribute id="Level7" type="LSString" value="2d10"/>
+                    <attribute id="Level8" type="LSString" value="2d10"/>
+                    <attribute id="Level9" type="LSString" value="2d10"/>
+                    <attribute id="Level10" type="LSString" value="3d10"/>
+                    <attribute id="Level11" type="LSString" value="3d10"/>
+                    <attribute id="Level12" type="LSString" value="3d10"/>
+                    <attribute id="Level13" type="LSString" value="3d10"/>
+                    <attribute id="Level14" type="LSString" value="4d10"/>
+                    <attribute id="Name" type="FixedString" value="YASRM_D10Cantrip"/>
+                    <attribute id="UUID" type="guid" value="dc93a31e-0256-4e46-a37e-72da2256d575"/>
+                </node>
+                <node id="LevelMapSeries">
+                    <attribute id="Level1" type="LSString" value="1d10"/>
+                    <attribute id="Level2" type="LSString" value="1d10"/>
+                    <attribute id="Level3" type="LSString" value="1d10"/>
+                    <attribute id="Level4" type="LSString" value="1d12"/>
+                    <attribute id="Level5" type="LSString" value="2d12"/>
+                    <attribute id="Level6" type="LSString" value="2d12"/>
+                    <attribute id="Level7" type="LSString" value="2d12"/>
+                    <attribute id="Level8" type="LSString" value="2d12"/>
+                    <attribute id="Level9" type="LSString" value="2d12"/>
+                    <attribute id="Level10" type="LSString" value="3d12"/>
+                    <attribute id="Level11" type="LSString" value="3d12"/>
+                    <attribute id="Level12" type="LSString" value="3d12"/>
+                    <attribute id="Level13" type="LSString" value="3d12"/>
+                    <attribute id="Level14" type="LSString" value="4d12"/>
+                    <attribute id="Name" type="FixedString" value="YASRM_D12Cantrip"/>
+                    <attribute id="UUID" type="guid" value="22214279-5efd-4d5d-8361-200384b4ac8b"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

@@ -1,1 +1,40 @@
-// Cantrips
+// Acid splash
+// Ground cast creates a 1m acid surface for 2 rounds
+// Applies acid directly to target for 2 turns
+// Uses adjusted cantrip scaling
+
+new entry "Projectile_AcidSplash"
+type "SpellData"
+data "SpellType" "Projectile"
+using "Projectile_AcidSplash"
+data "SpellProperties" "GROUND:CreateSurface(1,2,Acid)"
+data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Acid,Magical);ApplyStatus(ACID,100,2)"
+data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D6Cantrip)+2)/2,Acid,Magical);IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Acid)"
+data "TooltipStatusApply" "ApplyStatus(ACID,100,2)"
+
+// Blade ward
+// Scales with proficiency bonus
+// Ticks at start of turn
+
+new entry "Shout_BladeWard"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_BladeWard"
+data "SpellProperties" "ApplyStatus(BLADE_WARD,100,ProficiencyBonus)"
+
+new entry "BLADE_WARD"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BLADE_WARD"
+data "TickType" "StartTurn"
+
+// Chill touch
+// Modified cantrip scaling
+
+new entry "Target_ChillTouch"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_ChillTouch"
+data "SpellSuccess" "ApplyStatus(CHILL_TOUCH,100,1);DealDamage(LevelMapValue(YASRM_D8Cantrip)+2, Necrotic,Magical)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Necrotic)"
