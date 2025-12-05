@@ -1,0 +1,10 @@
+// Uses modified cantrip scaling, upgraded to d10
+
+new entry "Target_ShockingGrasp"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_ShockingGrasp"
+data "SpellSuccess" "AI_IGNORE:ApplyStatus(SHOCKING_GRASP,100,1);DealDamage(LevelMapValue(YASRM_D10Cantrip)+2,Lightning,Magical)"
+data "Icon" "Spell_Evocation_ShockingGrasp"
+data "DescriptionParams" "DealDamage(LevelMapValue(YASRM_D10Cantrip)+2,Lightning)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D10Cantrip)+2,Lightning)"

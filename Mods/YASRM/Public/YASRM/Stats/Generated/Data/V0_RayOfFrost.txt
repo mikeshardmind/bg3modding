@@ -1,0 +1,9 @@
+// Ray of frost is pretty ideal as a cantrip power measuring stick.
+// Gets the general modified cantrip scaling, no other changes needed.
+
+new entry "Projectile_RayOfFrost"
+type "SpellData"
+data "SpellType" "Projectile"
+using "Projectile_RayOfFrost"
+data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Cold,Magical);ApplyStatus(RAY_OF_FROST,100,1)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Cold)"

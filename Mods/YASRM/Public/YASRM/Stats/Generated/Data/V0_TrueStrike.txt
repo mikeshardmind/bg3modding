@@ -1,0 +1,4 @@
+// TODO: fully replace true strike with a version that is similar to that of
+// the 2024 rules.
+// Not quite happy with any existing mods that replace this, or I'd use them
+// as an optional dependency, and do a little work with compat framework.
