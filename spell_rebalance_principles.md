@@ -51,3 +51,15 @@ lv 1-4: 1d(N-2)+2 for all dice other than d4, which remain a d4
 lv 5-9: 2dN+2
 lv 10-13: 3dN+2
 lv 14+: 4dN+2
+
+### Leveled spells
+
+I do not anticipate making as many changes to leveled spells.
+The across the board cantrip changes are largely a systems issue with the
+interactions between rests if using leveled spells,
+dexterity stat dominance, and light crossbows existing.
+Most casters were better off never using a cantrip for damage before level 6,
+with some going further.
+
+By contrast, the expected changes for leveled spells will be more surgical
+rather than system addressing.
