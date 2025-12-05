@@ -1,1 +1,5 @@
 // This is a massive todo
+// Realistically, the best option here might be to not touch it, and just
+// leave base scaling + point people to `Extra Attack Fix SE` from `Wesslen`
+// Leaving it as is makes it a weaker option in lv 17+ for modlists that can
+// reach that level.
