@@ -12,4 +12,19 @@
 - Not all spell lists are created equal. Access to various things should remain
   thematic and appropriate to class features available.
 - The rebalance will assume a curated inclusion of specific spell mods for
-  impact on spell lists.
+  impact on spell lists. It will make attempts to not break any other use,
+  but balance will not be focused around spell mods I don't personally use.
+
+### Intentionally unmodified
+
+- Friends
+- Guidance
+- Light
+- Minor illusion
+- Resistence
+
+### Needs deeper rework
+
+- booming blade
+- true strike
+- Produce flame (maybe, has partial modification currently)
