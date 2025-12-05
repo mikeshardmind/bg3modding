@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentList>
-	<content contentuid="ha5df747ag7290g4789ga0aeg3befd81dc916" version="1">Has a -2 penalty to &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;.</content>
-	<content contentuid="h37242afcgfda9g4c1bg93aege165fedb3c36" version="1">Insult a creature: it has a -2 penalty to &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; made until the end of it's turn.</content>
+	<content contentuid="ha5df747ag7290g4789ga0aeg3befd81dc916" version="1">Has a -3 penalty to &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;.</content>
+	<content contentuid="h37242afcgfda9g4c1bg93aege165fedb3c36" version="1">Insult a creature: it has a -3 penalty to &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt; made until the end of it's turn.</content>
 </contentList>
