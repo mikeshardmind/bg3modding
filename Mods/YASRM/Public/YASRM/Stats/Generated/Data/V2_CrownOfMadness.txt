@@ -1,0 +1,6 @@
+// removed concentration
+new entry "Target_CrownOfMadness"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_CrownOfMadness"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;HasHighGroundRangeExtension;IsSpell"

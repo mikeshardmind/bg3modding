@@ -1,0 +1,6 @@
+// removed concentration requirement
+new entry "Target_Bane"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Bane"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsSpell;IsHarmful;IgnorePreviouslyPickedEntities"

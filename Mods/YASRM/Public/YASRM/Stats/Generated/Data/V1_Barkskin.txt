@@ -1,0 +1,6 @@
+// concentration removal
+new entry "Target_Barkskin"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Barkskin"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsMelee;IsSpell"

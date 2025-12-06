@@ -1,0 +1,7 @@
+// removed concentration requirement
+new entry "Target_Heroism"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Heroism"
+data "MaximumTargets" "1"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsSpell;IsMelee;IgnorePreviouslyPickedEntities"

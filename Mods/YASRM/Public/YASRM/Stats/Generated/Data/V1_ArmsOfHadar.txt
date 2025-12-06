@@ -1,0 +1,6 @@
+// increased area radius
+new entry "Shout_ArmsOfHadar"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_ArmsOfHadar"
+data "AreaRadius" "5"

@@ -58,3 +58,20 @@ Progression modification via Compatability framework.
 Mod won't crash without SE+compat framework, but the progression won't be modified.
 
 
+# YASRM - Yet Another Spell Rebalancing Mod
+
+Various spell data entries are modified, mostly via self-inheritence.
+An effort has been made to at least not break any base game inheritence.
+
+Beyond this, Shillelagh has an associated goal file used to conditionally
+remove itself from weapons upon the weapon being unequipped.
+
+I can't guarantee compatability with other spell rebalancing mods,
+but I've kept most changes relatively minimally intrusive.
+
+The adjustments are written assuming the use of
+[Expansion Level 13-20 (Configurable)][ExpansionURL] for upcasting, and modifies
+some of the upcasted entries. This mod should work
+with or without expansion, but should be loaded after it if using both.
+
+[ExpansionURL]: https://www.nexusmods.com/baldursgate3/mods/279

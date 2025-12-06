@@ -1,0 +1,6 @@
+// removed concentration
+new entry "Shout_Blur"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_Blur"
+data "SpellFlags" "IsSpell;HasVerbalComponent"
