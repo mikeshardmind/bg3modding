@@ -1,4 +1,6 @@
 // remove concentration, scale on d8s
+// This is unironically still pretty weak for a level 3 spell slot,
+// but I don't want to revamp it in a way that goes beyond this.
 
 new entry "Target_VampiricTouch"
 type "SpellData"

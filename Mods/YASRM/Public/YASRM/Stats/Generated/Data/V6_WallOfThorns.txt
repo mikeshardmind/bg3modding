@@ -1,0 +1,52 @@
+// Fixes saving throw
+// Increases max size and targetting range
+// make it actually penalize movement speed as advertised
+
+new entry "Wall_WallOfThorns"
+type "SpellData"
+data "SpellType" "Wall"
+using "Wall_WallOfThorns"
+data "TargetRadius" "24"
+data "MaxDistance" "12"
+
+new entry "WALLOFTHORN"
+type "StatusData"
+data "StatusType" "BOOST"
+using "WALLOFTHORN"
+data "AuraStatuses" "IF(not Dead()):ApplyStatus(WALLOFTHORN_AURA,100,1);ApplyStatus(YASRM_DIFFICULT_TERRAIN_WALLOFTHORN,100,1)"
+
+new entry "YASRM_DIFFICULT_TERRAIN_WALLOFTHORN"
+type "StatusData"
+data "StatusType" "BOOST"
+using "DIFFICULT_TERRAIN"
+data "Boosts" "ActionResourceConsumeMultiplier(Movement,4,0)"
+
+new entry "WALLOFTHORN_AURA"
+type "StatusData"
+data "StatusType" "BOOST"
+using "WALLOFTHORN_AURA"
+data "OnApplyRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+data "OnTickRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+
+// expansion perpetuates the vanilla DC bug explicitly rather than just inheriting the spell roll, gotta fix it too
+
+new entry "WALLOFTHORN_AURA_7"
+type "StatusData"
+data "StatusType" "BOOST"
+using "WALLOFTHORN_AURA_7"
+data "OnApplyRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+data "OnTickRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+
+new entry "WALLOFTHORN_AURA_8"
+type "StatusData"
+data "StatusType" "BOOST"
+using "WALLOFTHORN_AURA_8"
+data "OnApplyRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+data "OnTickRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+
+new entry "WALLOFTHORN_AURA_9"
+type "StatusData"
+data "StatusType" "BOOST"
+using "WALLOFTHORN_AURA_9"
+data "OnApplyRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+data "OnTickRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"

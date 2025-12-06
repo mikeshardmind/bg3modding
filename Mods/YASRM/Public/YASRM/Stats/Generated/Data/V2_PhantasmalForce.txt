@@ -1,5 +1,9 @@
 // Removed concentration, increased damage.
 // Save per turn to end the effect remains.
+// possible future:
+// Alt idea: reuse statuses from command spell container
+// to emulate the missing CC part of the tabletop version,
+// but retain concentration.
 
 new entry "Target_PhantasmalForce"
 type "SpellData"

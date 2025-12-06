@@ -1,0 +1,15 @@
+// No concentration, also works on magical damage, it's a lv 4 spell slot.
+
+new entry "Target_Stoneskin"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Stoneskin"
+data "Description" "h1d260e09gad85g46bagb32bgcf8160ba4b27;1"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsSpell;IsMelee"
+
+new entry "STONESKIN"
+type "StatusData"
+data "StatusType" "BOOST"
+using "STONESKIN"
+data "Description" "ha0f29edag820ag469cg99ccg9ec66a5be1d7;1"
+data "Boosts" "Resistance(Bludgeoning, Resistant);Resistance(Piercing, Resistant);Resistance(Slashing, Resistant)"

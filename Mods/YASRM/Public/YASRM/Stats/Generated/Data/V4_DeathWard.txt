@@ -1,0 +1,37 @@
+// On death:
+// No longer regens other resources
+// Grants 15% of hp as temp hp until start of their turn
+// Flags the target as an unpreferred target (2 rounds)
+// There are a couple AI archetypes where this won't have the desired effect,
+// but the vast majority of enemies it will at least have a minor positive effect.
+
+new entry "DEATH_WARD_DOWNED"
+type "StatusData"
+data "StatusType" "DOWNED"
+using "DEATH_WARD_DOWNED"
+data "OnApplyFunctors" "RemoveStatus(DEATH_WARD);RegainHitPoints(1,Guaranteed);ApplyStatus(YASRM_DEATH_WARD_TEMPHP,100,1);ApplyStatus(YASRM_DEATH_WARD_AITAG,100,2)"
+data "OnRemoveFunctors" "ResetCombatTurn();ApplyStatus(DEATH_WARD_RESTORE,100,1)"
+
+new entry "YASRM_DEATH_WARD_TEMPHP"
+type "StatusData"
+data "StatusType" "BOOST"
+data "StackId" "YARSM_DEATH_WARD_TEMPHP"
+data "TickType" "StartTurn"
+data "Boosts" "TemporaryHP(MaxHP/15)"
+data "StatusPropertyFlags" "DisableCombatlog;DisableOverhead;DisablePortraitIndicator"
+
+new entry "YASRM_DEATH_WARD_AITAG"
+type "StatusData"
+data "StatusType" "BOOST"
+data "StackId" "YASRM_DEATH_WARD_AITAG"
+data "TickType" "StartTurn"
+data "Boosts" "Tag(AI_UNPREFERRED_TARGET)"
+data "StatusPropertyFlags" "DisableCombatlog;DisableOverhead;DisablePortraitIndicator"
+
+// Undo the changes for this sortof scripted combat thing inheriting from deathward downed.
+
+new entry "STEEL_WATCHER_INVULNERABILITY"
+type "StatusData"
+data "StatusType" "DOWNED"
+using "STEEL_WATCHER_INVULNERABILITY"
+data "OnRemoveFunctors" "ResetCombatTurn();RestoreResource(Movement, 100%, 0);RestoreResource(BonusActionPoint, 100%, 0);RestoreResource(ActionPoint, 100%, 0);RestoreResource(ReactionActionPoint, 100%, 0)"

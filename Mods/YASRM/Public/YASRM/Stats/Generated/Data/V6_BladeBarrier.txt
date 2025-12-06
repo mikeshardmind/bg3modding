@@ -1,0 +1,16 @@
+// Fixes saving throw
+// Increases max size and targetting range
+
+new entry "Wall_BladeBarrier"
+type "SpellData"
+data "SpellType" "Wall"
+using "Wall_BladeBarrier"
+data "TargetRadius" "24"
+data "MaxDistance" "12"
+
+new entry "BLADE_BARRIER_AURA"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BLADE_BARRIER_AURA"
+data "OnApplyRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"
+data "OnTickRoll" "not SavingThrow(Ability.Dexterity,CalculateSpellDC(context.PreferredCastingAbility,GetSummoner(context.Source)))"

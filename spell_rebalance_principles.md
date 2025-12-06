@@ -76,3 +76,21 @@ with some going further.
 
 By contrast, the expected changes for leveled spells will be more surgical
 rather than system addressing.
+
+
+### Wall spells
+
+These are big flashy feats of magic. Their cast range and maximum size has been adjusted upwards.
+
+
+### Why nots
+
+A lot of spells aren't even attempted to be reworked.
+
+Examples of this are spells like Seeming and Windwalk.
+Any change that makes them a viable resource in the context of BG3 as a combat focused CRPG
+would be an entirely different spell, not even a thematically close enough rework is reasonable.
+
+Rather than even attempt this, the spells are left in a pile of "things most players won't touch".
+You can use the compatability framework to trim spells from various lists if you find them to
+only be bloat, but I won't be spending time on keeping something like that maintained publically.

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="7" revision="1" build="3"/>
+  <region id="SpellLists">
+    <node id="root">
+      <children>
+          <node id="SpellList">
+            <attribute id="MergedInto" type="guid" value="820b1220-0385-426d-ae15-458dc8a6f5c0"/>
+            <attribute id="Name" type="FixedString" value="AddTo_Wizard4"/>
+            <attribute id="Spells" type="LSString" value="Wall_WallOfStone"/>
+            <attribute id="UUID" type="guid" value="502a23c1-aa6b-4cda-93a4-7a633842df3a"/>
+          </node>
+          <node id="SpellList">
+            <attribute id="MergedInto" type="guid" value="5fe40622-1d3e-4cc1-8d89-e66fe51d8c5c"/>
+            <attribute id="Name" type="FixedString" value="AddTo_Sorc4"/>
+            <attribute id="Spells" type="LSString" value="Wall_WallOfStone"/>
+            <attribute id="UUID" type="guid" value="5ea1153a-cf8e-4de9-8434-7ebf6fe9ab18"/>
+          </node>
+          <node id="SpellList">
+            <attribute id="MergedInto" type="guid" value="09c326c9-672c-4198-a4c0-6f07323bde27"/>
+            <attribute id="Name" type="FixedString" value="AddTo_Druid4"/>
+            <attribute id="Spells" type="LSString" value="Wall_WallOfStone"/>
+            <attribute id="UUID" type="guid" value="b6fff0bc-a380-46fc-892c-53a320a3e774"/>
+          </node>
+      </children>
+    </node>
+  </region>
+</save>

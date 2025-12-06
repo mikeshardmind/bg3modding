@@ -1,0 +1,20 @@
+// Increases max size and targetting range
+// changed to level 4 spell
+
+new entry "Wall_WallOfStone"
+type "SpellData"
+data "SpellType" "Wall"
+using "Wall_WallOfStone"
+data "Level" "4"
+data "TargetRadius" "24"
+data "MaxDistance" "12"
+data "UseCosts" "ActionPoint:1;SpellSlotsGroup:1:1:4"
+
+new entry "Wall_WallOfStone_5"
+type "SpellData"
+data "SpellType" "Wall"
+using "Wall_WallOfStone"
+data "TooltipUpcastDescription" "6ff1780a-855a-414c-a8bf-811251537206"
+data "UseCosts" "ActionPoint:1;SpellSlotsGroup:1:1:5"
+data "RootSpellID" "Wall_WallOfStone"
+data "PowerLevel" "5"
