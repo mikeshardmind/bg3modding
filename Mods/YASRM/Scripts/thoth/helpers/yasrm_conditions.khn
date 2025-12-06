@@ -38,9 +38,6 @@ function YASRM_SHIL_LV17()
     return CharacterLevelGreaterThan(16, char)
 end
 
-
-// These are "well ordered" Cha > Wis > Int in case of tie to avoid needing negation.
-
 function YASRM_SHIL_C()
     local char = GetOwner(context.Source)
     return ConditionResult((char.Charisma >= char.Wisdom) and (char.Charisma >= char.Intelligence))

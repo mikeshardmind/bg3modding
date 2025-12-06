@@ -5,4 +5,5 @@
 	<content contentuid="h9e64e353g526cg4e4cg87a4gccf2e62bb6d3" version="1">Your club, staff, mace, javelin, spear, sickle or flail becomes magical: it deals [1], and uses your best &lt;LSTag Tooltip="SpellCastingAbilityModifier"&gt; Spellcasting Ability&lt;/LSTag&gt; for &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;.</content>
 	<content contentuid="ha0f29edag820ag469cg99ccg9ec66a5be1d7" version="1">Has &lt;LSTag Tooltip="Resistant"&gt;Resistance&lt;/LSTag&gt; to Bludgeoning, Piercing, and Slashing damage.</content>
 	<content contentuid="h1d260e09gad85g46bagb32bgcf8160ba4b27" version="1">Turn a creature's flesh hard as stone. It takes only &lt;LSTag Tooltip="Resistant"&gt;half the damage&lt;/LSTag&gt; of all Bludgeoning, Piercing, and Slashing damage.</content>
+  <content contentuid="h3d861ee5gfb13g405ag87a0g281d15d66bd7" version="1">Uses your best &lt;LSTag Tooltip="SpellCastingAbilityModifier"&gt; Spellcasting Ability&lt;/LSTag&gt; for &lt;LSTag Tooltip="AttackRoll"&gt;Attack Rolls&lt;/LSTag&gt;.</content>
 </contentList>
