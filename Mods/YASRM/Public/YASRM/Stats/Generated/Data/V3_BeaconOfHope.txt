@@ -1,0 +1,6 @@
+// - concentration
+new entry "Shout_BeaconOfHope"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_BeaconOfHope"
+data "SpellFlags" "IsSpell;HasVerbalComponent;HasSomaticComponent"

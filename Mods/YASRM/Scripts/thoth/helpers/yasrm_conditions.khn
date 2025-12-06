@@ -52,5 +52,3 @@ function YASRM_SHIL_I()
     local char = GetOwner(context.Source)
     return ConditionResult((char.Intelligence > char.Wisdom) and (char.Intelligence > char.Charisma))
 end
-
-

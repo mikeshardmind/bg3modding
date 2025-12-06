@@ -1,0 +1,8 @@
+// triples range, ignores LoS
+
+new entry "Teleportation_DimensionDoor"
+type "SpellData"
+data "SpellType" "Teleportation"
+using "Teleportation_DimensionDoor"
+data "SpellFlags" "HasVerbalComponent;IsSpell;RangeIgnoreVerticalThreshold;IgnoreVisionBlock"
+data "AreaRadius" "150"

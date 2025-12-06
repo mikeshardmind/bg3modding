@@ -1,0 +1,13 @@
+// - concentration, + aura radius
+new entry "Shout_CrusadersMantle"
+type "SpellData"
+data "SpellType" "Shout"
+data "Level" "3"
+using "Shout_CrusadersMantle"
+data "SpellFlags" "HasVerbalComponent;IsSpell"
+
+new entry "CRUSADERS_MANTLE"
+type "StatusData"
+data "StatusType" "BOOST"
+using "CRUSADERS_MANTLE"
+data "AuraRadius" "12"
