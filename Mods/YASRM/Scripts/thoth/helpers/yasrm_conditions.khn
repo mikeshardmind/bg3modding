@@ -1,0 +1,15 @@
+function YASRM_BB1()
+    return Character() and not CharacterLevelGreaterThan(4)
+end
+
+function YASRM_BB5()
+    return Character() and CharacterLevelGreaterThan(4) and not CharacterLevelGreaterThan(9)
+end
+
+function YASRM_BB11()
+    return Character() and CharacterLevelGreaterThan(10) and not CharacterLevelGreaterThan(16)
+end
+
+function YASRM_BB17()
+    return Character() and CharacterLevelGreaterThan(16)
+end

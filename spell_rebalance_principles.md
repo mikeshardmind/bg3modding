@@ -26,15 +26,14 @@
 
 ### Needs deeper rework
 
-- booming blade
 - true strike
 - Produce flame (maybe, has partial modification currently)
 
 ## Damage values
 
-### Cantrips:
+### Non-weapon Cantrips:
 
-Cantrips have been changed across the board.
+Most Cantrips have been changed across the board.
 
 Damage values all include a flat +2 bonus.
 Dice scale based on level and a chosen base dice size
@@ -47,10 +46,24 @@ that table had at level 1.
 The core idea here is that a cantrip should always deal at least 3
 damage when succesful, ensuring no successes are largely unimpactful in combat.
 
-lv 1-4: 1d(N-2)+2 for all dice other than d4, which remain a d4
-lv 5-9: 2dN+2
-lv 10-13: 3dN+2
-lv 14+: 4dN+2
+- lv 1-4: 1d(N-2)+2 for all dice other than d4, which remain a d4
+- lv 5-9: 2dN+2
+- lv 10-13: 3dN+2
+- lv 14+: 4dN+2
+
+### Cantrips that make weapon attacks as part of the magic action:
+
+Scaling at levels 5, 11, and 17
+
+These scale differently because they also make weapon attacks, should fit
+best on a gish/spellblade archetype, and should not become the default cantrip
+for other build archetypes.
+
+Values vary by weapon cantrip
+
+Extra Attack interactions are *not* fixed with this. It is **highly** reccomended to use
+[Extra Attack Fix SE](https://www.nexusmods.com/baldursgate3/mods/5475) for this.
+
 
 ### Leveled spells
 

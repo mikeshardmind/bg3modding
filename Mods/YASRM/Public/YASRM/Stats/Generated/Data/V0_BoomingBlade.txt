@@ -1,5 +1,68 @@
-// This is a massive todo
-// Realistically, the best option here might be to not touch it, and just
-// leave base scaling + point people to `Extra Attack Fix SE` from `Wesslen`
-// Leaving it as is makes it a weaker option in lv 17+ for modlists that can
-// reach that level.
+// Booming blade is a mess, I can probably do better than this if I take more time on it
+// Level conditions are simplified here for my own sanity on ensuring this is all correct.
+// I've only made it scale past base game and fixed some DRS issues
+// Extra attack interactions are holistically handled by another awesome mod author.
+
+new entry "Target_BoomingBlade_ClassSpell"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_BoomingBlade_ClassSpell"
+data "Level" "0"
+data "SpellSuccess" "IF(YASRM_BB1()):ApplyStatus(BOOMING_BLADE,100,1);IF(YASRM_BB5()):ApplyStatus(BOOMING_BLADE_5,100,1);IF(YASRM_BB11()):ApplyStatus(BOOMING_BLADE_11,100,1);IF(YASRM_BB17()):ApplyStatus(YASRM_BOOMING_BLADE_17,100,1);IF(CharacterLevelGreaterThan(4)):DealDamage(LevelMapValue(YASRM_BoomingBlade),Thunder,Magical,,0,,true,false);DealDamage(MainMeleeWeapon,MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);"
+data "SpellFlags" "IsMelee;IsHarmful;IsSpell"
+data "DamageType" "Thunder"
+
+// Consistency with other hidden things
+
+new entry "BoomingBladeRepeat"
+type "PassiveData"
+using "BoomingBladeRepeat"
+data "Properties" "IsHidden"
+
+// DRS fixes
+
+new entry "BOOMING_BLADE_DAMAGE"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BOOMING_BLADE_DAMAGE"
+data "OnApplyFunctors" "DealDamage(1d8,Thunder,Magical,,0,,true,false);RemoveStatus(SELF,BOOMING_BLADE)"
+
+new entry "BOOMING_BLADE_5_DAMAGE"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BOOMING_BLADE_5_DAMAGE"
+data "OnApplyFunctors" "DealDamage(2d8,Thunder,Magical,,0,,true,false);RemoveStatus(SELF,BOOMING_BLADE_5)"
+
+new entry "BOOMING_BLADE_11_DAMAGE"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BOOMING_BLADE_11_DAMAGE"
+data "OnApplyFunctors" "DealDamage(3d8,Thunder,Magical,,0,,true,false);RemoveStatus(SELF,BOOMING_BLADE_11)"
+
+// Scaling past levels in base game
+
+new entry "YASRM_BOOMING_BLADE_17_DAMAGE"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BOOMING_BLADE_DAMAGE"
+data "DescriptionParams" "DealDamage(4d8,Thunder)"
+data "OnApplyFunctors" "DealDamage(4d8,Thunder,Magical,,0,,true,false);RemoveStatus(SELF,YASRM_BOOMING_BLADE_17)"
+
+new entry "YASRM_BOOMING_BLADE_17"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BOOMING_BLADE"
+data "DescriptionParams" "DealDamage(4d8,Thunder)"
+data "Passives" "YASRM_BoomingBlade_17_Movement_Passive;YASRM_BoomingBlade_17_MovementSpell_Passive;"
+
+new entry "YASRM_BoomingBlade_17_Movement_Passive"
+type "PassiveData"
+using "BoomingBlade_Movement_Passive"
+data "DisplayName" "ha57461c0gfb33g47bagb2f0g2b8064a7e509;1"
+data "StatsFunctors" "ApplyStatus(SELF,YASRM_BOOMING_BLADE_17_DAMAGE,100,0);ApplyStatus(SELF,BOOMING_BLADE_DAMAGE_IMMUNITY,100,0)"
+
+new entry "YASRM_BoomingBlade_17_MovementSpell_Passive"
+type "PassiveData"
+using "BoomingBlade_MovementSpell_Passive"
+data "DisplayName" "h6643abfegd843g437dg947dg8151b772282d;1"
+data "StatsFunctors" "ApplyStatus(SELF,YASRM_BOOMING_BLADE_17_DAMAGE,100,0);ApplyStatus(SELF,BOOMING_BLADE_DAMAGE_IMMUNITY,100,0)"
