@@ -59,6 +59,14 @@
                     <attribute id="Name" type="FixedString" value="YASRM_BoomingBlade"/>
                     <attribute id="UUID" type="guid" value="9bbb8fac-8eb0-4e8d-8068-6a586bac05db"/>
                 </node>
+                <node id="LevelMapSeries">
+                    <attribute id="Level1" type="LSString" value="1d8"/>
+                    <attribute id="Level5" type="LSString" value="1d10"/>
+                    <attribute id="Level11" type="LSString" value="1d12"/>
+                    <attribute id="Level17" type="LSString" value="2d12"/>
+                    <attribute id="Name" type="FixedString" value="YASRM_Shillelagh"/>
+                    <attribute id="UUID" type="guid" value="112b0319-7157-40a2-95c4-bf7639d70c60"/>
+                </node>
             </children>
         </node>
     </region>

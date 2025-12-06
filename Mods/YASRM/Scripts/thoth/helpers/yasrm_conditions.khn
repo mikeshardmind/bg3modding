@@ -1,15 +1,59 @@
 function YASRM_BB1()
-    return Character() and not CharacterLevelGreaterThan(4)
+    return Character() & ~CharacterLevelGreaterThan(4)
 end
 
 function YASRM_BB5()
-    return Character() and CharacterLevelGreaterThan(4) and not CharacterLevelGreaterThan(9)
+    return Character() & CharacterLevelGreaterThan(4) & ~CharacterLevelGreaterThan(10)
 end
 
 function YASRM_BB11()
-    return Character() and CharacterLevelGreaterThan(10) and not CharacterLevelGreaterThan(16)
+    return Character() & CharacterLevelGreaterThan(10) & ~CharacterLevelGreaterThan(16)
 end
 
 function YASRM_BB17()
-    return Character() and CharacterLevelGreaterThan(16)
+    return Character() & CharacterLevelGreaterThan(16)
 end
+
+function YASRM_VAL_SHILL(weapon)
+    return IsWeaponOfProficiencyGroup('Clubs|Quarterstaffs|Maces|Javelins|Spears|Sickles|Flails', weapon)
+end
+
+function YASRM_SHIL_LV1()
+    local char = GetOwner(context.Source)
+    return ~CharacterLevelGreaterThan(4,char)
+end
+
+function YASRM_SHIL_LV5()
+    local char = GetOwner(context.Source)
+    return CharacterLevelGreaterThan(4, char) & ~CharacterLevelGreaterThan(10, char)
+end
+
+function YASRM_SHIL_LV11()
+    local char = GetOwner(context.Source)
+    return CharacterLevelGreaterThan(10, char) & ~CharacterLevelGreaterThan(16, char)
+end
+
+function YASRM_SHIL_LV17()
+    local char = GetOwner(context.Source)
+    return CharacterLevelGreaterThan(16, char)
+end
+
+
+// These are "well ordered" Cha > Wis > Int in case of tie to avoid needing negation.
+
+function YASRM_SHIL_C()
+    local char = GetOwner(context.Source)
+    return ConditionResult((char.Charisma >= char.Wisdom) and (char.Charisma >= char.Intelligence))
+end
+
+function YASRM_SHIL_W()
+    local char = GetOwner(context.Source)
+    return ConditionResult((char.Wisdom >= char.Intelligence) and (char.Wisdom > char.Charisma))
+end
+
+function YASRM_SHIL_I()
+    local char = GetOwner(context.Source)
+    return ConditionResult((char.Intelligence > char.Wisdom) and (char.Intelligence > char.Charisma))
+end
+
+
