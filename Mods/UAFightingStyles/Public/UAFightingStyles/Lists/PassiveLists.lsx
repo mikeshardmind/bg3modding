@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="7" revision="1" build="3"/>
+  <region id="PassiveLists">
+    <node id="root">
+      <children>
+        <node id="PassiveList">
+          <attribute id="MergedInto" type="guid" value="da3203d8-750a-4de1-b8eb-1eccfccddf46"/>
+          <attribute id="Name" type="FixedString" value="AddTo_Fighter"/>
+          <attribute id="Passives" type="LSString" value="UA_FightingStyle_CloseQuartersShooter,UA_FightingStyle_Interception,UA_FightingStyle_Mariner,UA_FightingStyle_SuperiorTechnique,UA_FightingStyle_ThrownWeaponFighting,UA_FightingStyle_TunnelFighter"/>
+          <attribute id="UUID" type="guid" value="d83342f7-bbc6-49d1-bb55-ca621244ba56"/>
+        </node>
+        <node id="PassiveList">
+          <attribute id="MergedInto" type="guid" value="a0bdb113-1cce-45ac-94fb-72d4c3f207e9"/>
+          <attribute id="Name" type="FixedString" value="AddTo_Ranger"/>
+          <attribute id="Passives" type="LSString" value="UA_FightingStyle_CloseQuartersShooter,UA_FightingStyle_DruidicWarrior,UA_FightingStyle_Interception,UA_FightingStyle_Mariner,UA_FightingStyle_ThrownWeaponFighting,UA_FightingStyle_TunnelFighter"/>
+          <attribute id="UUID" type="guid" value="6556a907-f369-4972-9c23-c41ce974fc85"/>
+        </node>
+        <node id="PassiveList">
+          <attribute id="MergedInto" type="guid" value="f8ebba38-932a-4c64-ae55-3df23e2f60fa"/>
+          <attribute id="Name" type="FixedString" value="AddTo_Paladin"/>
+          <attribute id="Passives" type="LSString" value="UA_FightingStyle_BlessedWarrior,UA_FightingStyle_CloseQuartersShooter,UA_FightingStyle_Interception,UA_FightingStyle_Mariner,UA_FightingStyle_ThrownWeaponFighting,UA_FightingStyle_TunnelFighter"/>
+          <attribute id="UUID" type="guid" value="aa10dc79-69ba-467e-b3db-7e5c9b2e55b2"/>
+        </node>
+        <node id="PassiveList">
+          <attribute id="MergedInto" type="guid" value="11f3b209-eb13-42d2-9fec-46dfc68fe619"/>
+          <attribute id="Name" type="FixedString" value="AddTo_SwordsBard"/>
+          <attribute id="Passives" type="LSString" value="UA_FightingStyle_CloseQuartersShooter,UA_FightingStyle_Mariner,UA_FightingStyle_ThrownWeaponFighting"/>
+          <attribute id="UUID" type="guid" value="607fb9ac-2ff9-460a-974d-ec630af027f8"/>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>
