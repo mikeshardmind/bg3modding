@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentList>
 	<content contentuid="hd76c11b8ga82ag4b7dg8c7eg3641f579453b" version="1">Close Quarters Shooter</content>
-	<content contentuid="hcc9e4ad8g8f8bg4f9agb611g9252a551b9fb" version="1">You ignore disadvantage from attacking with a ranged weapon within [1]. You also gain a +1 bonus to ranged weapon attacks.</content>
+	<content contentuid="hcc9e4ad8g8f8bg4f9agb611g9252a551b9fb" version="1">You ignore &lt;LSTag Tooltip="Disadvantage"&gt;disadvantage&lt;/LSTag&gt; from making &lt;LSTag Tooltip="RangedWeaponAttack"&gt;ranged weapon attacks&lt;/LSTag&gt; within [1]. You also gain a +1 bonus to &lt;LSTag Tooltip="RangedWeaponAttack"&gt;ranged weapon attacks.&lt;/LSTag&gt;.</content>
 	<content contentuid="hd66945f9g29aag4261gaaa5gf8e5428782a6" version="1">Tunnel Fighter</content>
-	<content contentuid="h66a1652eg3728g488dga6eegc51c6ed1967c" version="1">As a bonus action, you can enter a Defensive Stance until your next turn. While in this stance, your Armor Class increases by 1 and you gain an extra Reaction.</content>
+	<content contentuid="h66a1652eg3728g488dga6eegc51c6ed1967c" version="1">As a &lt;LSTag Type="ActionResource" Tooltip="BonusActionPoint"&gt;bonus action&lt;/LSTag&gt;, you can enter a &lt;LSTag Type="Status" Tooltip="UA_FightingStyle_DEFENSIVE_STANCE"&gt;defensive stance&lt;/LSTag&gt; until your next turn. While in this stance, your &lt;LSTag Tooltip="ArmourClass"&gt;Armor Class increases&lt;/LSTag&gt; by 1 and you gain an extra &lt;LSTag Type="ActionResource" Tooltip="ReactionActionPoint"&gt;Reaction&lt;/LSTag&gt;.</content>
 	<content contentuid="h3ab5d606gd88ag49e2g8cb1g77903a43752f" version="1">Tunnel Fighter: Defensive Stance</content>
-	<content contentuid="hcb6927adg7d55g409dg983fg4bed97a83d18" version="1">Enter a Defensive Stance. Until the start of your next turn, your Armor Class increases by 1 and you gain an extra Reaction.</content>
+	<content contentuid="hcb6927adg7d55g409dg983fg4bed97a83d18" version="1">Until the start of your next turn, your &lt;LSTag Tooltip="ArmourClass"&gt;Armor Class&lt;/LSTag&gt; increases by 1 and you gain an extra &lt;LSTag Type="ActionResource" Tooltip="ReactionActionPoint"&gt;Reaction&lt;/LSTag&gt;.</content>
 	<content contentuid="heba6eafbg842cg4242g9215g7bcdc643d52f" version="1">Mariner</content>
-	<content contentuid="hacd63138g0ae8g4344gbaaeg46332292d5fc" version="1">While you are not wearing heavy armor or wielding a shield, your Armor Class increases by 1, your movement speed increases by [1], and your jump distance increases by 50%.</content>
+	<content contentuid="hacd63138g0ae8g4344gbaaeg46332292d5fc" version="1">While you are not wearing heavy armor or wielding a shield, your &lt;LSTag Tooltip="ArmourClass"&gt;Armor Class&lt;/LSTag&gt; increases by 1, your &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; increases by [1], and your jump distance increases by 50%.</content>
 	<content contentuid="h0c3365adg4886g476dgaefcg8936a8c52ae2" version="1">Interception</content>
-	<content contentuid="h47772a46g6ab5g43fdg999fg66701da7c282" version="1">When an enemy hits an ally within [1], reduce the damage by 1d10 + Your Proficiency Bonus. You must be able to see the attacker.</content>
+	<content contentuid="h47772a46g6ab5g43fdg999fg66701da7c282" version="1">When an enemy hits an ally within [1], reduce the damage by 1d10 + Your &lt;LSTag Tooltip="ProficiencyBonus"&gt;Proficiency Bonus&lt;/LSTag&gt;. You must be able to see the attacker.</content>
 	<content contentuid="h92170444g12acg4478gab19g746682a1d35a" version="1">Thrown Weapon Fighting</content>
-	<content contentuid="h8793b644g1180g4f3cgbac3gff0b3deb7522" version="1">Deal an additional 2 damage with thrown weapons.</content>
+	<content contentuid="h8793b644g1180g4f3cgbac3gff0b3deb7522" version="1">Deal an additional 2 damage with &lt;LSTag Tooltip="Thrown"&gt;thrown&lt;/LSTag&gt; weapons.</content>
 	<content contentuid="h6152a1acge203g4698gb2afgf3554a1dd614" version="1">Superior Technique</content>
-	<content contentuid="h54b3996bg81e9g49b8g977eg7399a957edb4" version="1">You gain one superiority dice and learn the Riposte maneuver from the Battle Master subclass.</content>
+	<content contentuid="h54b3996bg81e9g49b8g977eg7399a957edb4" version="1">You gain one &lt;LSTag Type="ActionResource" Tooltip="SuperiorityDie"&gt;superiority die&lt;/LSTag&gt; and learn the Riposte maneuver from the Battle Master subclass.</content>
 	<content contentuid="h0e895e79g47f5g48eega964ga28755a8761d" version="1">Druidic Warrior</content>
-	<content contentuid="h5ab5ce8fg3577g461bg9f69g297467e281b3" version="1">You learn the Shillelagh and Guidance cantrips. Wisdom is your spellcasting modifier for them.</content>
+	<content contentuid="h5ab5ce8fg3577g461bg9f69g297467e281b3" version="1">You learn the &lt;LSTag Type="Spell" Tooltip="Shout_Shillelagh"&gt;Shillelagh&lt;/LSTag&gt; and &lt;LSTag Type="Spell" Tooltip="Target_Guidance"&gt;Guidance&lt;/LSTag&gt; &lt;LSTag Tooltip="Cantrip"&gt;cantrips&lt;/LSTag&gt;. &lt;LSTag Tooltip="Wisdom"&gt;Wisdom&lt;/LSTag&gt; is your &lt;LSTag Tooltip="SpellcastingAbility"&gt;spellcasting ability&lt;/LSTag&gt; for them.</content>
 	<content contentuid="h4d5e6958g52fdg4ebbga7abgf765c4c9ed17" version="1">Blessed Warrior</content>
-	<content contentuid="h9186b007gbf2fg492ega6b6gbcd8690560ea" version="1">You learn the Sacred Flame and Guidance cantrips. Charisma is your spellcasting modifier for them.</content>
+	<content contentuid="h9186b007gbf2fg492ega6b6gbcd8690560ea" version="1">You learn the &lt;LSTag Type="Spell" Tooltip="Target_SacredFlame"&gt;Sacred Flame&lt;/LSTag&gt; and &lt;LSTag Type="Spell" Tooltip="Target_Guidance"&gt;Guidance&lt;/LSTag&gt; &lt;LSTag Tooltip="Cantrip"&gt;cantrips&lt;/LSTag&gt;. &lt;LSTag Tooltip="Charisma"&gt;Charisma&lt;/LSTag&gt; is your &lt;LSTag Tooltip="SpellcastingAbility"&gt;spellcasting ability&lt;/LSTag&gt; for them.</content>
 </contentList>
