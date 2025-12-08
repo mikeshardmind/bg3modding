@@ -213,30 +213,6 @@ difficulty increasing mods.
 - Sanguine Offering Charges are 1 per Witch knight level,
   matching [source material](https://www.gmbinder.com/share/-M0i_wbRAX8qAz1OIjbF).
 
-### Rationale (see above, outdated, but kept for reference of the issues)
-
-Because of the base game's implementation of warlock spell slots,
-both Witch knight and Warlock are punished if you multiclass these two together.
-
-I don't particularly want to over-buff in compensation of this, and (previously, see note above)
-have only given some melee focused warlock invocations at specific levels.
-I may make more tweaks later, but allowing choice of invocation was too finicky,
-and also allowed what I would consider certain options that are
-unacceptable to give while retaining full base fighter feature scaling.
-
-This mod does not attempt to prevent you from multiclassing with warlock after having it,
-but doing so will likely weaken the build again due to base game implementation unless you
-have a very specific build idea in mind
-
-If you want to multiclass warlock/fighter,
-the base game's battle master or the
-5e fighter sublass combined mod's implementation of Brute fighter
-will provide strictly better numerical power.
-
-This leaves the Witch Knight closer to existing as if it's tabletop counterpart
-had been multiclassed with hexblade but a little weaker
-(in theory, the changes still need playtesting)
-
 ### Compatability
 
 Modifies progression via compatability framework.
@@ -246,10 +222,11 @@ the base mod to be as written, you no longer should load this mod.
 
 In the event that happens, this mod is safe to remove mid-playthrough.
 
-# Planned mods
+## YASRM
 
-- Spell and feat rebalances (Yes, Yet another one of those...)
-- Merged list sorter (I'd like my feats and fighting styles in order...)
+(Yet Another Spell Rebalancing mod)
+
+Changes a lot of things (tbd)
 
 See Issues tab for more details.
 
