@@ -68,6 +68,10 @@ will not recieve the 3 injury kits.
 
 # Details of mods below
 
+## BardicPreparation
+
+It makes bards prepared casters.
+
 ## BaseParameters
 
 carry weight and loot from traders. Mostly just for me, use if you want,

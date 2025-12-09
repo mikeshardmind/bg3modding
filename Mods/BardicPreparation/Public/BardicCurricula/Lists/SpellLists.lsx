@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="7" revision="1" build="3"/>
+  <region id="SpellLists">
+    <node id="root">
+      <children>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation1"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="a5dae82b-4452-438f-a3e3-ff76951dcd01"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation2"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="898fa5d6-4abf-42b1-bbd6-1bec7eb0c282"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation3"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="3325ed36-e499-4284-acc4-772e51f1e64e"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation4"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="854ae3f1-2eb3-4416-aea9-a1852a056919"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation5"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="fa3ab275-4968-44f5-b252-b0b9128446aa"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation6"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="2e159f46-7354-48e1-9f61-7b6c1b29ee72"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation7"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="97178150-8c85-4381-9a05-2f85d2c60230"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation8"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="d5368041-c4c4-4fbf-9f46-1b662b5529ec"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="BardicPreparation9"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="e3d2a506-7aa6-4554-ab2b-ac7a66e1dfbe"/>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>
