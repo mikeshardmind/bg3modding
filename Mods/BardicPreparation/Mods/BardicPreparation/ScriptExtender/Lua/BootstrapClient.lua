@@ -55,9 +55,32 @@ function GetOurLists()
     return t
 end
 
+function AlwaysMagicalSecrets()
+
+    local ids = {}
+    for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
+        local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
+        if resourceGuid == bard_guid or desc.ParentGuid == bard_guid then
+            ids[desc.ProgressionTableUUID] = true
+        end
+    end
+
+    for _, progguid in pairs(Ext.StaticData.GetAll("Progression")) do
+        local pd = Ext.StaticData.Get(progguid, "Progression")
+        if ids[pd.TableUUID] ~= nil then
+            for _, this_select in ipairs(pd["SelectSpells"]) do
+                if this_select.SelectorId  == "BardMagicalSecrets" then
+                    this_select.PrepareType = "AlwaysPrepared"
+                end
+            end
+        end
+    end
+end
+
 function OnStatsLoaded()
 
     SetPrepared()
+    AlwaysMagicalSecrets()
     local prog_data = GetProgressionData()
     local seen_lists = {}
     local seen_spells = {}
