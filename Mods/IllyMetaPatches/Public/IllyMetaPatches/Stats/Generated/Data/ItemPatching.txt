@@ -1,0 +1,5 @@
+
+new entry "ARA_Cloak_ToHit_Passive"
+type "PassiveData"
+using "ARA_Cloak_ToHit_Passive"
+data "Boosts" "RollBonus(Attack, 1)"
