@@ -11,6 +11,15 @@ local Selector = {
     ["SelectorId"] = " "
 }
 
+local random = math.random
+local function uuid()
+    local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    return string.gsub(template, '[xy]', function (c)
+        local v = (c == 'x') and random(0, 0xf) or random(8, 0xb)
+        return string.format('%x', v)
+    end)
+end
+
 local Ours = {
     "a5dae82b-4452-438f-a3e3-ff76951dcd01",
     "898fa5d6-4abf-42b1-bbd6-1bec7eb0c282",
@@ -23,11 +32,50 @@ local Ours = {
     "e3d2a506-7aa6-4554-ab2b-ac7a66e1dfbe",
 }
 
-function SetPrepared()
+local defaultConfig = {
+    enabled = true,
+    filter = true,
+    with_scroll_learning = false,
+}
+
+--[[ Needs thought....
+extra_selectors = {
+        "CelestialSecrets",
+    },
+secrets_always_prepared = true,
+]]--
+
+
+local function LoadConfigFile()
+    local file = Ext.IO.LoadFile("BardicPreparation.json")
+    if file == nil then
+        local d = Ext.Json.Stringify(defaultConfig)
+        Ext.IO.SaveFile("BardicPreparation.json", d)
+        return Ext.Json.Parse(d)
+    end
+    return Ext.Json.Parse(file) or {}
+
+end
+
+local function LoadConfig()
+
+    local ret = LoadConfigFile()
+    ret.enabled = (ret.enabled ~= false)
+    ret.filter = (ret.filter ~= false)
+    ret.with_scroll_learning = (ret.with_scroll_learning ~= false)
+    -- Below aren't exposed to users yet.
+    ret.extra_selectors = {"CelestialSecrets"}
+    ret.secrets_always_prepared = true
+    return ret
+end
+
+
+function SetPrepared(with_scroll_learning)
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
         local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
         if resourceGuid == bard_guid or desc.ParentGuid == bard_guid then
             desc.MustPrepareSpells = true
+            desc.CanLearnSpells = with_scroll_learning
         end
     end
 end
@@ -55,7 +103,8 @@ function GetOurLists()
     return t
 end
 
-function AlwaysMagicalSecrets()
+function AlwaysMagicalSecrets(selectors, always_prepared)
+    local ret = {}
 
     local ids = {}
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
@@ -69,18 +118,35 @@ function AlwaysMagicalSecrets()
         local pd = Ext.StaticData.Get(progguid, "Progression")
         if ids[pd.TableUUID] ~= nil then
             for _, this_select in ipairs(pd["SelectSpells"]) do
-                if this_select.SelectorId  == "BardMagicalSecrets" then
-                    this_select.PrepareType = "AlwaysPrepared"
+                if selectors[this_select.SelectorId]  ~= nil then
+                    this_select.PrepareType = always_prepared and "AlwaysPrepared" or "Unknown"
+                    table.insert(ret, progguid)
                 end
             end
         end
     end
+
+    return ret
 end
 
 function OnStatsLoaded()
 
-    SetPrepared()
-    AlwaysMagicalSecrets()
+    local config = LoadConfig()
+    if config.enabled ~= true then
+        return
+    end
+
+    local secrets_selectors = {
+        ["BardMagicalSecrets"] = true
+    }
+
+    for _, selname in pairs(config.extra_selectors) do
+        secrets_selectors[selname] = true
+    end
+
+    SetPrepared(config.with_scroll_learning)
+
+    local has_secrets = AlwaysMagicalSecrets(secrets_selectors, config.secrets_always_prepared)
     local prog_data = GetProgressionData()
     local seen_lists = {}
     local seen_spells = {}
@@ -102,7 +168,7 @@ function OnStatsLoaded()
         local to_remove = {}
 
         for idx, this_select in ipairs(data.prog["SelectSpells"]) do
-            if this_select.PrepareType == "Unknown" and this_select.SelectorId  ~= "BardMagicalSecrets" then
+            if this_select.PrepareType == "Unknown" and secrets_selectors[this_select.SelectorId]  == nil then
                 table.insert(to_remove, idx)
 
                 if seen_lists[this_select.SpellUUID] == nil then
@@ -140,6 +206,33 @@ function OnStatsLoaded()
 
     for _, data in ipairs(our_lists) do
         data.List.Spells = data.acc
+    end
+
+    if config.filter then
+        for _, progguid in ipairs(has_secrets) do
+            local pd = Ext.StaticData.Get(progguid, "Progression")
+
+            for idx, this_select in ipairs(pd["SelectSpells"]) do
+                if secrets_selectors[this_select.SelectorId]  ~= nil then
+                    local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
+                    if spell_list ~= nil then
+
+                        local working_list = {}
+
+                        for _, spell in pairs(spell_list.Spells) do
+                            if seen_spells[spell] == nil then
+                                table.insert(working_list, spell)
+                            end
+
+                        local new_uuid = uuid()
+                        local nl = Ext.StaticData.Create("SpellList", new_uuid)
+                        nl.Spells = working_list
+                        this_select.SpellUUID = new_uuid
+                        end
+                    end
+                end
+            end
+        end
     end
 
 end
