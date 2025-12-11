@@ -1,0 +1,64 @@
+Version 1
+SubGoalCombiner SGC_AND
+
+INITSECTION
+
+NOT DB_mikeshardmind_Illy_StartingExperience((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
+NOT DB_mikeshardmind_Illy_StartingEquip((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
+NOT DB_mikeshardmind_Illy_HostItems((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
+
+
+KBSECTION
+
+IF
+LevelGameplayReady(_Level, _IsEditor)
+AND
+_Level == "TUT_Avernus_C"
+AND
+DB_Avatars(_Character)
+AND
+NOT DB_mikeshardmind_Illy_StartingExperience(_Character)
+THEN
+AddExplorationExperience(_Character, 1100);
+DB_mikeshardmind_Illy_StartingExperience(_Character);
+
+IF
+LevelGameplayReady(_Level, _IsEditor)
+AND
+GetHostCharacter(_Host)
+AND
+NOT DB_mikeshardmind_Illy_HostItems(_Host)
+THEN
+TemplateAddTo(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d, _Host, 1, 0);
+
+IF
+LevelGameplayReady(_Level, _IsEditor)
+AND
+_Level != "SYS_CC_I"
+AND
+DB_Avatars(_Character)
+AND
+NOT DB_mikeshardmind_Illy_StartingEquip(_Character)
+THEN
+TemplateAddTo(WPN_HUM_Shield_A_0_d2af60ea-1b72-4d25-a188-6d8bc4fe255b, _Character, 1, 0);
+TemplateAddTo(WPN_HUM_Shortsword_A_0_467ddb4f-6791-41fa-99f7-ee8620d63bbe, _Character, 1, 0);
+TemplateAddTo(WPN_HUM_Spear_A_0_9f0f1c0e-012d-44e1-9b29-86c64d2bf675, _Character, 1, 0);
+TemplateAddTo(WPN_HUM_LightCrossbow_A_0_43b7fbf5-7f6e-4e9e-bce7-c679eea44593, _Character, 1, 0);
+DB_mikeshardmind_Illy_StartingEquip(_Character);
+
+PROC
+PROC_GLO_PartyMembers_Add((CHARACTER)_Origin,(CHARACTER)_Player)
+AND
+DB_PartOfTheTeam(_Origin)
+AND
+NOT DB_mikeshardmind_Illy_StartingEquip(_Origin)
+THEN
+TemplateAddTo(WPN_HUM_Shield_A_0_d2af60ea-1b72-4d25-a188-6d8bc4fe255b, _Origin, 1, 0);
+TemplateAddTo(WPN_HUM_Shortsword_A_0_467ddb4f-6791-41fa-99f7-ee8620d63bbe, _Origin, 1, 0);
+TemplateAddTo(WPN_HUM_Spear_A_0_9f0f1c0e-012d-44e1-9b29-86c64d2bf675, _Origin, 1, 0);
+TemplateAddTo(WPN_HUM_LightCrossbow_A_0_43b7fbf5-7f6e-4e9e-bce7-c679eea44593, _Origin, 1, 0);
+DB_mikeshardmind_Illy_StartingEquip(_Origin);
+
+EXITSECTION
+
+ENDEXITSECTION

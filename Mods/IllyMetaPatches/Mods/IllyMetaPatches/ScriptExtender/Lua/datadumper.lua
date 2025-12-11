@@ -37,3 +37,5 @@ function Dump_interesting_static_data(_, name)
         end
     end
 end
+
+Ext.RegisterConsoleCommand("staticdump", Dump_interesting_static_data)

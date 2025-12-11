@@ -81,7 +81,7 @@
           <attribute id="UUID" type="guid" value="8a26f431-6f20-4f62-9733-160c77fe4879"/>
         </node>
         <node id="RulesetModifier">
-          <attribute id="Default" type="LSString" value="false"/>
+          <attribute id="Default" type="LSString" value="true"/>
           <attribute id="Description" type="TranslatedString" handle="hd1b7fa4bgd4e8g439ag8921g29932ccfd4ce" version="2"/>
           <attribute id="DisplayName" type="TranslatedString" handle="h08309889gdee5g473cg9e1cgd071453a9498" version="2"/>
           <attribute id="Name" type="LSString" value="NO_FREE_FIRST_STRIKE"/>
@@ -111,7 +111,7 @@
           <attribute id="UUID" type="guid" value="1d9a608a-3885-4d48-8816-458e40d1136e"/>
         </node>
         <node id="RulesetModifier">
-          <attribute id="Default" type="LSString" value="2.5"/>
+          <attribute id="Default" type="LSString" value="3"/>
           <attribute id="Description" type="TranslatedString" handle="hc3d2e083g1f6dg4c9cg8655gc597ee0dd488" version="1"/>
           <attribute id="DisplayName" type="TranslatedString" handle="h6d69bd4bg2ae8g4765g9492g745d2b12af5b" version="3"/>
           <attribute id="Max" type="float" value="4"/>
@@ -169,7 +169,7 @@
           <attribute id="UUID" type="guid" value="38fc0d10-ee64-40d6-b1d9-35f8de95b972"/>
         </node>
         <node id="RulesetModifier">
-          <attribute id="Default" type="LSString" value="false"/>
+          <attribute id="Default" type="LSString" value="true"/>
           <attribute id="Description" type="TranslatedString" handle="h957e5d4cgc755g4239g8892g22c47cf8fea6" version="2"/>
           <attribute id="DisplayName" type="TranslatedString" handle="h9015417ag58a9g4bffga52age5f1b1c712b2" version="4"/>
           <attribute id="Name" type="LSString" value="DIALOGUE_DC_PREVIEW"/>
@@ -220,7 +220,7 @@
           <attribute id="UUID" type="guid" value="1e8586e0-b957-4cf1-a0d4-aaf99f60d954"/>
         </node>
         <node id="RulesetModifier">
-          <attribute id="Default" type="LSString" value="true"/>
+          <attribute id="Default" type="LSString" value="false"/>
           <attribute id="Description" type="TranslatedString" handle="h1e1a0a55g26c9g4293g92f4g78e81338098b" version="1"/>
           <attribute id="DisplayName" type="TranslatedString" handle="hb46396b3gecfeg496fgb097g270324794f8b" version="1"/>
           <attribute id="Name" type="LSString" value="SCROLL_CLASS_RESTRICTION"/>

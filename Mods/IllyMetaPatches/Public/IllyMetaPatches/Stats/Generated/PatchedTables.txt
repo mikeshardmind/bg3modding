@@ -1,0 +1,9 @@
+new treasuretable "UND_Spectator_Reward"
+CanMerge 1
+new subtable "-1"
+object category "MARCELINES_BASS_AXE_INSTRUMENT",1,0,0,0,0,0,0,0
+
+new treasuretable "SHA_Necromancer"
+CanMerge 1
+new subtable "-1"
+object category "MARCELINES_BASS_AXE",1,0,0,0,0,0,0,0
