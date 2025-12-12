@@ -180,6 +180,8 @@ function AlwaysMagicalSecrets(selectors, always_prepared)
 end
 
 local function subtract_setlists(l1, l2)
+    -- creates a new list from unique values of l1
+    -- that are neither a key or value of l2
 
     local sub_table = {}
     for key, item in pairs(l2) do
