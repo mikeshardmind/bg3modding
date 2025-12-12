@@ -56,7 +56,6 @@ local OursRitual = {
 
 local defaultConfig = {
     enabled = true,
-    filter = true,
     with_scroll_learning = false,
     rituals_always_prepared = true,
 }
@@ -84,7 +83,6 @@ local function LoadConfig()
 
     local ret = LoadConfigFile()
     ret.enabled = (ret.enabled ~= false)
-    ret.filter = (ret.filter ~= false)
     ret.with_scroll_learning = (ret.with_scroll_learning ~= false)
     ret.rituals_always_prepared = (ret.rituals_always_prepared ~= false)
     -- Below aren't exposed to users yet.
@@ -246,33 +244,31 @@ function OnStatsLoaded()
             end
         end
         data.List.Spells = prep
-        if #ritual then
+        if #ritual > 0 then
             local ritual_list = Ext.StaticData.Get(OursRitual[i], "SpellList")
             ritual_list.Spells = ritual
         end
     end
 
-    if config.filter then
-        for _, progguid in ipairs(has_secrets) do
-            local pd = Ext.StaticData.Get(progguid, "Progression")
+    for _, progguid in ipairs(has_secrets) do
+        local pd = Ext.StaticData.Get(progguid, "Progression")
 
-            for idx, this_select in ipairs(pd["SelectSpells"]) do
-                if secrets_selectors[this_select.SelectorId]  ~= nil then
-                    local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
-                    if spell_list ~= nil then
+        for idx, this_select in ipairs(pd["SelectSpells"]) do
+            if secrets_selectors[this_select.SelectorId]  ~= nil then
+                local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
+                if spell_list ~= nil then
 
-                        local working_list = {}
+                    local working_list = {}
 
-                        for _, spell in pairs(spell_list.Spells) do
-                            if seen_spells[spell] == nil then
-                                table.insert(working_list, spell)
-                            end
-
-                        local new_uuid = uuid()
-                        local nl = Ext.StaticData.Create("SpellList", new_uuid)
-                        nl.Spells = working_list
-                        this_select.SpellUUID = new_uuid
+                    for _, spell in pairs(spell_list.Spells) do
+                        if seen_spells[spell] == nil then
+                            table.insert(working_list, spell)
                         end
+
+                    local new_uuid = uuid()
+                    local nl = Ext.StaticData.Create("SpellList", new_uuid)
+                    nl.Spells = working_list
+                    this_select.SpellUUID = new_uuid
                     end
                 end
             end
