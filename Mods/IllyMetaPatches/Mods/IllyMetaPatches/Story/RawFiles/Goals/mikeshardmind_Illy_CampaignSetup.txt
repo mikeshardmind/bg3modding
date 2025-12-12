@@ -25,11 +25,14 @@ DB_mikeshardmind_Illy_StartingExperience(_Character);
 IF
 LevelGameplayReady(_Level, _IsEditor)
 AND
+_Level != "SYS_CC_I"
+AND
 GetHostCharacter(_Host)
 AND
 NOT DB_mikeshardmind_Illy_HostItems(_Host)
 THEN
 TemplateAddTo(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d, _Host, 1, 0);
+DB_mikeshardmind_Illy_HostItems(_Host);
 
 IF
 LevelGameplayReady(_Level, _IsEditor)
