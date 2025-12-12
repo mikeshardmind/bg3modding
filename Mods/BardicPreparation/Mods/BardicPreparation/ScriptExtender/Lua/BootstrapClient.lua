@@ -11,6 +11,16 @@ local Selector = {
     ["SelectorId"] = " "
 }
 
+local RitualSelector = {
+    ["Ability"] = "None",
+    ["ActionResource"] = "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
+    ["ClassUUID"] = "00000000-0000-0000-0000-000000000000",
+    ["CooldownType"] = "Default",
+    ["PrepareType"] = "AlwaysPrepared",
+    ["SpellUUID"] = "",
+    ["SelectorId"] = " "
+}
+
 local random = math.random
 local function uuid()
     local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
@@ -32,10 +42,23 @@ local Ours = {
     "e3d2a506-7aa6-4554-ab2b-ac7a66e1dfbe",
 }
 
+local OursRitual = {
+    "4980f02c-bb60-4e2f-9bab-e4ce32384b7f",
+    "88d8e1cd-b0ff-4d1b-95ff-c816f49d10bf",
+    "7eaeeffb-df1f-4276-992a-6e35180a09a5",
+    "9785e2c9-f892-429e-ae1d-f74f3abfce6f",
+    "e9fefd63-f66e-424c-8187-68d6ef658ddb",
+    "1d135e50-82e7-4006-8b61-c226c4c2645b",
+    "95b4f5ed-5b1c-477e-94f8-4f47a56cf599",
+    "27c9134f-d0b3-410f-80d4-999465397c6e",
+    "f9335bad-5549-4976-b6a4-f6ff27426b70"
+}
+
 local defaultConfig = {
     enabled = true,
     filter = true,
     with_scroll_learning = false,
+    rituals_always_prepared = true,
 }
 
 --[[ Needs thought....
@@ -63,6 +86,7 @@ local function LoadConfig()
     ret.enabled = (ret.enabled ~= false)
     ret.filter = (ret.filter ~= false)
     ret.with_scroll_learning = (ret.with_scroll_learning ~= false)
+    ret.rituals_always_prepared = (ret.rituals_always_prepared ~= false)
     -- Below aren't exposed to users yet.
     ret.extra_selectors = {"CelestialSecrets"}
     ret.secrets_always_prepared = true
@@ -199,13 +223,33 @@ function OnStatsLoaded()
 
         if (lv < 18) and (lv % 2 == 1) then
             Selector.SpellUUID = Ours[spell_lv]
+            RitualSelector.SpellUUID = OursRitual[spell_lv]
             pd["AddSpells"][#pd["AddSpells"] + 1] = Selector
+            pd["AddSpells"][#pd["AddSpells"] + 1] = RitualSelector
         end
 
     end
 
-    for _, data in ipairs(our_lists) do
-        data.List.Spells = data.acc
+    for i, data in ipairs(our_lists) do
+
+        local prep = {}
+        local ritual = {}
+        for _, spellname in ipairs(data.acc) do
+            local spell = Ext.Stats.Get(spellname)
+            if spell ~= nil then
+                if config.rituals_always_prepared and #spell.RitualCosts:match("^%s*(.-)%s*$") > 0 then
+                    table.insert(ritual, spellname)
+                else
+                    table.insert(prep, spellname)
+                end
+
+            end
+        end
+        data.List.Spells = prep
+        if #ritual then
+            local ritual_list = Ext.StaticData.Get(OursRitual[i], "SpellList")
+            ritual_list.Spells = ritual
+        end
     end
 
     if config.filter then
