@@ -180,6 +180,10 @@ function AlwaysMagicalSecrets(selectors, always_prepared)
                     table.insert(ret, progguid)
                 end
             end
+            -- Needed for class actions that are technically spells
+            for _, this_select in ipairs(pd["AddSpells"]) do
+                this_select.PrepareType = "AlwaysPrepared"
+            end
         end
     end
 
