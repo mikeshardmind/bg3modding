@@ -1,4 +1,6 @@
-
+-- this code can be cleaned up significantly later.
+-- it functions as intended, but has a bit of duplicated iteration
+-- with the way in which functionality was expanded upon.
 local bard_guid = "92cd50b6-eb1b-4824-8adb-853e90c34c90"
 
 local Selector = {
@@ -54,6 +56,11 @@ local OursRitual = {
     "f9335bad-5549-4976-b6a4-f6ff27426b70"
 }
 
+-- Matches the removal done by
+-- "Use 5e spells with Mystra's Spells" Mod.
+-- See article: https://www.nexusmods.com/baldursgate3/articles/1536
+-- only used when this mod is present, otherwise we assume the user
+-- wants duplicates as options or is handling it themselves.
 local known_duplicates = {
     ["Target_BoomingBladeMove"] = true,
     ["Projectile_Infestation"] = true,
