@@ -6,7 +6,7 @@ local bard_guid = "92cd50b6-eb1b-4824-8adb-853e90c34c90"
 local Selector = {
     ["Ability"] = "None",
     ["ActionResource"] = "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
-    ["ClassUUID"] = "00000000-0000-0000-0000-000000000000",
+    ["ClassUUID"] = bard_guid,
     ["CooldownType"] = "Default",
     ["PrepareType"] = "Unknown",
     ["SpellUUID"] = "",
@@ -16,7 +16,7 @@ local Selector = {
 local RitualSelector = {
     ["Ability"] = "None",
     ["ActionResource"] = "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
-    ["ClassUUID"] = "00000000-0000-0000-0000-000000000000",
+    ["ClassUUID"] = bard_guid,
     ["CooldownType"] = "Default",
     ["PrepareType"] = "AlwaysPrepared",
     ["SpellUUID"] = "",
@@ -130,8 +130,10 @@ end
 function SetPrepared(with_scroll_learning)
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
         local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
-        if resourceGuid == bard_guid or desc.ParentGuid == bard_guid then
+        if resourceGuid == bard_guid then
             desc.MustPrepareSpells = true
+            desc.CanLearnSpells = with_scroll_learning
+        elseif desc.ParentGuid == bard_guid then
             desc.CanLearnSpells = with_scroll_learning
         end
     end
