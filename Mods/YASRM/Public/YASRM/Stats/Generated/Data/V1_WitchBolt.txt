@@ -1,6 +1,7 @@
 // remove concentration
 new entry "Projectile_WitchBolt"
 type "SpellData"
+using "Projectile_WitchBolt"
 data "SpellType" "Projectile"
 data "ConcentrationSpellID" ""
 data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsSpell;HasHighGroundRangeExtension;RangeIgnoreVerticalThreshold;IsHarmful"
