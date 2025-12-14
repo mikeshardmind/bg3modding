@@ -23,15 +23,6 @@ local RitualSelector = {
     ["SelectorId"] = " "
 }
 
-local random = math.random
-local function uuid()
-    local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-    return string.gsub(template, '[xy]', function (c)
-        local v = (c == 'x') and random(0, 0xf) or random(8, 0xb)
-        return string.format('%x', v)
-    end)
-end
-
 local Ours = {
     "a5dae82b-4452-438f-a3e3-ff76951dcd01",
     "898fa5d6-4abf-42b1-bbd6-1bec7eb0c282",
@@ -61,7 +52,7 @@ local OursRitual = {
 -- See article: https://www.nexusmods.com/baldursgate3/articles/1536
 -- only used when this mod is present, otherwise we assume the user
 -- wants duplicates as options or is handling it themselves.
-local known_duplicates = {
+local known_5e_with_mystras_duplicates = {
     ["Target_BoomingBladeMove"] = true,
     ["Projectile_Infestation"] = true,
     ["Projectile_MindSilver"] = true,
@@ -88,6 +79,13 @@ local known_duplicates = {
     ["Target_SummonDraconicSpirit"] = true,
 }
 
+local never_include_as_secrets = {
+    "Target_Daylight",
+    "Target_EnsnaringStrike",
+    "Shout_Shield_Sorcerer",
+    "Shout_Shield_Warlock",
+    "Shout_ShadowBlade_Spell",
+}
 
 local defaultConfig = {
     enabled = true,
@@ -120,8 +118,8 @@ local function LoadConfig()
     ret.filter_known_from_secrets = (ret.filter_known_from_secrets ~= false)
     local d = Ext.Json.Stringify(ret)
     Ext.IO.SaveFile("BardicPreparation.json", d)
-    -- Below aren't exposed to users yet.
-    ret.extra_selectors = {"CelestialSecrets"}
+    -- Below aren't exposed to users yet, maybe ever
+    ret.secret_selectors = {["BardMagicalSecrets"] = true}
     return ret
 
 end
@@ -217,7 +215,7 @@ local function subtract_setlists(l1, l2)
 end
 
 
-function GetAllValidSecrets()
+function GetAllValidSecrets(config)
 
     local all_spells = {
         [0] = {},
@@ -241,18 +239,24 @@ function GetAllValidSecrets()
         ["b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"] = true, -- lock
         ["a865965f-501b-46e9-9eaa-7748e8c04d09"] = true, -- wiz
     }
+    local warlock_guid = "b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"
 
     local collected_spell_lists = {}
     local collected_prog_ids = {}
     local collected_spells = {}
+    local collected_warlock_progs = {}
+    local warlock_spell_table_assoc = {}
 
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
+        local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
         if supprted_secrets_classes[resourceGuid] ~= nil then
-            local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
             if desc.SpellList ~= nil then
                 collected_spell_lists[desc.SpellList] = true
             end
             collected_prog_ids[desc.ProgressionTableUUID] = true
+        end
+        if desc.ParentGuid == warlock_guid then
+            collected_warlock_progs[desc.ProgressionTableUUID] = true
         end
     end
 
@@ -262,6 +266,24 @@ function GetAllValidSecrets()
             for _, this_select in ipairs(pd["SelectSpells"]) do
                 collected_spell_lists[this_select.SpellUUID] = true
             end
+        end
+        if collected_warlock_progs[pd.TableUUID] ~= nil then
+            for _, this_select in ipairs(pd["SelectSpells"]) do
+                local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
+                if spell_list ~= nil then
+                    for _, spell in pairs(spell_list.Spells) do
+                        local assoc = warlock_spell_table_assoc[spell] or {}
+                        assoc[pd.TableUUID] = true
+                        warlock_spell_table_assoc[spell] = assoc
+                    end
+                end
+            end
+        end
+    end
+
+    for spell_name, guids in pairs(warlock_spell_table_assoc) do
+        if #guids >= 3 then
+            collected_spells[spell_name] = true
         end
     end
 
@@ -287,17 +309,6 @@ function GetAllValidSecrets()
 
 end
 
-function Filter_5e_with_mystras(spell_list)
-
-    local ret = {}
-    for _, spell_name in pairs(spell_list) do
-        if known_duplicates[spell_name] == nil then
-            table.insert(ret, spell_name)
-        end
-    end
-    return ret
-end
-
 function OnStatsLoaded()
 
     local config = LoadConfig()
@@ -305,19 +316,14 @@ function OnStatsLoaded()
         return
     end
 
-    local secrets_selectors = {
-        ["BardMagicalSecrets"] = true
-    }
-
-    for _, selname in pairs(config.extra_selectors) do
-        secrets_selectors[selname] = true
-    end
+    local secrets_selectors = config.secret_selectors
 
     SetPrepared(config.with_scroll_learning)
 
     local has_secrets = AlwaysMagicalSecrets(secrets_selectors, config.secrets_always_prepared)
-    local all_secret_spells = config.extend_secrets_lists and GetAllValidSecrets() or {}
+    local all_secret_spells = config.extend_secrets_lists and GetAllValidSecrets(config) or {}
     local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
+    local to_subtract = use_mystras_with_5e_loaded and known_5e_with_mystras_duplicates or {}
 
     local prog_data = GetProgressionData()
     local seen_lists = {}
@@ -340,7 +346,7 @@ function OnStatsLoaded()
         local to_remove = {}
 
         for idx, this_select in ipairs(data.prog["SelectSpells"]) do
-            if this_select.PrepareType == "Unknown" and secrets_selectors[this_select.SelectorId]  == nil then
+            if this_select.PrepareType == "Unknown" and secrets_selectors[this_select.SelectorId] == nil then
                 table.insert(to_remove, idx)
 
                 if seen_lists[this_select.SpellUUID] == nil then
@@ -394,12 +400,8 @@ function OnStatsLoaded()
             end
         end
 
-        if use_mystras_with_5e_loaded then
-            prep = Filter_5e_with_mystras(prep)
-            ritual = Filter_5e_with_mystras(ritual)
-        end
-
-        data.List.Spells = prep
+        ritual = subtract_setlists(ritual, to_subtract)
+        data.List.Spells = subtract_setlists(prep, to_subtract)
         if #ritual > 0 then
             local ritual_list = Ext.StaticData.Get(OursRitual[i], "SpellList")
             ritual_list.Spells = ritual
@@ -408,6 +410,7 @@ function OnStatsLoaded()
 
     for _, progguid in ipairs(has_secrets) do
         local pd = Ext.StaticData.Get(progguid, "Progression")
+        local secret_spell_level = (pd.Level > 17) and 9 or ((pd.Level + 1) // 2)
 
         for _, this_select in ipairs(pd["SelectSpells"]) do
             if secrets_selectors[this_select.SelectorId]  ~= nil then
@@ -415,7 +418,6 @@ function OnStatsLoaded()
                 if spell_list ~= nil then
 
                     local working_list = {}
-                    local max_seen = 0
 
                     for _, spell in pairs(spell_list.Spells) do
                         if seen_spells[spell] == nil then
@@ -423,18 +425,14 @@ function OnStatsLoaded()
                             if spell_data ~= nil then
                                 if #spell_data.SpellContainerID:match("^%s*(.-)%s*$") == 0 then
                                     table.insert(working_list, spell)
-                                    if spell_data.Level > max_seen then
-                                        max_seen = spell_data.Level
-                                    end
                                 end
                             end
 
                         end
 
-                    -- have to be stricter here, celestial secrets shouldn't be extended.
-                    if config.extend_secrets_lists and this_select.SelectorId == "BardMagicalSecrets" then
+                    if config.extend_secrets_lists then
                         for lv, spells in pairs(all_secret_spells) do
-                            if lv <= max_seen then
+                            if lv <= secret_spell_level then
                                 for spell, _ in pairs(spells) do
                                     table.insert(working_list, spell)
                                 end
@@ -442,24 +440,12 @@ function OnStatsLoaded()
                         end
                     end
 
-                    if use_mystras_with_5e_loaded then
-                        working_list = Filter_5e_with_mystras(working_list)
-                    end
-
-                    local never_include_as_secrets = {
-                        "Target_Daylight",
-                        "Target_EnsnaringStrike"
-                    }
-
                     working_list = subtract_setlists(working_list, never_include_as_secrets)
                     if config.filter_known_from_secrets then
                         working_list = subtract_setlists(working_list, seen_spells)
                     end
 
-                    local new_uuid = uuid()
-                    local nl = Ext.StaticData.Create("SpellList", new_uuid)
-                    nl.Spells = working_list
-                    this_select.SpellUUID = new_uuid
+                    spell_list.Spells = subtract_setlists(working_list, to_subtract)
                     end
                 end
             end
@@ -468,12 +454,7 @@ function OnStatsLoaded()
 
     local bard_spell_desc = Ext.StaticData.Get(bard_guid, "ClassDescription")
     local bard_list = Ext.StaticData.Get(bard_spell_desc.SpellList, "SpellList")
-
-    if use_mystras_with_5e_loaded then
-        seen_spells = Filter_5e_with_mystras(seen_spells)
-    end
-
-    bard_list.Spells = seen_spells
+    bard_list.Spells = subtract_setlists(seen_spells, to_subtract)
 
 end
 
