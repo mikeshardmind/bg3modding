@@ -478,4 +478,4 @@ function OnStatsLoaded()
 end
 
 -- We want to be after compatability framework
-Ext.Events.StatsLoaded:Subscribe(OnStatsLoaded, {Priority = 200})
+Ext.Events.StatsLoaded:Subscribe(OnStatsLoaded, {Priority = -100})
