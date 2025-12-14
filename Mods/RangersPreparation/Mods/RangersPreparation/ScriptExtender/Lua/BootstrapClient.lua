@@ -92,7 +92,7 @@ local function LoadConfig()
     ret.with_scroll_learning = (ret.with_scroll_learning ~= false)
     ret.rituals_always_prepared = (ret.rituals_always_prepared ~= false)
     local d = Ext.Json.Stringify(ret)
-    Ext.IO.SaveFile("BardicPreparation.json", d)
+    Ext.IO.SaveFile("RangersPreparation.json", d)
     -- Below aren't exposed to users yet.
     ret.using_fullcaster_conversion = false
     return ret
