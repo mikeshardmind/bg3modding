@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="7" revision="1" build="3"/>
+  <region id="SpellLists">
+    <node id="root">
+      <children>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation1"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="1b3954dd-d174-48a4-af90-92850353c40d"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation2"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="4b5566a2-6e58-428e-9437-358b325be5b2"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation3"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="8bb068be-ad2c-43af-b05b-3c852b8e27ed"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation4"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="d559ed43-971b-4ada-a275-1e24da88e8a4"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation5"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="bab76edf-0a72-40e3-ade6-05cb730de263"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation6"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="0c892882-b50c-4ff8-acf0-c744ef17583f"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation7"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="0fbb80cb-8627-4c66-82f6-35fef5c33302"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation8"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="d4a21c92-200c-4c4a-8718-cc5187174fc3"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparation9"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="149e22ee-bf11-4573-bcac-17dbfc086600"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual1"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="6deeb481-a642-4fd3-bea0-206e22061269"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual2"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="81fe9040-49ce-4533-a146-aba430c61be0"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual3"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="e6764b87-46c0-44ac-b3ff-380689da4f76"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual4"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="1b7fbc1d-c2a6-4cde-aa33-8eaa55b02b5f"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual5"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="58597bf1-c5c8-45a9-adbd-4ad2e87b5972"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual6"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="616adde7-0300-4b3b-a750-a47947e68cf7"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual7"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="0729421c-2175-4997-bf54-4b5d6bf2902d"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual8"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="ed772d36-7ac1-4ac8-9ddd-3922bcf86b7e"/>
+        </node>
+        <node id="SpellList">
+          <attribute id="Name" type="FixedString" value="SorcerousPreparationRitual9"/>
+          <attribute id="Spells" type="LSString" value=""/>
+          <attribute id="UUID" type="guid" value="60be2839-8474-484d-a5c8-be5eed598472"/>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>
