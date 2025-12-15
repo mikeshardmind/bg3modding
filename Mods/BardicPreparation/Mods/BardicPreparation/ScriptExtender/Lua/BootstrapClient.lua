@@ -97,6 +97,7 @@ local defaultConfig = {
     rituals_always_prepared = true,
     extend_secrets_lists = true,
     filter_known_from_secrets = true,
+    only_bard_secrets = false,
 }
 
 local function LoadConfigFile()
@@ -120,6 +121,7 @@ local function LoadConfig()
     ret.extend_secrets_lists = (ret.extend_secrets_lists ~= false)
     ret.secrets_always_prepared = (ret.secrets_always_prepared ~= false)
     ret.filter_known_from_secrets = (ret.filter_known_from_secrets ~= false)
+    ret.only_bard_secrets = (ret.only_bard_secrets ~= false)
     local d = Ext.Json.Stringify(ret)
     Ext.IO.SaveFile("BardicPreparation.json", d)
     -- https://www.nexusmods.com/baldursgate3/mods/6770
@@ -134,6 +136,10 @@ end
 
 
 function SetPrepared(config)
+
+    if config.only_bard_secrets then
+        return
+    end
 
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
         local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
@@ -187,13 +193,17 @@ function AlwaysMagicalSecrets(config)
         if ids[pd.TableUUID] ~= nil then
             for _, this_select in ipairs(pd["SelectSpells"]) do
                 if selectors[this_select.SelectorId]  ~= nil then
-                    this_select.PrepareType = always_prepared and "AlwaysPrepared" or "Unknown"
+                    if not config.only_bard_secrets then
+                        this_select.PrepareType = always_prepared and "AlwaysPrepared" or "Unknown"
+                    end
                     table.insert(ret, progguid)
                 end
             end
-            -- Needed for class actions that are technically spells
-            for _, this_select in ipairs(pd["AddSpells"]) do
-                this_select.PrepareType = "AlwaysPrepared"
+            if not config.only_bard_secrets then
+                -- Needed for class actions that are technically spells
+                for _, this_select in ipairs(pd["AddSpells"]) do
+                    this_select.PrepareType = "AlwaysPrepared"
+                end
             end
         end
     end
@@ -336,9 +346,14 @@ function OnStatsLoaded()
     local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
     local to_subtract = use_mystras_with_5e_loaded and known_5e_with_mystras_duplicates or {}
 
-    local prog_data = GetProgressionData()
     local seen_lists = {}
     local seen_spells = {}
+
+    local bard_spell_desc = Ext.StaticData.Get(bard_guid, "ClassDescription")
+    local bard_list = Ext.StaticData.Get(bard_spell_desc.SpellList, "SpellList")
+
+    local prog_data = GetProgressionData()
+
     local our_lists = GetOurLists()
     -- Below is a large scale dynamic rebuilding of progression data.
     -- If it gives a spell selection, and isn't tagged BardMagicalSecrets
@@ -380,46 +395,51 @@ function OnStatsLoaded()
 
         end
 
-        table.sort(to_remove, function (a, b) return a > b end)
-        for _, idx in ipairs(to_remove) do
-            pd["SelectSpells"][idx] = nil
-        end
+        if not config.only_bard_secrets then
+            table.sort(to_remove, function (a, b) return a > b end)
+            for _, idx in ipairs(to_remove) do
+                pd["SelectSpells"][idx] = nil
+            end
 
-        if (lv < 18) and (lv % 2 == 1) then
-            Selector.SpellUUID = Ours[spell_lv]
-            RitualSelector.SpellUUID = OursRitual[spell_lv]
-            pd["AddSpells"][#pd["AddSpells"] + 1] = Selector
-            pd["AddSpells"][#pd["AddSpells"] + 1] = RitualSelector
+            if (lv < 18) and (lv % 2 == 1) then
+                Selector.SpellUUID = Ours[spell_lv]
+                RitualSelector.SpellUUID = OursRitual[spell_lv]
+                pd["AddSpells"][#pd["AddSpells"] + 1] = Selector
+                pd["AddSpells"][#pd["AddSpells"] + 1] = RitualSelector
+            end
         end
-
     end
 
-    for i, data in ipairs(our_lists) do
+    if not config.only_bard_secrets then
+        for i, data in ipairs(our_lists) do
 
-        local prep = {}
-        local ritual = {}
-        for _, spellname in ipairs(data.acc) do
-            local spell = Ext.Stats.Get(spellname)
-            if spell ~= nil then
-                if #spell.SpellContainerID:match("^%s*(.-)%s*$") == 0 then
-                    if config.rituals_always_prepared and #spell.RitualCosts:match("^%s*(.-)%s*$") > 0 then
-                        table.insert(ritual, spellname)
-                    elseif force_ritual[spellname] ~= nil then
-                        table.insert(ritual, spellname)
-                    else
-                        table.insert(prep, spellname)
+            local prep = {}
+            local ritual = {}
+            for _, spellname in ipairs(data.acc) do
+                local spell = Ext.Stats.Get(spellname)
+                if spell ~= nil then
+                    if #spell.SpellContainerID:match("^%s*(.-)%s*$") == 0 then
+                        if config.rituals_always_prepared and #spell.RitualCosts:match("^%s*(.-)%s*$") > 0 then
+                            table.insert(ritual, spellname)
+                        elseif force_ritual[spellname] ~= nil then
+                            table.insert(ritual, spellname)
+                        else
+                            table.insert(prep, spellname)
+                        end
                     end
                 end
             end
-        end
 
-        ritual = subtract_setlists(ritual, to_subtract)
-        data.List.Spells = subtract_setlists(prep, to_subtract)
-        if #ritual > 0 then
-            local ritual_list = Ext.StaticData.Get(OursRitual[i], "SpellList")
-            ritual_list.Spells = ritual
+            ritual = subtract_setlists(ritual, to_subtract)
+            data.List.Spells = subtract_setlists(prep, to_subtract)
+            if #ritual > 0 then
+                local ritual_list = Ext.StaticData.Get(OursRitual[i], "SpellList")
+                ritual_list.Spells = ritual
+            end
         end
     end
+
+
 
     for _, progguid in ipairs(has_secrets) do
         local pd = Ext.StaticData.Get(progguid, "Progression")
@@ -465,9 +485,9 @@ function OnStatsLoaded()
         end
     end
 
-    local bard_spell_desc = Ext.StaticData.Get(bard_guid, "ClassDescription")
-    local bard_list = Ext.StaticData.Get(bard_spell_desc.SpellList, "SpellList")
-    bard_list.Spells = subtract_setlists(seen_spells, to_subtract)
+    if not config.only_bard_secrets then
+        bard_list.Spells = subtract_setlists(seen_spells, to_subtract)
+    end
 
 end
 
