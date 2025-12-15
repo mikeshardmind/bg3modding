@@ -87,6 +87,10 @@ local never_include_as_secrets = {
     "Shout_ShadowBlade_Spell",
 }
 
+local force_ritual = {
+    ["Shout_Glibness"] = true
+}
+
 local defaultConfig = {
     enabled = true,
     with_scroll_learning = false,
@@ -118,6 +122,10 @@ local function LoadConfig()
     ret.filter_known_from_secrets = (ret.filter_known_from_secrets ~= false)
     local d = Ext.Json.Stringify(ret)
     Ext.IO.SaveFile("BardicPreparation.json", d)
+    -- https://www.nexusmods.com/baldursgate3/mods/6770
+    -- Xara's Remove Spell Preparation Mod.
+    -- We get run after that mod, lets respect user choices here.
+    ret.disable_prep_requirement = Ext.Mod.IsModLoaded("0e8d791a-8338-4aeb-adf0-cd5e68151107")
     -- Below aren't exposed to users yet, maybe ever
     ret.secret_selectors = {["BardMagicalSecrets"] = true}
     return ret
@@ -125,14 +133,15 @@ local function LoadConfig()
 end
 
 
-function SetPrepared(with_scroll_learning)
+function SetPrepared(config)
+
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
         local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
         if resourceGuid == bard_guid then
-            desc.MustPrepareSpells = true
-            desc.CanLearnSpells = with_scroll_learning
+            desc.MustPrepareSpells = not config.disable_prep_requirement
+            desc.CanLearnSpells = config.with_scroll_learning
         elseif desc.ParentGuid == bard_guid then
-            desc.CanLearnSpells = with_scroll_learning
+            desc.CanLearnSpells = config.with_scroll_learning
         end
     end
 end
@@ -160,7 +169,9 @@ function GetOurLists()
     return t
 end
 
-function AlwaysMagicalSecrets(selectors, always_prepared)
+function AlwaysMagicalSecrets(config)
+    local selectors = config.secret_selectors
+    local always_prepared = config.secrets_always_prepared
     local ret = {}
 
     local ids = {}
@@ -318,9 +329,9 @@ function OnStatsLoaded()
 
     local secrets_selectors = config.secret_selectors
 
-    SetPrepared(config.with_scroll_learning)
+    SetPrepared(config)
 
-    local has_secrets = AlwaysMagicalSecrets(secrets_selectors, config.secrets_always_prepared)
+    local has_secrets = AlwaysMagicalSecrets(config)
     local all_secret_spells = config.extend_secrets_lists and GetAllValidSecrets(config) or {}
     local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
     local to_subtract = use_mystras_with_5e_loaded and known_5e_with_mystras_duplicates or {}
@@ -392,6 +403,8 @@ function OnStatsLoaded()
             if spell ~= nil then
                 if #spell.SpellContainerID:match("^%s*(.-)%s*$") == 0 then
                     if config.rituals_always_prepared and #spell.RitualCosts:match("^%s*(.-)%s*$") > 0 then
+                        table.insert(ritual, spellname)
+                    elseif force_ritual[spellname] ~= nil then
                         table.insert(ritual, spellname)
                     else
                         table.insert(prep, spellname)

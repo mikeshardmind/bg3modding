@@ -72,13 +72,16 @@ local function LoadConfig()
     ret.rituals_always_prepared = (ret.rituals_always_prepared ~= false)
     local d = Ext.Json.Stringify(ret)
     Ext.IO.SaveFile("SorcerousPreparation.json", d)
+    -- https://www.nexusmods.com/baldursgate3/mods/6770
+    -- Xara's Remove Spell Preparation Mod.
+    -- We get run after that mod, lets respect user choices here.
+    ret.disable_prep_requirement = Ext.Mod.IsModLoaded("0e8d791a-8338-4aeb-adf0-cd5e68151107")
     return ret
 
 end
 
 
 local function ModifyDescriptionsAndCollectProgressions(config)
-    local with_scroll_learning = config.with_scroll_learning
     local ret = {}
 
     local class_prog_table_ids = {}
@@ -88,12 +91,12 @@ local function ModifyDescriptionsAndCollectProgressions(config)
         local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
         if desc.ParentGuid == sorc_guid then
             subclass_prog_table_ids[desc.ProgressionTableUUID] = true
-            desc.CanLearnSpells = with_scroll_learning
+            desc.CanLearnSpells = config.with_scroll_learning
         end
         if resourceGuid == sorc_guid then
             class_prog_table_ids[desc.ProgressionTableUUID] = true
-            desc.MustPrepareSpells = true
-            desc.CanLearnSpells = with_scroll_learning
+            desc.MustPrepareSpells = config.disable_prep_requirement
+            desc.CanLearnSpells = config.with_scroll_learning
         end
     end
 
