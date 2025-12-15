@@ -7,6 +7,7 @@ NOT DB_mikeshardmind_Illy_StartingExperience((CHARACTER)NULL_00000000-0000-0000-
 NOT DB_mikeshardmind_Illy_StartingEquip((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
 NOT DB_mikeshardmind_Illy_HostItems((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
 
+KBSECTION
 
 IF
 LevelGameplayReady(_Level, _IsEditor)
