@@ -5,9 +5,21 @@ INITSECTION
 
 NOT DB_mikeshardmind_Illy_StartingExperience((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
 NOT DB_mikeshardmind_Illy_StartingEquip((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
-NOT DB_mikeshardmind_Illy_HostItems((CHARACTER)NULL_00000000-0000-0000-0000-000000000000);
+NOT DB_mikeshardmind_Illy_HostItems((ITEMROOT)NULL_00000000-0000-0000-0000-000000000000);
 
 KBSECTION
+
+IF
+LevelGameplayReady(_Level, _IsEditor)
+AND
+_Level == "TUT_Avernus_C"
+AND
+DB_Avatars(_Character)
+AND
+NOT DB_mikeshardmind_Illy_StartingExperience(_Character)
+THEN
+AddExplorationExperience(_Character, 750);
+DB_mikeshardmind_Illy_StartingExperience(_Character);
 
 IF
 LevelGameplayReady(_Level, _IsEditor)
@@ -16,10 +28,10 @@ _Level != "SYS_CC_I"
 AND
 GetHostCharacter(_Host)
 AND
-NOT DB_mikeshardmind_Illy_HostItems(_Host)
+NOT DB_mikeshardmind_Illy_HostItems(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d)
 THEN
 TemplateAddTo(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d, _Host, 1, 0);
-DB_mikeshardmind_Illy_HostItems(_Host);
+DB_mikeshardmind_Illy_HostItems(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d);
 
 IF
 LevelGameplayReady(_Level, _IsEditor)

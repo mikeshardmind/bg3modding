@@ -95,7 +95,7 @@ local function ModifyDescriptionsAndCollectProgressions(config)
         end
         if resourceGuid == sorc_guid then
             class_prog_table_ids[desc.ProgressionTableUUID] = true
-            desc.MustPrepareSpells = config.disable_prep_requirement
+            desc.MustPrepareSpells = not config.disable_prep_requirement
             desc.CanLearnSpells = config.with_scroll_learning
         end
     end
