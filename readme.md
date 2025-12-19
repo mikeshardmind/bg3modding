@@ -270,3 +270,6 @@ exp_cfg_keys = {f"Level{i}": v for i, v in enumerate(tdm_per_lv, 1)}
 ```
 
 [^1]: If you're looking to donate to a good cause that I'd support, I personally donate to [MSF (AKA Doctors Without Borders)](https://www.msf.org)
+
+
+local s = CreateAtObject("d486ac69-be44-4be3-b1ed-f0e14d21be11",GetHostCharacter(),1,1,"",1); SetImmortal(s,1);

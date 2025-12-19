@@ -5,10 +5,10 @@
     <node id="root">
       <children>
         <node id="ProgressionDescription">
-          <attribute id="Description" type="TranslatedString" handle="TODO" version="1" />
-          <attribute id="DisplayName" type="TranslatedString" handle="TODO" version="1" />
-          <attribute id="SelectorId" type="FixedString" value="BonusCantrip" />
-          <attribute id="UUID" type="guid" value="TODO" />
+          <attribute id="Description" type="TranslatedString" handle="" version="1" />
+          <attribute id="DisplayName" type="TranslatedString" handle="" version="1" />
+          <attribute id="SelectorId" type="FixedString" value="CollegeOfWands" />
+          <attribute id="UUID" type="guid" value="1344384e-44f7-4dc6-a383-590c5ab2d2a4" />
         </node>
       </children>
     </node>

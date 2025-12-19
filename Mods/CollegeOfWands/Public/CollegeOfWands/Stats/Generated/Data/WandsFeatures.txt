@@ -1,18 +1,14 @@
 
 new entry "mikeshardmind_AtYourFingertips"
 type "PassiveData"
-data "DisplayName" "todo;1"
-data "Description" "todo;1"
+
 data "Icon" "PassiveFeature_BardicInspiration_Attack"
 data "Properties" "IsHidden"
 data "Boosts" "UnlockInterrupt(mikeshardmind_AtYourFingertips_Interrupt)"
 
 new entry "mikeshardmind_AtYourFingertips_Interrupt"
 type "InterruptData"
-data "DisplayName" "todo;1"
-data "Description" "todo;1"
-data "DescriptionParams" "todo"
-data "ExtraDescription" "todo;1"
+
 data "Icon" "PassiveFeature_BardicInspiration_Attack"
 data "InterruptContext" "OnCastHit"
 data "InterruptContextScope" "Self"
@@ -24,13 +20,11 @@ data "InterruptDefaultValue" "Ask;Enabled"
 data "EnableCondition" "HasActionResource('BardicInspiration',1,0,false,false,context.Source) and (not HasStatus('SG_Polymorph') or HasAnyStatus({'SG_Disguise','WILDSHAPE_STARRY_ARCHER_PLAYER','WILDSHAPE_STARRY_CHALICE_PLAYER','WILDSHAPE_STARRY_DRAGON_PLAYER'}))"
 data "EnableContext" "OnActionResourcesChanged;OnStatusApplied;OnStatusRemoved"
 data "InterruptFlags" "InterruptWhileInvisible"
-data "Properties" "DealDamage(LevelMapValue(CollegeOfWands_AYF), context.HitDescription.MainDamageType, Magical)"
-
+data "Properties" "IF:ILYDT1():DealDamage(2d6, 1, Magical);IF:ILYDT2():DealDamage(2d6, 2, Magical);IF:ILYDT3():DealDamage(2d6, 3, Magical);IF:ILYDT4():DealDamage(2d6, 4, Magical);IF:ILYDT5():DealDamage(2d6, 5, Magical);IF:ILYDT6():DealDamage(2d6, 6, Magical);IF:ILYDT7():DealDamage(2d6, 7, Magical);IF:ILYDT8():DealDamage(2d6, 8, Magical);IF:ILYDT9():DealDamage(2d6, 9, Magical);IF:ILYDT10():DealDamage(2d6, 10, Magical);IF:ILYDT11():DealDamage(2d6, 11, Magical);IF:ILYDT12():DealDamage(2d6, 12, Magical);IF:ILYDT13():DealDamage(2d6, 13, Magical)"
+// LevelMapValue doesn't work here.... fix something up later
 
 new entry "mikeshardmind_WandslingersPresence"
 type "PassiveData"
-data "DisplayName" "todo;1"
-data "Description" "todo;1"
 data "Icon" "PassiveFeature_BardicInspiration_Attack"
 data "Properties" "IsHidden;OncePerCombat"
 data "Boosts" "Initiative(3)"
