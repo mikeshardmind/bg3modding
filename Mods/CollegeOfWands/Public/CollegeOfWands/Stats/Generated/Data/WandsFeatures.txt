@@ -1,14 +1,12 @@
 
 new entry "mikeshardmind_AtYourFingertips"
 type "PassiveData"
-
 data "Icon" "PassiveFeature_BardicInspiration_Attack"
 data "Properties" "IsHidden"
 data "Boosts" "UnlockInterrupt(mikeshardmind_AtYourFingertips_Interrupt)"
 
 new entry "mikeshardmind_AtYourFingertips_Interrupt"
 type "InterruptData"
-
 data "Icon" "PassiveFeature_BardicInspiration_Attack"
 data "InterruptContext" "OnCastHit"
 data "InterruptContextScope" "Self"
@@ -17,11 +15,11 @@ data "Conditions" "not Dead(context.Observer) and Character() and IsCantrip() an
 data "Cost" "BardicInspiration:1"
 data "Stack" "BardicInspiration"
 data "InterruptDefaultValue" "Ask;Enabled"
-data "EnableCondition" "HasActionResource('BardicInspiration',1,0,false,false,context.Source) and (not HasStatus('SG_Polymorph') or HasAnyStatus({'SG_Disguise','WILDSHAPE_STARRY_ARCHER_PLAYER','WILDSHAPE_STARRY_CHALICE_PLAYER','WILDSHAPE_STARRY_DRAGON_PLAYER'}))"
+data "EnableCondition" "HasActionResource('BardicInspiration',1,0,false,false,context.Source)"
 data "EnableContext" "OnActionResourcesChanged;OnStatusApplied;OnStatusRemoved"
 data "InterruptFlags" "InterruptWhileInvisible"
-data "Properties" "IF:ILYDT1():DealDamage(2d6, 1, Magical);IF:ILYDT2():DealDamage(2d6, 2, Magical);IF:ILYDT3():DealDamage(2d6, 3, Magical);IF:ILYDT4():DealDamage(2d6, 4, Magical);IF:ILYDT5():DealDamage(2d6, 5, Magical);IF:ILYDT6():DealDamage(2d6, 6, Magical);IF:ILYDT7():DealDamage(2d6, 7, Magical);IF:ILYDT8():DealDamage(2d6, 8, Magical);IF:ILYDT9():DealDamage(2d6, 9, Magical);IF:ILYDT10():DealDamage(2d6, 10, Magical);IF:ILYDT11():DealDamage(2d6, 11, Magical);IF:ILYDT12():DealDamage(2d6, 12, Magical);IF:ILYDT13():DealDamage(2d6, 13, Magical)"
-// LevelMapValue doesn't work here.... fix something up later
+data "Properties" "IF(ILYDT1()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Slashing, Magical);IF(ILYDT2()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Piercing, Magical);IF(ILYDT3()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Bludgeoning, Magical);IF(ILYDT4()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Acid, Magical);IF(ILYDT5()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Thunder, Magical);IF(ILYDT6()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Necrotic, Magical);IF(ILYDT7()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Fire, Magical);IF(ILYDT8()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Lightning, Magical);IF(ILYDT9()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Cold, Magical);IF(ILYDT10()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Psychic, Magical);IF(ILYDT11()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Poison, Magical);IF(ILYDT12()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Radiant, Magical);IF(ILYDT13()):DealDamage(LevelMapValue(CollegeOfWands_AYF), Force, Magical)"
+// LevelMapValue isn't working, check why later
 
 new entry "mikeshardmind_WandslingersPresence"
 type "PassiveData"
