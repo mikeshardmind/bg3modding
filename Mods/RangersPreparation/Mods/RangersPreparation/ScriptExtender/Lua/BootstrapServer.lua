@@ -1,7 +1,4 @@
-require("datadumper.lua")
-require("ListSort.lua")
-
-
+require("ListMod.lua")
 
 local function on_swap_level(event)
 	if event.FromState == "LoadLevel" and event.ToState == "SwapLevel" then
@@ -9,6 +6,5 @@ local function on_swap_level(event)
 	end
 end
 
-Ext.Events.StatsLoaded:Subscribe(ModifyLists, {Priority = -200})
 Ext.Events.GameStateChanged:Subscribe(on_swap_level, {Priority = -200})
 Ext.Events.ResetCompleted:Subscribe(ModifyLists, {Priority = -200})
