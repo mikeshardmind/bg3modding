@@ -205,12 +205,25 @@ local function subtract_setlists(l1, l2)
 end
 
 
+local CachedLeveledLists = nil
+
+
 function ModifyLists()
 
     local config = LoadConfig()
     if config.enabled ~= true then
         return
     end
+
+    if CachedLeveledLists ~= nil then
+        for guid, cached_list in pairs(CachedLeveledLists) do
+            local spell_list = Ext.StaticData.Get(guid, "SpellList")
+            spell_list.Spells = cached_list
+        end
+        return
+    end
+
+    local workingcache = {}
 
     local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
 
@@ -303,12 +316,14 @@ function ModifyLists()
         if #prep > 0 then
             local prep_list = Ext.StaticData.Get(Ours[i], "SpellList")
             prep_list.Spells = prep
+            workingcache[Ours[i]] = prep
         end
 
         if #ritual > 0 then
             local ritual_list = Ext.StaticData.Get(OursRitual[i], "SpellList")
             ritual_list.Spells = ritual
+            workingcache[OursRitual[i]] = ritual
         end
     end
-
+    CachedLeveledLists = workingcache
 end
