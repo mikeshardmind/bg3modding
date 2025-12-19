@@ -12,14 +12,7 @@
           <attribute id="UUID" type="guid" value="da27c2d9-64fc-4c5c-a49b-c318e1cfcf15"/>
         </node>
         <node id="DefaultValue">
-          <attribute id="Add" type="LSString" value="Target_CureWounds;Target_DissonantWhispers;Target_HealingWord;Target_Longstrider"/>
-          <attribute id="Level" type="int32" value="1"/>
-          <attribute id="SelectorId" type="LSString" value="BardSpells"/>
-          <attribute id="TableUUID" type="guid" value="229c98da-2cd1-4a5e-8051-9d90ec7931e7"/>
-          <attribute id="UUID" type="guid" value="da6f4c28-e457-4fc1-ab56-8ab414d09a80"/>
-        </node>
-        <node id="DefaultValue">
-          <attribute id="Add" type="LSString" value="Target_Guidance;Target_Resistance;Target_TollTheDead"/>
+          <attribute id="Add" type="LSString" value="Target_Guidance;Target_Resistance;Target_SacredFlame"/>
           <attribute id="Level" type="int32" value="1"/>
           <attribute id="TableUUID" type="guid" value="64474b62-b4f5-46b3-b94a-c676c6da3116"/>
           <attribute id="UUID" type="guid" value="815c9bd6-538a-4460-8b9e-c94384a438ed"/>
