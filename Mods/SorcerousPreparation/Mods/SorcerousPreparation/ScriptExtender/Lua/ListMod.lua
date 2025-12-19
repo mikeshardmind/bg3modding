@@ -251,8 +251,10 @@ function ModifyLists()
 
     local sorc_desc = Ext.StaticData.Get(sorc_guid, "ClassDescription")
     local sorc_list = Ext.StaticData.Get(sorc_desc.SpellList, "SpellList")
+    local total_list = subtract_setlists(seen_sorc_spells, to_subtract)
 
-    sorc_list.Spells = subtract_setlists(seen_sorc_spells, to_subtract)
+    sorc_list.Spells = total_list
+    workingcache[sorc_desc.SpellList] = total_list
 
     local leveled_lists = {
         [1] = {["prep"] = {}, ["ritual"] = {}},

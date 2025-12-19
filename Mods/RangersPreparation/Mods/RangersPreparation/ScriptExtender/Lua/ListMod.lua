@@ -283,8 +283,10 @@ function ModifyLists()
 
     local ranger_desc = Ext.StaticData.Get(ranger_guid, "ClassDescription")
     local ranger_list = Ext.StaticData.Get(ranger_desc.SpellList, "SpellList")
+    local total_list = subtract_setlists(seen_ranger_spells, to_subtract)
 
-    ranger_list.Spells = subtract_setlists(seen_ranger_spells, to_subtract)
+    ranger_list.Spells = total_list
+    workingcache[ranger_desc.SpellList] = total_list
 
     local leveled_lists = {
         [1] = {["prep"] = {}, ["ritual"] = {}},
