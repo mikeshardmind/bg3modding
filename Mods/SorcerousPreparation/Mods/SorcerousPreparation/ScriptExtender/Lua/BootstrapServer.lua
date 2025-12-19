@@ -1,7 +1,7 @@
-require("ListMod.lua")
+Ext.Require("ListMod.lua")
 
 local function on_swap_level(event)
-	if event.FromState == "LoadLevel" and event.ToState == "SwapLevel" then
+	if event.FromState == "LoadSession" and event.ToState == "LoadLevel" then
 		ModifyLists()
 	end
 end

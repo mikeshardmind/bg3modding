@@ -330,26 +330,12 @@ function GetAllValidSecrets(config)
 
 end
 
-
-local CachedLeveledLists = nil
-
 function ModifyLists()
 
     local config = LoadConfig()
     if config.enabled ~= true then
         return
     end
-
-    if CachedLeveledLists ~= nil then
-        for guid, cached_list in pairs(CachedLeveledLists) do
-            local spell_list = Ext.StaticData.Get(guid, "SpellList")
-            spell_list.Spells = cached_list
-        end
-        return
-    end
-
-    local workingcache = {}
-
 
     local secrets_selectors = config.secret_selectors
 
@@ -447,11 +433,9 @@ function ModifyLists()
             ritual = subtract_setlists(ritual, to_subtract)
             prep = subtract_setlists(prep, to_subtract)
             data.List.Spells = prep
-            workingcache[Ours[i]] = prep
             if #ritual > 0 then
                 local ritual_list = Ext.StaticData.Get(OursRitual[i], "SpellList")
                 ritual_list.Spells = ritual
-                workingcache[OursRitual[i]] = ritual
             end
         end
     end
@@ -497,7 +481,6 @@ function ModifyLists()
 
                     local secr_list = subtract_setlists(working_list, to_subtract)
                     spell_list.Spells = secr_list
-                    workingcache[this_select.SpellUUID] = secr_list
                     end
                 end
             end
@@ -507,9 +490,5 @@ function ModifyLists()
     if not config.only_bard_secrets then
         local total_list = subtract_setlists(seen_spells, to_subtract)
         bard_list.Spells = total_list
-        workingcache[bard_spell_desc.SpellList] = total_list
     end
-
-    CachedLeveledLists = workingcache
-
 end

@@ -212,7 +212,7 @@
           <attribute id="Intelligence" type="int32" value="10" />
           <attribute id="Strength" type="int32" value="8" />
           <attribute id="UUID" type="guid" value="567de48e-b40a-4e6f-9d21-4404f8e3ee4e" />
-          <attribute id="Wisdom" type="int32" value="14" />
+          <attribute id="Wisdom" type="int32" value="15" />
         </node>
         <node id="AbilityDistributionPreset">
           <attribute id="Charisma" type="int32" value="14" />
