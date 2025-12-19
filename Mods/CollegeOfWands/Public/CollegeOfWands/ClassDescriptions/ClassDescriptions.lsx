@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+  <version major="4" minor="0" revision="0" build="0" />
+  <region id="ClassDescriptions">
+    <node id="root">
+      <children>
+        <node id="ClassDescription">
+          <attribute id="CharacterCreationPose" type="guid" value="0f07ec6e-4ef0-434e-9a51-1353260ccff8" />
+          <attribute id="Description" type="TranslatedString" handle="TODO" version="1" />
+          <attribute id="DisplayName" type="TranslatedString" handle="TODO" version="1" />
+          <attribute id="LearningStrategy" type="uint8" value="1" />
+          <attribute id="Name" type="FixedString" value="CollegeOfWands" />
+          <attribute id="ParentGuid" type="guid" value="92cd50b6-eb1b-4824-8adb-853e90c34c90" />
+          <attribute id="PrimaryAbility" type="uint8" value="6" />
+          <attribute id="ProgressionTableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
+          <attribute id="SoundClassType" type="FixedString" value="Bard" />
+          <attribute id="SpellCastingAbility" type="uint8" value="6" />
+          <attribute id="SpellList" type="guid" value="c98f2011-31e1-4e9a-8061-62c8679c645e" />
+          <attribute id="UUID" type="guid" value="563d9b5c-1c61-421a-a4e6-25548ec900a6" />
+          <children>
+            <node id="Tags">
+              <attribute id="Object" type="guid" value="591fbad3-9fe4-4943-9849-5817d408b5c2" />
+            </node>
+          </children>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>

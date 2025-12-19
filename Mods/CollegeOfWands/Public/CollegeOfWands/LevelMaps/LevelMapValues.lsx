@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="0" revision="8" build="612"/>
+  <region id="LevelMapValues">
+    <node id="root">
+      <children>
+        <node id="LevelMapSeries">
+          <attribute id="Level1" type="LSString" value="2d6"/>
+          <attribute id="Level5" type="LSString" value="3d6"/>
+          <attribute id="Level10" type="LSString" value="5d6"/>
+          <attribute id="Level15" type="LSString" value="8d6"/>
+          <attribute id="Name" type="FixedString" value="CollegeOfWands_AYF"/>
+          <attribute id="UUID" type="guid" value="0b520329-068a-4e9d-958a-591ba52e070a"/>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>
