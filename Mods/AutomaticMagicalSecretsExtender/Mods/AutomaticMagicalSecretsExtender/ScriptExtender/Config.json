@@ -1,5 +1,5 @@
 {
     "RequiredVersion": 29,
-    "ModTable": "AMSE",
+    "ModTable": "AutomaticMagicalSecretsExtender",
     "FeatureFlags": ["Lua"]
 }

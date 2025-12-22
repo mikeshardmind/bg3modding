@@ -43,24 +43,79 @@ local never_include_as_secrets = {
     ["Shout_ShadowBlade_Spell"] = true,
 }
 
+local sortv_cache = {}
+local spell_list_cache = {}
 
-function GetProgressionData()
-    local desc = Ext.StaticData.Get(bard_guid, "ClassDescription")
-    local data = {}
-
-    for _, progguid in pairs(Ext.StaticData.GetAll("Progression")) do
-        local pd = Ext.StaticData.Get(progguid, "Progression")
-        if pd.TableUUID == desc.ProgressionTableUUID then
-            table.insert(data, {["Lv"] = pd.Level, ["uu"] = progguid, ["prog"] = pd})
-        end
+local function generate_sort_key_for_spell(spell_name, spell)
+    if sortv_cache[spell_name] ~= nil then
+        return true
     end
 
-    table.sort(data, function(a, b) return a.Lv < b.Lv end)
-    return data
+    local ok, modlistype = pcall(function() return spell.ModifierList end)
+
+    if not ok or type(modlistype) ~= "string" or modlistype ~= "SpellData" then
+        Ext.Utils.PrintWarning("Ignoring broken spell entry: " .. spell_name)
+        return false
+    end
+
+    local translated_name = Ext.Loca.GetTranslatedString(spell.DisplayName)
+    local sort_name = (translated_name or "") .. spell_name
+
+    sortv_cache[spell_name] = {["Level"] = spell.Level, ["Name"] = sort_name}
+    return true
+end
+
+local function sort_func(a, b)
+
+    local lhs = sortv_cache[a]
+    local rhs = sortv_cache[b]
+
+    if lhs.Level ~= rhs.Level then
+        return lhs.Level > rhs.Level
+    end
+    return lhs.Name < rhs.Name
+end
+
+local function SortSpellWorkingList(working_list)
+    local ret = {}
+    for spell_name, spell_object in pairs(working_list) do
+        if generate_sort_key_for_spell(spell_name, spell_object) then
+            table.insert(ret, spell_name)
+        end
+    end
+    table.sort(ret, sort_func)
+    return ret
+
+end
+
+local function SortSpellList(spell_list, guid)
+    if spell_list_cache[guid] ~= nil then
+        if spell_list ~= nil then
+            spell_list.Spells = spell_list_cache[guid]
+        end
+    else
+        local checked_names = {}
+        local working_list = {}
+        if spell_list ~= nil then
+            for _, spell_name in pairs(spell_list.Spells) do
+                if checked_names[spell_name] == nil then
+                    local spell = Ext.Stats.Get(spell_name)
+                    if spell ~= nil then
+                        working_list[spell_name] = spell
+                    end
+                end
+                checked_names[spell_name] = true
+            end
+        end
+        local sorted = SortSpellWorkingList(working_list)
+        spell_list_cache[guid] = sorted
+        spell_list.Spells = sorted
+    end
 end
 
 
-function AlwaysMagicalSecrets()
+
+local function MagicalSecretsProgressions()
 
     local ret = {}
     local ids = {}
@@ -110,7 +165,7 @@ local function subtract_setlists(l1, l2)
 end
 
 
-function GetAllValidSecrets()
+local function GetAllValidSecrets()
 
     local all_spells = {
         [0] = {},
@@ -133,6 +188,7 @@ function GetAllValidSecrets()
         ["784001e2-c96d-4153-beb6-2adbef5abc92"] = true, -- sorc
         ["b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"] = true, -- lock
         ["a865965f-501b-46e9-9eaa-7748e8c04d09"] = true, -- wiz
+        ["92cd50b6-eb1b-4824-8adb-853e90c34c90"] = true, -- bard (because it is valid to double dip)
     }
     local warlock_guid = "b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"
 
@@ -206,9 +262,7 @@ end
 
 function ModifyLists()
 
-    SetPrepared()
-
-    local has_secrets = AlwaysMagicalSecrets()
+    local has_secrets = MagicalSecretsProgressions()
     local all_secret_spells = GetAllValidSecrets()
     local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
     local to_subtract = never_include_as_secrets
@@ -219,46 +273,7 @@ function ModifyLists()
         end
     end
 
-    local seen_lists = {}
     local seen_spells = {}
-
-    local prog_data = GetProgressionData()
-    local our_lists = GetOurLists()
-
-
-    for _, data in ipairs(prog_data) do
-
-        local lv = data.Lv
-        local spell_lv = (lv > 17) and 9 or ((lv + 1) // 2)
-        local our_acc = our_lists[spell_lv].acc
-
-        local to_remove = {}
-
-        for idx, this_select in ipairs(data.prog["SelectSpells"]) do
-            if magical_secrets_select[this_select.SelectorId] == nil then
-                table.insert(to_remove, idx)
-
-                if seen_lists[this_select.SpellUUID] == nil then
-                    local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
-                    if spell_list ~= nil then
-                        for _, spell in pairs(spell_list.Spells) do
-
-                            if seen_spells[spell] == nil then
-                                table.insert(our_acc, spell)
-                            end
-                            seen_spells[spell] = true
-
-                        end
-                    end
-
-                end
-                seen_lists[this_select.SpellUUID] = true
-
-            end
-
-        end
-
-    end
 
     for _, progguid in ipairs(has_secrets) do
         local pd = Ext.StaticData.Get(progguid, "Progression")
@@ -292,6 +307,7 @@ function ModifyLists()
 
                     working_list = subtract_setlists(working_list, seen_spells)
                     spell_list.Spells = subtract_setlists(working_list, to_subtract)
+                    SortSpellList(spell_list, this_select.SpellUUID)
                     end
                 end
             end
