@@ -1,0 +1,15 @@
+{
+    "Lua.diagnostics.libraryFiles": "Disable",
+    "Lua.diagnostics.workspaceRate": 25,
+    "Lua.diagnostics.workspaceDelay": 5000,
+    "Lua.workspace.preloadFileSize": 10000,
+    "Lua.diagnostics.globals": [
+        "Osi",
+        "Ext"
+    ],
+    "Lua.diagnostics.disable": ["duplicate-doc-field"],
+    "Lua.workspace.ignoreDir": [
+        ".vscode",
+        "IllyMetaPatches/Mods/ManyMoreMonsters/**"
+    ]
+}
