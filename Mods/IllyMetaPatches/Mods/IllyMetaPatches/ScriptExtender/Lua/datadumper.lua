@@ -24,12 +24,12 @@ local function dump_name(name)
         local default = Ext.StaticData.Get(resource_id, name)
         data[resource_id] = Ext.Json.Parse(Ext.DumpExport(default))
     end
-    Ext.IO.SaveFile("StaticDataDump/" ~ name ~ ".json", Ext.Json.Stringify(data))
+    Ext.IO.SaveFile("StaticDataDump/" .. name .. ".json", Ext.Json.Stringify(data))
 end
 
 function Dump_interesting_static_data(_, name)
 
-    if name ~- nil then
+    if name ~= nil then
         dump_name(name)
     else
         for _, name in ipairs(Static_data_names) do
