@@ -1,0 +1,9 @@
+
+new entry "Target_TollTheDead"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_TollTheDead"
+data "SpellSuccess" "IF(not HasHPPercentageEqualOrLessThan(99,context.Target)):DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Necrotic,Magical);IF(HasHPPercentageEqualOrLessThan(99,context.Target)):DealDamage(LevelMapValue(YASRM_D10Cantrip)+2,Necrotic,Magical)"
+data "SpellFail" "IF(not HasHPPercentageEqualOrLessThan(99,context.Target) and HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D8Cantrip)+2)/2,Necrotic,Magical);IF(HasHPPercentageEqualOrLessThan(99,context.Target) and HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D10Cantrip)+2)/2,Necrotic,Magical);IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0);"
+data "DescriptionParams" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Necrotic)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D10Cantrip)+2,Necrotic)"

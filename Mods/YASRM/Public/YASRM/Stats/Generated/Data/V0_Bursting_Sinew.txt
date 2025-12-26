@@ -1,0 +1,7 @@
+new entry "Target_BurstingSinew"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_BurstingSinew"
+data "SpellSuccess" "TARGET:AOE:IF(not Dead()):DealDamage(LevelMapValue(YASRM_D10Cantrip)+2,Piercing)"
+data "SpellFail" "TARGET:AOE:IF(not Dead() and HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D10Cantrip)+2)/2,Piercing)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D10Cantrip)+2,Piercing)"

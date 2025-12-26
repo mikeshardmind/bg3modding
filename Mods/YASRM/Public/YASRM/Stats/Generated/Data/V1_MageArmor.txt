@@ -1,0 +1,27 @@
+new entry "Target_MageArmor"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_MageArmor"
+data "RitualCosts" "ActionPoint:1"
+data "TargetConditions" "Self() and not Enemy() and not WearingArmor()"
+
+
+new entry "MAGE_ARMOR"
+type "StatusData"
+data "StatusType" "BOOST"
+using "MAGE_ARMOR"
+data "OnRemoveFunctors" "ApplyStatus(MAGE_ARMOR_DISABLED_BY_EQUIP,100,-1)"
+
+
+new entry "MAGE_ARMOR_DISABLED_BY_EQUIP"
+type "StatusData"
+data "StatusType" "BOOST"
+data "DisplayName" "h74b3edccgff4ag49d2gbea5gc73bdb9968c4;1"
+data "Description" "h7a8b84e9gb5c9g4298g87dfgdb5c8804bbb8;1"
+data "Icon" "PassiveFeature_LightlyArmored"
+data "StackId" "MAGE_ARMOR"
+data "StackType" "Overwrite"
+data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog"
+data "RemoveEvents" "OnUnequip;OnTurn"
+data "RemoveConditions" "not WearingArmor()"
+data "OnRemoveFunctors" "ApplyStatus(MAGE_ARMOR,100,-1)"
