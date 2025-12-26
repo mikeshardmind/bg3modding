@@ -18,8 +18,17 @@ DB_Avatars(_Character)
 AND
 NOT DB_mikeshardmind_Illy_StartingExperience(_Character)
 THEN
-AddExplorationExperience(_Character, 750);
+AddExplorationExperience(_Character, 5);
 DB_mikeshardmind_Illy_StartingExperience(_Character);
+
+IF
+LevelGameplayReady(_Level, _IsEditor)
+AND
+_Level == "TUT_Avernus_C"
+AND
+DB_Avatars(_Character)
+THEN
+ApplyStatus(_Character, "MAGE_ARMOR", -1);
 
 IF
 LevelGameplayReady(_Level, _IsEditor)
@@ -30,7 +39,7 @@ GetHostCharacter(_Host)
 AND
 NOT DB_mikeshardmind_Illy_HostItems(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d)
 THEN
-TemplateAddTo(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d, _Host, 1, 0);
+TemplateAddTo(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d, _Host, 0, 0);
 DB_mikeshardmind_Illy_HostItems(MARCELINES_BASS_AXE_INSTRUMENT_d24c9169-401f-414f-ba88-45b9fd34797d);
 
 IF
@@ -43,11 +52,11 @@ AND
 NOT DB_mikeshardmind_Illy_StartingEquip(_Character)
 THEN
 TemplateAddTo(WPN_HUM_Shield_A_0_d2af60ea-1b72-4d25-a188-6d8bc4fe255b, _Character, 1, 0);
-TemplateAddTo(WPN_HUM_Shortsword_A_0_467ddb4f-6791-41fa-99f7-ee8620d63bbe, _Character, 1, 0);
+TemplateAddTo(WPN_HUM_Shortsword_A_0_467ddb4f-6791-41fa-99f7-ee8620d63bbe, _Character, 2, 0);
 TemplateAddTo(WPN_HUM_Spear_A_0_9f0f1c0e-012d-44e1-9b29-86c64d2bf675, _Character, 1, 0);
 TemplateAddTo(WPN_HUM_LightCrossbow_A_0_43b7fbf5-7f6e-4e9e-bce7-c679eea44593, _Character, 1, 0);
-TemplateAddTo(CONS_Potion_Healing_A_d47006e9-8a51-453d-b200-9e0d42e9bbab, _Character, 4, 0);
-AddGold(_Character, 500);
+TemplateAddTo(CONS_Potion_Healing_A_d47006e9-8a51-453d-b200-9e0d42e9bbab, _Character, 5, 0);
+AddGold(_Character, 100);
 DB_mikeshardmind_Illy_StartingEquip(_Character);
 
 PROC
@@ -61,6 +70,7 @@ TemplateAddTo(WPN_HUM_Shield_A_0_d2af60ea-1b72-4d25-a188-6d8bc4fe255b, _Origin, 
 TemplateAddTo(WPN_HUM_Shortsword_A_0_467ddb4f-6791-41fa-99f7-ee8620d63bbe, _Origin, 1, 0);
 TemplateAddTo(WPN_HUM_Spear_A_0_9f0f1c0e-012d-44e1-9b29-86c64d2bf675, _Origin, 1, 0);
 TemplateAddTo(WPN_HUM_LightCrossbow_A_0_43b7fbf5-7f6e-4e9e-bce7-c679eea44593, _Origin, 1, 0);
+TemplateAddTo(CONS_Potion_Healing_A_d47006e9-8a51-453d-b200-9e0d42e9bbab, _Character, 5, 0);
 DB_mikeshardmind_Illy_StartingEquip(_Origin);
 
 EXITSECTION
