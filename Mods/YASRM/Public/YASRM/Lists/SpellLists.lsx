@@ -7,7 +7,7 @@
           <node id="SpellList">
             <attribute id="MergedInto" type="guid" value="61f79a30-2cac-4a7a-b5fe-50c89d307dd6"/>
             <attribute id="Name" type="FixedString" value="AddTo_BardCantrip"/>
-            <attribute id="Spells" type="LSString" value="Target_LightningLure"/>
+            <attribute id="Spells" type="LSString" value="Target_LightningLure;SHV_Projectile_Chromadarts_Container"/>
             <attribute id="UUID" type="guid" value="2cdccd69-2041-45ad-8c87-7d42930fa914"/>
           </node>
           <node id="SpellList">

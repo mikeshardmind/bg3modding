@@ -24,16 +24,6 @@ DB_mikeshardmind_Illy_StartingExperience(_Character);
 IF
 LevelGameplayReady(_Level, _IsEditor)
 AND
-_Level == "TUT_Avernus_C"
-AND
-DB_Avatars(_Character)
-THEN
-ApplyStatus(_Character, "MAGE_ARMOR", -1);
-ApplyStatus(_Character, "HEROISM", -1);
-
-IF
-LevelGameplayReady(_Level, _IsEditor)
-AND
 _Level != "SYS_CC_I"
 AND
 GetHostCharacter(_Host)

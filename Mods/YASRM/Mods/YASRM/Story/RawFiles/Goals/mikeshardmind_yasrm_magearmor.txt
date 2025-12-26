@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+
+INITSECTION
+
+KBSECTION
+
+IF
+LongRestFinished()
+AND
+DB_Players(_Player)
+AND
+HasSpell(_Player, "Target_MageArmor", 1)
+THEN
+ApplyStatus(_Player, "MAGE_ARMOR", -1.0);
+
+EXITSECTION
+
+ENDEXITSECTION
