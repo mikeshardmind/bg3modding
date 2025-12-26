@@ -5,6 +5,12 @@
     <node id="root">
       <children>
           <node id="SpellList">
+            <attribute id="MergedInto" type="guid" value="61f79a30-2cac-4a7a-b5fe-50c89d307dd6"/>
+            <attribute id="Name" type="FixedString" value="AddTo_BardCantrip"/>
+            <attribute id="Spells" type="LSString" value="Target_LightningLure"/>
+            <attribute id="UUID" type="guid" value="2cdccd69-2041-45ad-8c87-7d42930fa914"/>
+          </node>
+          <node id="SpellList">
             <attribute id="MergedInto" type="guid" value="820b1220-0385-426d-ae15-458dc8a6f5c0"/>
             <attribute id="Name" type="FixedString" value="AddTo_Wizard4"/>
             <attribute id="Spells" type="LSString" value="Wall_WallOfStone"/>

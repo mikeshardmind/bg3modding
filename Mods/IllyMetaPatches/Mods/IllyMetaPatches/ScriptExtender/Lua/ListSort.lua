@@ -1,6 +1,22 @@
 local spells_to_remove = {
-    ["Target_Ceremony"] = true,  -- 5eSpells: Why implement this one... not a crpg appropriate spell
-    ["Shout_ShadowBlade_Spell"] = true, -- Mystra's spells shadowblade
+    ["Target_Ceremony"] = true,
+    ["Shout_ShadowBlade_Spell"] = true,
+    ["Shout_HandOfRadiance"] = true,
+    ["Target_CreateBonfire"] = true,
+    ["Target_MagicStone"] = true,
+    ["Target_Infestation"] = true,
+    ["Target_Gust"] = true,
+    ["Target_GreenFlameBlade"] = true,
+    ["Target_MoldEarth"] = true,
+    ["Target_ControlFlames"] = true,
+    ["Target_UnseenServant"] = true,
+    ["Target_ZoneofTruth"] = true,
+    ["Zone_GustOfWind"] = true,
+    ["Shout_FindTraps"] = true,
+    ["Shout_SwordBurst"] = true,
+    ["Shout_Thunderclap"] = true,
+    ["Target_SilveryBarbs"] = true,
+    ["Projectile_SappingSting"] = true,
 }
 
 -- todo, generic framework

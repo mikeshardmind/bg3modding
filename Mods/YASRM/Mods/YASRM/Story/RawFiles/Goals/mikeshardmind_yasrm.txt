@@ -12,6 +12,25 @@ HasActiveStatus(_PossibleShillelagh, "SHILLELAGH", 1)
 THEN
 RemoveStatus(_PossibleShillelagh, "SHILLELAGH", NULL_00000000-0000-0000-0000-000000000000);
 
+IF
+LongRestFinished()
+AND
+DB_Avatars(_Character)
+AND
+HasSpell(_Character, "Target_MageArmor", 1)
+THEN
+ApplyStatus(_Character, "MAGE_ARMOR", -1);
+
+IF
+LongRestFinished()
+AND
+DB_Avatars(_Character)
+AND
+HasSpell(_Character, "Target_Longstrider", 1)
+THEN
+ApplyStatus(_Character, "LONGSTRIDER", -1);
+
+
 EXITSECTION
 
 ENDEXITSECTION

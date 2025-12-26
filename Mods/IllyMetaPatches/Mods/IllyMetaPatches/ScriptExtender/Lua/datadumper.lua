@@ -1,17 +1,6 @@
 
 
 --[[
-word of radiance
-hand of radiance
-create bonfire
-frostbite
-infestation
-magic stone
-primal savagery
-thunderclap
-larloch's minor drain
-lightning lure
-sword burst
 sapping sting
 ]]
 

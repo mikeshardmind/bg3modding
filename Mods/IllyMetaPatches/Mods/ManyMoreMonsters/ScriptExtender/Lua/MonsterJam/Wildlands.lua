@@ -673,9 +673,7 @@ end
 
 --Za'krug call reinforcements
 local function ZakrugReinforcements()
-    Osi.PlaySound(Zakrug,"II_Quest_DEN_BattleHorn")
-    Osi.PlayEffect(Zakrug, "a5b7b36f-8033-c0cb-4767-801ab6214323", "", 2)
-    ShowNotification(GetHostCharacter(), "Za'krug is calling reinforcements!")
+    -- stubbed out effects, this is called repeatedly :/
 end
 
 --Spawn Oof
