@@ -28,3 +28,11 @@ data "Properties" "IsHidden;OncePerCombat"
 data "Boosts" "Initiative(3)"
 data "StatsFunctorContext" "OnTurn"
 data "Conditions" "Combat()"
+
+new_entry "mikeshardmind_GotYourBack"
+type "PassiveData"
+data "Properties" "IsHidden"
+
+new_entry "mikeshardmind_ABEftBoU"
+type "PassiveData"
+data "Properties" "IsHidden"
