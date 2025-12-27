@@ -1,0 +1,7 @@
+
+new entry "Target_FindFamiliar"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_FindFamiliar"
+data "TargetRadius" "18"
+data "RequirementConditions" ""
