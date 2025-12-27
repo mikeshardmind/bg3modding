@@ -24,7 +24,7 @@
           <attribute id="UUID" type="guid" value="968ce114-d656-407c-88c2-0c071fe2181b"/>
         </node>
         <node id="RulesetModifier">
-          <attribute id="Default" type="LSString" value="STATUS_HARD"/>
+          <attribute id="Default" type="LSString" value="STATUS_MEDIUM"/>
           <attribute id="Description" type="TranslatedString" handle="hf41151d4g9cc1g4023gb6d7g2c8216884b9d" version="4"/>
           <attribute id="DisplayName" type="TranslatedString" handle="hb012bdedga319g497agab7fgc34b720b827e" version="3"/>
           <attribute id="Name" type="LSString" value="CHARACTER_STATS_DIFFICULTY"/>
@@ -63,7 +63,7 @@
           <attribute id="UUID" type="guid" value="226a83ca-abc9-4e98-90a2-4219471a5b15"/>
         </node>
         <node id="RulesetModifier">
-          <attribute id="Default" type="LSString" value="false"/>
+          <attribute id="Default" type="LSString" value="true"/>
           <attribute id="Description" type="TranslatedString" handle="h7891c266g62eag4cf1gb882g5823a20e9742" version="2"/>
           <attribute id="DisplayName" type="TranslatedString" handle="he66013b5g6f70g4a13g8bafgad57212febea" version="2"/>
           <attribute id="Name" type="LSString" value="NPC_CAN_CRITICAL_HIT"/>
@@ -111,15 +111,15 @@
           <attribute id="UUID" type="guid" value="1d9a608a-3885-4d48-8816-458e40d1136e"/>
         </node>
         <node id="RulesetModifier">
-          <attribute id="Default" type="LSString" value="3"/>
+          <attribute id="Default" type="LSString" value="5"/>
           <attribute id="Description" type="TranslatedString" handle="hc3d2e083g1f6dg4c9cg8655gc597ee0dd488" version="1"/>
           <attribute id="DisplayName" type="TranslatedString" handle="h6d69bd4bg2ae8g4765g9492g745d2b12af5b" version="3"/>
-          <attribute id="Max" type="float" value="4"/>
+          <attribute id="Max" type="float" value="5"/>
           <attribute id="Min" type="float" value="1"/>
           <attribute id="Name" type="LSString" value="TRADE_PRICE_MODIFIER"/>
           <attribute id="RulesetModifierType" type="uint8" value="2"/>
           <attribute id="ShowInCustom" type="bool" value="true"/>
-          <attribute id="Step" type="float" value="0.1"/>
+          <attribute id="Step" type="float" value="0.25"/>
           <attribute id="UUID" type="guid" value="f52ca62e-e7ee-435a-853f-454b2303c278"/>
         </node>
         <node id="RulesetModifier">

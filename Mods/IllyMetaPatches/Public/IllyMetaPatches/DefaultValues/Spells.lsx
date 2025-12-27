@@ -5,7 +5,7 @@
     <node id="root">
       <children>
         <node id="DefaultValue">
-          <attribute id="Add" type="LSString" value="SD_Projectile_StarryWisp;Target_ViciousMockery"/>
+          <attribute id="Add" type="LSString" value="SD_Projectile_StarryWisp;Target_ViciousMockery;Target_DWE_TrueStrike;Target_ThunderNote"/>
           <attribute id="Level" type="int32" value="1"/>
           <attribute id="SelectorId" type="LSString" value="BardCantrip"/>
           <attribute id="TableUUID" type="guid" value="229c98da-2cd1-4a5e-8051-9d90ec7931e7"/>

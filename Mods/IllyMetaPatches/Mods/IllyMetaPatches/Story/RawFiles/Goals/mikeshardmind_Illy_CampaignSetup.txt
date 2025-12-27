@@ -18,7 +18,7 @@ DB_Avatars(_Character)
 AND
 NOT DB_mikeshardmind_Illy_StartingExperience(_Character)
 THEN
-AddExplorationExperience(_Character, 5);
+AddExplorationExperience(_Character, 1100);
 DB_mikeshardmind_Illy_StartingExperience(_Character);
 
 IF

@@ -1,7 +1,0 @@
-key "EncumberedMultiplier","75"
-key "HeavilyEncumberedMultiplier","75"
-key "CarryLimitMultiplier","75"
-key "MaxPickUpMultiplier","50"
-key "PickupObjectMultiplier","50"
-key "TraderDroppedItemsPercentage","100"
-key "TraderDroppedItemsCap","250"

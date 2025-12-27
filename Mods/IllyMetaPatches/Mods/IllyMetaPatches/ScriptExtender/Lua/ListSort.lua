@@ -72,10 +72,10 @@ function ProgTweaks()
     for _, progguid in pairs(Ext.StaticData.GetAll("Progression")) do
         local pd = Ext.StaticData.Get(progguid, "Progression")
 
-        if pd and pd.TableUUID == bard_prog then
+        if pd and pd.Level == 1 and pd.TableUUID == bard_prog then
            for _, this_select in ipairs(pd["SelectSpells"]) do
                 if this_select.SelectorId == "BardCantrip" then
-                    this_select.Amount = this_select.Amount + 1
+                    this_select.Amount = this_select.Amount + 2
                 end
             end
         end
