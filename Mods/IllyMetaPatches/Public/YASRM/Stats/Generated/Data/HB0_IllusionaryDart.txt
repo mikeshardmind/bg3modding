@@ -1,0 +1,6 @@
+new entry "Projectile_IllusionaryDart"
+type "SpellData"
+data "SpellType" "Projectile"
+using "Projectile_IllusionaryDart"
+data "SpellSuccess" "DealDamage(1d8+2,Psychic,Magical)"
+data "TooltipDamageList" "DealDamage(1d8+2,Psychic)"

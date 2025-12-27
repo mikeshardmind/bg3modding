@@ -1,0 +1,7 @@
+new entry "Target_ThunderNote"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_ThunderNote"
+data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Thunder,Magical)"
+data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D8Cantrip)+2)/2,Thunder,Magical);IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL,100,0)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Thunder)"
