@@ -1,0 +1,8 @@
+// Use modified cantrip scaling
+new entry "Target_MindSliver"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_MindSliver"
+data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Psychic,Magical);ApplyStatus(MIND_SLIVER,100,2)"
+data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D6Cantrip)+2)/2,Psychic,Magical);ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Psychic)"

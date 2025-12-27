@@ -1,0 +1,7 @@
+new entry "Shout_WordOfRadiance"
+type "SpellData"
+data "SpellType" "Shout"
+using "Shout_WordOfRadiance"
+data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Radiant,Magical)"
+data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D6Cantrip)+2)/2,Radiant,Magical);ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Radiant)"

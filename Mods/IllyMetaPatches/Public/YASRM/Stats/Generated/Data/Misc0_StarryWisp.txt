@@ -1,0 +1,8 @@
+// Use modified cantrip scaling
+new entry "SD_Projectile_StarryWisp"
+type "SpellData"
+data "SpellType" "Projectile"
+using "SD_Projectile_StarryWisp"
+data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Radiant,Magical);ApplyStatus(SD_STARRYWISP_STATUS, 100, 2)"
+data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D8Cantrip)+2)/2,Radiant,Magical); IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0)"
+data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Radiant)"
