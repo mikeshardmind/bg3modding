@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+  <version major="4" minor="0" revision="8" build="612"/>
+  <region id="Progressions">
+    <node id="root">
+      <children>
+        <node id="Progression">
+          <attribute id="Boosts" type="LSString" value="ActionResource(SpellSlot,1,1);ActionResource(SpellSlot,2,2)" />
+          <attribute id="Level" type="uint8" value="3" />
+          <attribute id="Name" type="LSString" value="Bard" />
+          <attribute id="PassivesAdded" type="LSString" value="UnlockedSpellSlotLevel2" />
+          <attribute id="ProgressionType" type="uint8" value="0" />
+          <attribute id="Selectors" type="LSString" value="SelectSpells(7ea8f476-97a1-4256-8f10-afa76a845cce,1,1,BardSpells);SelectSkillsExpertise(f974ebd6-3725-4b90-bb5c-2b647d41615d,2)" />
+          <attribute id="TableUUID" type="guid" value="229c98da-2cd1-4a5e-8051-9d90ec7931e7" />
+          <attribute id="UUID" type="guid" value="26f64038-6033-48d5-9da7-38e8c95ce712" />
+          <children>
+            <node id="SubClasses">
+              <children>
+                <node id="SubClass">
+                  <attribute id="Object" type="guid" value="d21368ac-c776-465c-9dcf-6123dd52734f" />
+                </node>
+                <node id="SubClass">
+                  <attribute id="Object" type="guid" value="2b46330d-0ada-4eb5-a131-3d250a41ca6a" />
+                </node>
+                <node id="SubClass">
+                  <attribute id="Object" type="guid" value="c4bd5252-d68a-4330-9431-5e8ab24c5f29" />
+                </node>
+                <node id="SubClass">
+                  <attribute id="Object" type="guid" value="a06241d2-c432-472c-8c7d-84228d530cfa" />
+                </node>
+                <node id="SubClass">
+                  <attribute id="Object" type="guid" value="563d9b5c-1c61-421a-a4e6-25548ec900a6" />
+                </node>
+              </children>
+            </node>
+          </children>
+        </node>
+        <node id="Progression">
+          <attribute id="Level" type="uint8" value="3" />
+          <attribute id="Name" type="LSString" value="CollegeOfDueling" />
+          <attribute id="Boosts" type="LSString" value="Proficiency(MediumArmor)"/>
+          <attribute id="PassivesAdded" type="LSString" value="CollegeOfDueling_AlwaysReadyToDuel;CollegeOfDueling_AtYourFingertips;CollegeOfDueling_AtYourFingertips_TechRefund" />
+          <attribute id="ProgressionType" type="uint8" value="1" />
+          <attribute id="Selectors" type="LSString" value="SelectSpells(485a68b4-c678-4888-be63-4a702efbe391,1,0,DuelistsCantrip,,,AlwaysPrepared)" />
+          <attribute id="TableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
+          <attribute id="UUID" type="guid" value="1344384e-44f7-4dc6-a383-590c5ab2d2a4" />
+        </node>
+        <node id="Progression">
+          <attribute id="Level" type="uint8" value="6" />
+          <attribute id="Name" type="LSString" value="Got Your Back" />
+          <attribute id="PassivesAdded" type="LSString" value="CollegeOfDueling_GotYourBack" />
+          <attribute id="ProgressionType" type="uint8" value="1" />
+          <attribute id="TableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
+          <attribute id="UUID" type="guid" value="4768fe9c-dddc-4f41-a5be-19b75d017313" />
+        </node>
+        <node id="Progression">
+          <attribute id="Level" type="uint8" value="7" />
+          <attribute id="Name" type="LSString" value="Woven attacks" />
+          <attribute id="PassivesAdded" type="LSString" value="CollegeOfDuelingWarMagic" />
+          <attribute id="ProgressionType" type="uint8" value="1" />
+          <attribute id="TableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
+          <attribute id="UUID" type="guid" value="4567db6f-3647-4e0a-b37c-1c78fe4a2a22" />
+        </node>
+        <node id="Progression">
+          <attribute id="Level" type="uint8" value="11" />
+          <attribute id="Name" type="LSString" value="Spellslinger's Secrets" />
+          <attribute id="Selectors" type="LSString" value="SelectSpells(c935609e-7e1d-46cb-b4aa-21e35e7939a8,1,0,BardMagicalSecrets,,,AlwaysPrepared);SelectSpells(485a68b4-c678-4888-be63-4a702efbe391,1,1,DuelistsCantrip,,,AlwaysPrepared)" />
+          <attribute id="ProgressionType" type="uint8" value="1" />
+          <attribute id="TableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
+          <attribute id="UUID" type="guid" value="54da812e-90b8-4b99-bbee-f4779146014f" />
+        </node>
+        <node id="Progression">
+          <attribute id="Level" type="uint8" value="14" />
+          <attribute id="Name" type="LSString" value="Quick on the draw" />
+          <attribute id="PassivesAdded" type="LSString" value="CollegeOfDueling_QuickOnTheDraw" />
+          <attribute id="ProgressionType" type="uint8" value="1" />
+          <attribute id="TableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
+          <attribute id="UUID" type="guid" value="ed8dbd88-a06d-4643-9742-83f5d9c5abeb" />
+        </node>
+      </children>
+    </node>
+  </region>
+</save>

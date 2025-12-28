@@ -1,0 +1,39 @@
+UnlockSpellVariant([conditions (khn)], Modifier1(), Modifier2(), ...)
+
+Modifiers,
+ModifyAreaRadius(modifierType, value),
+ModifyMaximumTargets(modifierType, value),
+ModifyNumberOfTargets(modifierType, value, bool)
+bool - Have to target and different targets,
+,
+ModifySavingThrowDisadvantage(),
+ModifySpellFlags(flag, 0or1)
+flag - only Supports, Somatic, Verbal, Melee, Invisible, Stealth
+0or1 - disable/enable flag,
+,
+,
+ModifySpellRoll(search, replace)
+search - string to look for
+replace - string to replace search string with,
+,
+,
+ModifyStatusDuration(modifierType, float),
+ModifySummonDuration(modifierType, float),
+ModifySurfaceDuration(modifierType, float),
+ModifyTargetRadius(modifierType, float),
+ModifyUseCosts(Replace/Add, resource, amount, level, [replace])
+Replace/Add - version of modifier
+resource - replacement or added resource,
+amount,
+level - resource level to modify
+on replace -1, removes cost entirely,
+,
+[replace] - Only for "Replace" version, original resource being replaced,
+,
+,
+ModifyVisuals(icon)
+icon - new spell icon name,
+,
+ModifyIconGlow(),
+ModifyTooltipDescription()
+Uses source Description and DescriptionParam

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="0" revision="8" build="612"/>
+  <region id="LevelMapValues">
+    <node id="root">
+      <children>
+        <node id="LevelMapSeries">
+          <attribute id="Level1" type="LSString" value="2d6"/>
+          <attribute id="Level5" type="LSString" value="3d6"/>
+          <attribute id="Level10" type="LSString" value="5d6"/>
+          <attribute id="Level15" type="LSString" value="8d6"/>
+          <attribute id="Name" type="FixedString" value="CollegeOfDueling_AYF"/>
+          <attribute id="UUID" type="guid" value="a234f364-dc55-493a-af84-67f19db90882"/>
+          <attribute id="PreferredClassUUID" type="guid" value="92cd50b6-eb1b-4824-8adb-853e90c34c90"/>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>

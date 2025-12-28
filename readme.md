@@ -5,9 +5,9 @@ Mod Permissions/Licensing:
 To the extent not restricted by other existing rightsholders, all work here is
 given freely for the use of others.
 
-Currently, no assets are licensed seperately.
-This may change if any art is added, and will be noted as it applies, but I will not add
-any art that will require the mods not be allowed to be reshared relatively unrestricted.
+Currently, art assets are licensed seperately.
+
+Code license:
 
 If a statement of gift to the public is insufficient and
 you require a license for any portion of work which is not creative assets covered above
@@ -18,6 +18,10 @@ You may assume your choice of any of the following licenses:
 - [0BSD](https://spdx.org/licenses/0BSD.html)
 - [MIT](https://spdx.org/licenses/MIT.html)
 - [WTFPL](https://spdx.org/licenses/WTFPL.html)
+
+Art Asset License:
+
+Per file: **/CollegeofDueling.DDS: https://creativecommons.org/licenses/by-nc-nd/4.0/
 
 
 If you like any of what I'm doing here enough that you're wanting to donate,

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+  <version major="4" minor="0" revision="8" build="612"/>
+  <region id="ProgressionDescriptions">
+    <node id="root">
+      <children>
+        <node id="ProgressionDescription">
+          <attribute id="DisplayName" type="TranslatedString" handle="h599adc77gaadbg4606g925ag24c27af1f8ee" version="1" />
+          <attribute id="Description" type="TranslatedString" handle="hbd0a15cag27e1g47d5g83a4g991ebb4fe5fd" version="1" />
+          <attribute id="ExactMatch" type="FixedString" value="CollegeOfDueling" />
+          <attribute id="ProgressionTableId" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58"/>
+          <attribute id="UUID" type="guid" value="1344384e-44f7-4dc6-a383-590c5ab2d2a4" />
+        </node>
+        <node id="ProgressionDescription">
+          <attribute id="DisplayName" type="TranslatedString" handle="h69538759g3c7fg4ed3gaa71gf9472d967cf4" version="1" />
+          <attribute id="Description" type="TranslatedString" handle="hd238a92dg92c9g4e54g8ea5g8cef37e2b692" version="1" />
+          <attribute id="SelectorId" type="FixedString" value="DuelistsCantrip" />
+          <attribute id="UUID" type="guid" value="1344384e-44f7-4dc6-a383-590c5ab2d2a4" />
+        </node>
+      </children>
+    </node>
+  </region>
+</save>
