@@ -67,6 +67,18 @@ local function SortSpellWorkingList(working_list)
 
 end
 
+local function HandleSpecialCases()
+    -- Not crawling all passives for granting true strike
+    -- Might do something more later if I don't make my own true strike
+    local mage_breaker = Ext.Stats.Get("FavoredEnemy_MageBreaker")
+    local temp_t = {}
+    for str in mage_breaker.Boosts:gmatch("([^;]+)") do
+        if not str:find("UnlockSpell%(Target_TrueStrike") then
+            temp_t:insert(str:match("^%s*(.-)%s*$"))
+        end
+    end
+    mage_breaker.Boosts = temp_t:concat(";")
+end
 
 function ModifyLists()
 
@@ -95,5 +107,5 @@ function ModifyLists()
             spell_list.Spells = sorted
         end
     end
-
+    HandleSpecialCases()
 end
