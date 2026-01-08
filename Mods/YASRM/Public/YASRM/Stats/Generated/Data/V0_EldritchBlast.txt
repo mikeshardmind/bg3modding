@@ -1,8 +1,8 @@
-// EB: Modified cantrip scaling, downgrade to d8
+// EB: Modified cantrip scaling, downgrade to d6
 
 new entry "Projectile_EldritchBlast"
 type "SpellData"
 data "SpellType" "Projectile"
 using "Projectile_EldritchBlast"
-data "SpellSuccess" "DealDamage(1d8+2,Force,Magical);IF(HasPassive('RepellingBlast',context.Source)):Force(4.5)"
-data "TooltipDamageList" "DealDamage(1d8+2,Force)"
+data "SpellSuccess" "DealDamage(1d6+2,Force,Magical);IF(HasPassive('RepellingBlast',context.Source)):Force(4.5)"
+data "TooltipDamageList" "DealDamage(1d6+2,Force)"

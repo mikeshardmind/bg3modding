@@ -74,10 +74,10 @@ local function HandleSpecialCases()
     local temp_t = {}
     for str in mage_breaker.Boosts:gmatch("([^;]+)") do
         if not str:find("UnlockSpell%(Target_TrueStrike") then
-            temp_t:insert(str:match("^%s*(.-)%s*$"))
+            table.insert(temp_t, str:match("^%s*(.-)%s*$"))
         end
     end
-    mage_breaker.Boosts = temp_t:concat(";")
+    mage_breaker.Boosts = table.concat(temp_t, ";")
 end
 
 function ModifyLists()

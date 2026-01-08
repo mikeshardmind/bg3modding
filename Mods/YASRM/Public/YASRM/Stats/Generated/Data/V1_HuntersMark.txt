@@ -1,0 +1,28 @@
+// mostly mirrors changes made to hex
+// no concentration
+// automaticly gain the re-apply after longrest when known/prepared
+// +ritual
+
+new entry "Target_HuntersMark"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_HuntersMark"
+data "ConcentrationSpellID" ""
+data "TargetRadius" "3"
+data "RitualCosts" "BonusActionPoint:1"
+data "SpellProperties" "ApplyStatus(SELF,HUNTERS_MARK_REAPPLY,100,-1)"
+data "TargetConditions" "Self()"
+data "CycleConditions" ""
+data "SpellFlags" "IsSpell;HasVerbalComponent"
+
+
+// Undo the targeting changes above that exist to make this
+// a self-target ritual granting the ability to use it.
+// Vanilla inherits from above
+new entry "Target_HuntersMark_Reapply"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_HuntersMark_Reapply"
+data "TargetRadius" "18"
+data "TargetConditions" "Character() and not Self() and not (not Player(context.Source) and not Enemy()) and not HasStatus('DOWNED')"
+data "CycleConditions" "Enemy() and not Dead()"

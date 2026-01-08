@@ -1,0 +1,27 @@
+// Automatically gain the recast form at start of day when known
+// Doesn't require concentration
+// Yes, this is technically a warlock buff.
+// See nerfs to eldritch blast.
+
+new entry "Target_Hex"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Hex"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsSpell;IsLinkedSpellContainer;IsHarmful"
+
+
+new entry "Target_Hex_Strength"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Hex_Strength"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsSpell;IsHarmful"
+
+// Other stats inherit flags from Strength, doesn't need direct overrides
+
+new entry "Target_Hex_Reapply"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Hex_Reapply"
+data "SpellFlags" "HasVerbalComponent;HasSomaticComponent;IsLinkedSpellContainer;IsHarmful;Temporary"
+
+// Re-applies all inherit flags from the base re-apply
