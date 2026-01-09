@@ -1,0 +1,7 @@
+// Increase AoE by 1m
+
+new entry "Target_Shatter"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Shatter"
+data "AreaRadius" "4"

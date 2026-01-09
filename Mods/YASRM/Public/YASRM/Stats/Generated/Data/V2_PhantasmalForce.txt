@@ -1,5 +1,4 @@
 // Removed concentration, increased damage.
-// Save per turn to end the effect remains.
 // Have Disadvantage on mental saves while it's still on you.
 
 new entry "Target_PhantasmalForce"
@@ -16,8 +15,8 @@ using "PHANTASMAL_FORCE"
 data "Boosts" "Disadvantage(SavingThrow, Intelligence);Disadvantage(SavingThrow, Wisdom);Disadvantage(SavingThrow, Charisma)"
 data "DescriptionParams" "DealDamage(3d6,Psychic)"
 data "TooltipDamage" "DealDamage(3d6,Psychic)"
-data "RemoveConditions" "SavingThrow(Ability.Intelligence, SourceSpellDC())"
-data "RemoveEvents" "OnTurn"
+data "RemoveConditions" ""
+data "RemoveEvents" ""
 
 new entry "PHANTASMAL_FORCE_SLASHING"
 type "StatusData"

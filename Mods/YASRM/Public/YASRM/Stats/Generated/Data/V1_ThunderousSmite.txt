@@ -1,0 +1,7 @@
+// remove BA cost
+
+new entry "Target_Smite_Thunderous"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_Smite_Thunderous"
+data "HitCosts" "SpellSlotsGroup:1:1:1"
