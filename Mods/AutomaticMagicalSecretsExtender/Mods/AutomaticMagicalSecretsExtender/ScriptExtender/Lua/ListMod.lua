@@ -46,16 +46,88 @@ local never_include_as_secrets = {
 local sortv_cache = {}
 local spell_list_cache = {}
 
-local function generate_sort_key_for_spell(spell_name, spell)
-    if sortv_cache[spell_name] ~= nil then
-        return true
+local validated_spells_cache = {}
+local has_warned_broken = {}
+local has_warned_broken_list = {
+    ["IGNORE"] = true
+}
+
+local broken_warn_formats = {
+    NotSpell = "[%s] Spell list %s contained something other than a spell. The bad entry is named %s",
+    InvalidSpellLevel = "The spell named %s has an invalid level",
+    InvalidSpellContainerID = "The spell named %s has an invalid container ID specified",
+    MissingSpell = "[%s] Spell list %s contained a spell that isn't defined named %s",
+    InvalidSpellName = "[%s] Spell list: %s contains an invalid spell name",
+}
+
+---@param name string
+---@param list_guid string
+---@param classnames string
+local function get_spell_with_validation(name, list_guid, classnames, debug)
+    --- Gets spell data if it exists, that the attributes we need to be valid are valid,
+    --- and the spell data does not indicate that the spell is the interior of a container
+    --- logs warnings once per spell with broken attributes
+
+    local maybe_spell = validated_spells_cache[name]
+    if maybe_spell then
+        return maybe_spell
+    end
+
+    if type(name) ~= "string" or #name < 1 then
+        local list_key = list_guid .. classnames
+        if debug and has_warned_broken_list[list_key] == nil then
+            Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellName:format(classnames, list_guid))
+            has_warned_broken_list[list_key] = true
+        end
+        return nil
+    end
+
+    if has_warned_broken[name] ~= nil then
+        return nil
+    end
+
+    local spell = Ext.Stats.Get(name)
+    if spell == nil then
+        Ext.Utils.PrintWarning(broken_warn_formats.MissingSpell:format(classnames, list_guid, name))
+        has_warned_broken[name] = true
+        return nil
     end
 
     local ok, modlistype = pcall(function() return spell.ModifierList end)
 
     if not ok or type(modlistype) ~= "string" or modlistype ~= "SpellData" then
-        Ext.Utils.PrintWarning("Ignoring broken spell entry: " .. spell_name)
-        return false
+        Ext.Utils.PrintWarning(broken_warn_formats.NotSpell:format(classnames, list_guid, name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    local ok, container_id = pcall(function() return spell.SpellContainerID end)
+    if not ok or type(container_id) ~= "string" then
+        Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellContainerID:format(name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    local ok, spell_level = pcall(function() return spell.Level end)
+    if not ok or type(spell_level) ~= "number" then
+        Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellLevel:format(name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    if #spell.SpellContainerID:match("^%s*(.-)%s*$") ~= 0 then
+        return nil
+    end
+
+    validated_spells_cache[name] = spell
+    return spell
+
+end
+
+
+local function generate_sort_key_for_spell(spell_name, spell)
+    if sortv_cache[spell_name] ~= nil then
+        return true
     end
 
     local translated_name = Ext.Loca.GetTranslatedString(spell.DisplayName)
@@ -99,7 +171,7 @@ local function SortSpellList(spell_list, guid)
         if spell_list ~= nil then
             for _, spell_name in pairs(spell_list.Spells) do
                 if checked_names[spell_name] == nil then
-                    local spell = Ext.Stats.Get(spell_name)
+                    local spell = get_spell_with_validation(spell_name, guid, "Bard")
                     if spell ~= nil then
                         working_list[spell_name] = spell
                     end
@@ -181,30 +253,37 @@ local function GetAllValidSecrets()
     }
 
     local supprted_secrets_classes = {
-        ["114e7aee-d1d4-4371-8d90-8a2080592faf"] = true, --cleric
-        ["457d0a6e-9da8-4f95-a225-18382f0e94b5"] = true, -- druid
-        ["ff4d9497-023c-434a-bd14-82fc367e991c"] = true, --paladain
-        ["36be18ba-23db-4dff-bfa6-ae105ce43144"] = true, -- ranger
-        ["784001e2-c96d-4153-beb6-2adbef5abc92"] = true, -- sorc
-        ["b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"] = true, -- lock
-        ["a865965f-501b-46e9-9eaa-7748e8c04d09"] = true, -- wiz
-        ["92cd50b6-eb1b-4824-8adb-853e90c34c90"] = true, -- bard (because it is valid to double dip)
+        ["114e7aee-d1d4-4371-8d90-8a2080592faf"] = "Cleric",
+        ["457d0a6e-9da8-4f95-a225-18382f0e94b5"] = "Druid",
+        ["ff4d9497-023c-434a-bd14-82fc367e991c"] = "Paladain",
+        ["36be18ba-23db-4dff-bfa6-ae105ce43144"] = "Ranger",
+        ["784001e2-c96d-4153-beb6-2adbef5abc92"] = "Sorcerer",
+        ["b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"] = "Warlock",
+        ["a865965f-501b-46e9-9eaa-7748e8c04d09"] = "Wizard",
+        ["92cd50b6-eb1b-4824-8adb-853e90c34c90"] = "Bard",
     }
     local warlock_guid = "b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"
 
     local collected_spell_lists = {}
+    local spell_list_to_class = {}
     local collected_prog_ids = {}
+    local prog_to_classname = {}
     local collected_spells = {}
     local collected_warlock_progs = {}
     local warlock_spell_table_assoc = {}
 
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
         local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
-        if supprted_secrets_classes[resourceGuid] ~= nil then
+        local class_name = supprted_secrets_classes[resourceGuid]
+        if class_name ~= nil then
             if desc.SpellList ~= nil then
                 collected_spell_lists[desc.SpellList] = true
+                local list_class_assoc = spell_list_to_class[desc.SpellList] or {}
+                list_class_assoc[class_name] = true
+                spell_list_to_class[desc.SpellList] = list_class_assoc
             end
             collected_prog_ids[desc.ProgressionTableUUID] = true
+            prog_to_classname[desc.ProgressionTableUUID] = class_name
         end
         if desc.ParentGuid == warlock_guid then
             collected_warlock_progs[desc.ProgressionTableUUID] = true
@@ -216,16 +295,21 @@ local function GetAllValidSecrets()
         if collected_prog_ids[pd.TableUUID] ~= nil then
             for _, this_select in ipairs(pd["SelectSpells"]) do
                 collected_spell_lists[this_select.SpellUUID] = true
+                local list_class_assoc = spell_list_to_class[this_select.SpellUUID] or {}
+                list_class_assoc[prog_to_classname[pd.TableUUID]] = true
+                spell_list_to_class[this_select.SpellUUID] = list_class_assoc
             end
         end
         if collected_warlock_progs[pd.TableUUID] ~= nil then
             for _, this_select in ipairs(pd["SelectSpells"]) do
                 local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                 if spell_list ~= nil then
-                    for _, spell in pairs(spell_list.Spells) do
-                        local assoc = warlock_spell_table_assoc[spell] or {}
-                        assoc[pd.TableUUID] = true
-                        warlock_spell_table_assoc[spell] = assoc
+                    for _, spell_name in pairs(spell_list.Spells) do
+                        if get_spell_with_validation(spell_name, this_select.SpellUUID, "Warlock") then
+                            local assoc = warlock_spell_table_assoc[spell_name] or {}
+                            assoc[pd.TableUUID] = true
+                            warlock_spell_table_assoc[spell_name] = assoc
+                        end
                     end
                 end
             end
@@ -241,18 +325,23 @@ local function GetAllValidSecrets()
     for list_uuid, _ in pairs(collected_spell_lists) do
         local spell_list = Ext.StaticData.Get(list_uuid, "SpellList")
         if spell_list ~= nil then
-            for _, spell in pairs(spell_list.Spells) do
-                collected_spells[spell] = true
+            local class_names = {}
+            for cl, _ in pairs(spell_list_to_class[list_uuid]) do
+                table.insert(class_names, cl)
+            end
+            local names = table.concat(class_names, ",")
+            for _, spell_name in pairs(spell_list.Spells) do
+                if get_spell_with_validation(spell_name, list_uuid, names) then
+                    collected_spells[spell_name] = true
+                end
             end
         end
     end
 
     for spell_name, _ in pairs(collected_spells) do
-        local spell = Ext.Stats.Get(spell_name)
+        local spell = get_spell_with_validation(spell_name, "IGNORE", "IGNORE")
         if spell ~= nil then
-            if #spell.SpellContainerID:match("^%s*(.-)%s*$") == 0 then
-                all_spells[spell.Level][spell_name] = true
-            end
+            all_spells[spell.Level][spell_name] = true
         end
     end
 
@@ -280,7 +369,7 @@ function ModifyLists()
         local secret_spell_level = (pd.Level > 17) and 9 or ((pd.Level + 1) // 2)
 
         for _, this_select in ipairs(pd["SelectSpells"]) do
-            if magical_secrets_select[this_select.SelectorId]  ~= nil then
+            if magical_secrets_select[this_select.SelectorId] ~= nil then
                 local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                 if spell_list ~= nil then
 
@@ -288,11 +377,9 @@ function ModifyLists()
 
                     for _, spell in pairs(spell_list.Spells) do
                         if seen_spells[spell] == nil then
-                            local spell_data = Ext.Stats.Get(spell)
+                            local spell_data = get_spell_with_validation(spell, this_select.SpellUUID, "Bard")
                             if spell_data ~= nil then
-                                if #spell_data.SpellContainerID:match("^%s*(.-)%s*$") == 0 then
-                                    table.insert(working_list, spell)
-                                end
+                                table.insert(working_list, spell)
                             end
 
                         end
