@@ -71,7 +71,7 @@ local function LoadConfig(filename)
             ret[key] = default
             needs_rewrite = true
         elseif type(ret[key]) ~= expected_type then
-            Ext.Utils.PrintWarning(invalid_config_messages[expected_type].format(key))
+            Ext.Utils.PrintWarning(invalid_config_messages[expected_type]:format(key))
             ret.enabled = false
             return ret
         end
@@ -84,6 +84,89 @@ local function LoadConfig(filename)
 
     return ret
 
+end
+
+
+local validated_spells_cache = {}
+local has_warned_broken = {}
+local has_warned_broken_list = {
+    ["IGNORE"] = true
+}
+
+local broken_warn_formats = {
+    NotSpell = "[Ranger] Spell list %s contained something other than a spell. The bad entry is named %s",
+    InvalidSpellLevel = "The spell named %s has an invalid level",
+    InvalidSpellContainerID = "The spell named %s has an invalid container ID specified",
+    MissingSpell = "[Ranger] Spell list %s contained a spell that isn't defined named %s",
+    InvalidSpellName = "[Ranger] Spell list: %s contains an invalid spell name",
+    InvalidRitualCosts = "The spell named %s has invalid ritual costs",
+}
+
+---@param name string
+---@param list_guid string
+local function get_spell_with_validation(name, list_guid, debug)
+    --- Gets spell data if it exists, that the attributes we need to be valid are valid,
+    --- and the spell data does not indicate that the spell is the interior of a container
+    --- logs warnings once per spell with broken attributes
+
+    local maybe_spell = validated_spells_cache[name]
+    if maybe_spell then
+        return maybe_spell
+    end
+
+    if type(name) ~= "string" or #name < 1 then
+        if debug and has_warned_broken_list[list_guid] == nil then
+            Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellName:format(list_guid))
+            has_warned_broken_list[list_guid] = true
+        end
+        return nil
+    end
+
+    if has_warned_broken[name] ~= nil then
+        return nil
+    end
+
+    local spell = Ext.Stats.Get(name)
+    if spell == nil then
+        Ext.Utils.PrintWarning(broken_warn_formats.MissingSpell:format(list_guid, name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    local ok, modlistype = pcall(function() return spell.ModifierList end)
+
+    if not ok or type(modlistype) ~= "string" or modlistype ~= "SpellData" then
+        Ext.Utils.PrintWarning(broken_warn_formats.NotSpell:format(list_guid, name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    local ok, container_id = pcall(function() return spell.SpellContainerID end)
+    if not ok or type(container_id) ~= "string" then
+        Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellContainerID:format(name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    local ok, spell_level = pcall(function() return spell.Level end)
+    if not ok or type(spell_level) ~= "number" then
+        Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellLevel:format(name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    if #spell.SpellContainerID:match("^%s*(.-)%s*$") ~= 0 then
+        return nil
+    end
+
+    local ok, ritual_costs = pcall(function() return spell.RitualCosts end)
+    if not ok or type(ritual_costs) ~= "string" then
+        Ext.Utils.PrintWarning(broken_warn_formats.InvalidRitualCosts:format(name))
+        has_warned_broken[name] = true
+    end
+
+    validated_spells_cache[name] = spell
+    return spell
 end
 
 ---@param config config
@@ -190,17 +273,6 @@ local function subtract_setlists(l1, l2)
     return ret
 end
 
-local stats_data_cache = {}
-local function get_stats_with_cache(name)
-
-    local v = stats_data_cache[name]
-    if v ~= nil then return v end
-    v = Ext.Stats.Get(name)
-    stats_data_cache[name] = v
-    return v
-
-end
-
 ---@param class_guid string
 ---@param spell_action_resource string
 ---@param filename string
@@ -238,7 +310,7 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
                     if spell_list ~= nil then
                         for _, spell in pairs(spell_list.Spells) do
 
-                            local spell_data = get_stats_with_cache(spell)
+                            local spell_data = get_spell_with_validation(spell, this_select.SpellUUID)
                             if spell_data ~= nil and spell_data.Level > spell_lv then
                                 spell_lv = spell_data.Level
                             end
@@ -317,7 +389,7 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
     }
 
     for _, spellname in ipairs(seen_class_spells) do
-        local spell = get_stats_with_cache(spellname)
+        local spell = get_spell_with_validation(spellname, "IGNORE")
         if spell ~= nil then
             if config.rituals_always_prepared and #spell.RitualCosts:match("^%s*(.-)%s*$") > 0 then
                 table.insert(leveled_lists[spell.Level]["ritual"], spellname)
