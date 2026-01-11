@@ -1,0 +1,4 @@
+new entry "Projectile_PoisonSpray_Yuanti"
+type "SpellData"
+data "SpellType" "Projectile"
+using "Projectile_PoisonSpray"

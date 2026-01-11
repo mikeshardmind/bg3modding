@@ -33,7 +33,6 @@ local function generate_sort_key_for_spell(spell_name, spell)
     local ok, modlistype = pcall(function() return spell.ModifierList end)
 
     if not ok or type(modlistype) ~= "string" or modlistype ~= "SpellData" then
-        Ext.Utils.PrintWarning("Ignoring broken spell entry: " .. spell_name)
         return false
     end
 
@@ -58,8 +57,10 @@ end
 local function SortSpellWorkingList(working_list)
     local ret = {}
     for spell_name, spell_object in pairs(working_list) do
-        if generate_sort_key_for_spell(spell_name, spell_object) then
-            table.insert(ret, spell_name)
+        if spell_object then
+            if generate_sort_key_for_spell(spell_name, spell_object) then
+                table.insert(ret, spell_name)
+            end
         end
     end
     table.sort(ret, sort_func)
@@ -71,7 +72,7 @@ local function HandleSpecialCases()
     -- Not crawling all passives for granting true strike
     -- Might do something more later if I don't make my own true strike
     local mage_breaker = Ext.Stats.Get("FavoredEnemy_MageBreaker")
-    local temp_t = {}
+    local temp_t = {"UnlockSpell(Target_LightningLure,,,,Wisdom)"}
     for str in mage_breaker.Boosts:gmatch("([^;]+)") do
         if not str:find("UnlockSpell%(Target_TrueStrike") then
             table.insert(temp_t, str:match("^%s*(.-)%s*$"))

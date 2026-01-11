@@ -1,9 +1,11 @@
 // Modified cantrip scaling
+// increased range
 
 new entry "Projectile_PoisonSpray"
 type "SpellData"
 data "SpellType" "Projectile"
 using "Projectile_PoisonSpray"
+data "TargetRadius" "18"
 data "SpellRoll" "not SavingThrow(Ability.Constitution, SourceSpellDC(),AdvantageOnPoisoned())"
 data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D12Cantrip)+2,Poison,Magical)"
 data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D12Cantrip)+2)/2,Poison,Magical); IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0)"
