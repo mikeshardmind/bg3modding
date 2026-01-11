@@ -2,6 +2,41 @@
 local bard_guid = "92cd50b6-eb1b-4824-8adb-853e90c34c90"
 
 local magical_secrets_select = {["BardMagicalSecrets"] = true}
+
+---@class config
+---@field enabled boolean
+---@field with_scroll_learning boolean
+---@field rituals_always_prepared boolean
+
+
+local defaultConfig = {
+    enabled = true,
+    with_scroll_learning = false,
+    rituals_always_prepared = true,
+}
+
+---@param filename string
+---@return config
+local function LoadConfig(filename)
+    local file = Ext.IO.LoadFile(filename)
+    local ret = file and Ext.Json.Parse(file) or {}
+
+    for key, default in pairs(defaultConfig) do
+
+        local expected_type = type(default)
+
+        if type(ret[key]) == "nil" then
+            ret[key] = default
+        elseif type(ret[key]) ~= expected_type then
+            ret.enabled = false
+            return ret
+        end
+    end
+
+    return ret
+
+end
+
 local function MagicalSecretsLists()
 
     local ret = {}
@@ -36,6 +71,9 @@ end
 local list_cache = {}
 
 function RemoveBardSpellsFromBardSecrets()
+
+    local config = LoadConfig("BardicPreparation.json")
+    if not config.enabled then return end
 
     local bard_list_id, secrets_lists_ids = MagicalSecretsLists()
 
