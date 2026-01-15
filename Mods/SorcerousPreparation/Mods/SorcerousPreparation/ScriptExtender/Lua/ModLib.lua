@@ -293,7 +293,7 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
     local prog_data, mc_prog_data = ModifyDescriptionsAndCollectProgressions(config, class_guid)
 
     local max_spell_lv = 0
-    local sl_map = {}
+    local sl_map = {[1] = 1}
 
     for _, pd in ipairs(prog_data) do
         local spell_lv = max_spell_lv
