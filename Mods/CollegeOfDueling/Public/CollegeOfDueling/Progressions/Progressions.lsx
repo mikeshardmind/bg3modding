@@ -38,7 +38,7 @@
         <node id="Progression">
           <attribute id="Level" type="uint8" value="3" />
           <attribute id="Name" type="LSString" value="CollegeOfDueling" />
-          <attribute id="Boosts" type="LSString" value="Proficiency(MediumArmor)"/>
+          <attribute id="Boosts" type="LSString" value="Proficiency(MediumArmor);Proficiency(Shields)"/>
           <attribute id="PassivesAdded" type="LSString" value="CollegeOfDueling_AlwaysReadyToDuel;CollegeOfDueling_AtYourFingertips;CollegeOfDueling_AtYourFingertips_TechRefund" />
           <attribute id="ProgressionType" type="uint8" value="1" />
           <attribute id="Selectors" type="LSString" value="SelectSpells(485a68b4-c678-4888-be63-4a702efbe391,1,0,DuelistsCantrip,,,AlwaysPrepared)" />

@@ -89,7 +89,7 @@ data "Icon" "Action_Bard_GrantBardicInspiration"
 data "Properties" "Highlighted;OncePerCombat"
 data "StatsFunctorContext" "OnTurn"
 data "Conditions" "Combat()"
-data "StatsFunctors" "ApplyStatus(CollegeOfDueling_QUICK_ON_THE_DRAW,100,2)"
+data "StatsFunctors" "ApplyStatus(CollegeOfDueling_QUICK_ON_THE_DRAW,100,1)"
 
 new entry "CollegeOfDueling_QUICK_ON_THE_DRAW"
 type "StatusData"
