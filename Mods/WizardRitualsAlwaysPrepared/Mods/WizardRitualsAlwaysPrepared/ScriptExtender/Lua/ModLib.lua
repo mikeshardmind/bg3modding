@@ -83,12 +83,12 @@ local has_warned_broken_list = {
 }
 
 local broken_warn_formats = {
-    NotSpell = "[Wizard] Spell list %s contained something other than a spell. The bad entry is named %s",
-    InvalidSpellLevel = "The spell named %s has an invalid level",
-    InvalidSpellContainerID = "The spell named %s has an invalid container ID specified",
-    MissingSpell = "[Wizard] Spell list %s contained a spell that isn't defined named %s",
-    InvalidSpellName = "[Wizard] Spell list: %s contains an invalid spell name",
-    InvalidRitualCosts = "The spell named %s has invalid ritual costs",
+    NotSpell = "[WizardRitualsAlwaysPrepared] Spell list %s contained something other than a spell. The bad entry is named %s",
+    InvalidSpellLevel = "[WizardRitualsAlwaysPrepared] The spell named %s has an invalid level",
+    InvalidSpellContainerID = "[WizardRitualsAlwaysPrepared] The spell named %s has an invalid container ID specified",
+    MissingSpell = "[WizardRitualsAlwaysPrepared] Spell list %s contained a spell that isn't defined named %s",
+    InvalidSpellName = "[WizardRitualsAlwaysPrepared] Spell list: %s contains an invalid spell name",
+    InvalidRitualCosts = "[WizardRitualsAlwaysPrepared] The spell named %s has invalid ritual costs",
 }
 
 ---@param name string

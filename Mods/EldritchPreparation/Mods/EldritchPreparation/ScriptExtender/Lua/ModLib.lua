@@ -32,15 +32,16 @@ end
 ---@class warlock_config
 ---@field enabled boolean
 ---@field with_scroll_learning boolean
-
+---@field disable_preparation_requirements boolean
 
 local defaultConfig = {
     enabled = true,
     with_scroll_learning = false,
+    disable_preparation_requirements = false,
 }
 
 local invalid_config_messages = {
-    ["boolean"] = 'Invalid entry for key "%s" (expected: true or false) in config file, disabling mod'
+    ["boolean"] = '[EldritchPreparation] Invalid entry for key "%s" (expected: true or false) in config file, disabling mod'
 }
 
 ---@param filename string
@@ -99,12 +100,12 @@ local has_warned_broken_list = {
 }
 
 local broken_warn_formats = {
-    NotSpell = "[Warlock] Spell list %s contained something other than a spell. The bad entry is named %s",
-    InvalidSpellLevel = "The spell named %s has an invalid level",
-    InvalidSpellContainerID = "The spell named %s has an invalid container ID specified",
-    MissingSpell = "[Warlock] Spell list %s contained a spell that isn't defined named %s",
-    InvalidSpellName = "[Warlock] Spell list: %s contains an invalid spell name",
-    InvalidRitualCosts = "The spell named %s has invalid ritual costs",
+    NotSpell = "[EldritchPreparation] Spell list %s contained something other than a spell. The bad entry is named %s",
+    InvalidSpellLevel = "[EldritchPreparation] The spell named %s has an invalid level",
+    InvalidSpellContainerID = "[EldritchPreparation] The spell named %s has an invalid container ID specified",
+    MissingSpell = "[EldritchPreparation] Spell list %s contained a spell that isn't defined named %s",
+    InvalidSpellName = "[EldritchPreparation] Spell list: %s contains an invalid spell name",
+    InvalidRitualCosts = "[EldritchPreparation] The spell named %s has invalid ritual costs",
 }
 
 ---@param name string
@@ -183,10 +184,7 @@ local function ModifyDescriptionsAndCollectProgressions(config, class_guid)
     local class_prog_table_ids = {}
     local subclass_prog_table_ids = {}
 
-    -- https://www.nexusmods.com/baldursgate3/mods/6770
-    -- Xara's Remove Spell Preparation Mod.
-    -- We get run after that mod, lets respect user choices here.
-    local must_prepare = not Ext.Mod.IsModLoaded("0e8d791a-8338-4aeb-adf0-cd5e68151107")
+    local must_prepare = not config.disable_preparation_requirements
 
     for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
         local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")

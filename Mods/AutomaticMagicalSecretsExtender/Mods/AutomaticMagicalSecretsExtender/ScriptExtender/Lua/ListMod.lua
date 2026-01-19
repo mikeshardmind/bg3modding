@@ -53,11 +53,11 @@ local has_warned_broken_list = {
 }
 
 local broken_warn_formats = {
-    NotSpell = "[%s] Spell list %s contained something other than a spell. The bad entry is named %s",
-    InvalidSpellLevel = "The spell named %s has an invalid level",
-    InvalidSpellContainerID = "The spell named %s has an invalid container ID specified",
-    MissingSpell = "[%s] Spell list %s contained a spell that isn't defined named %s",
-    InvalidSpellName = "[%s] Spell list: %s contains an invalid spell name",
+    NotSpell = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained something other than a spell. The bad entry is named %s",
+    InvalidSpellLevel = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid level",
+    InvalidSpellContainerID = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid container ID specified",
+    MissingSpell = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained a spell that isn't defined named %s",
+    InvalidSpellName = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list: %s contains an invalid spell name",
 }
 
 ---@param name string
