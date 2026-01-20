@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+
+INITSECTION
+
+KBSECTION
+
+IF
+LeftTrigger(_PartyMember, _Trigger)
+AND
+DB_LOW_OskarsBeloved_AuraItems(_Trigger, _Item)
+AND
+HasActiveStatus(_PartyMember,"PHANTASMAL_FORCE",1)
+THEN
+RemoveStatus(_PartyMember, "PHANTASMAL_FORCE");
+
+EXITSECTION
+
+ENDEXITSECTION
