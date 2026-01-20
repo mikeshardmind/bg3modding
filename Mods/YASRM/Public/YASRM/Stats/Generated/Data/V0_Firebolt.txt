@@ -1,10 +1,17 @@
 // Uses modified cantrip scaling, with downgrade to d8
 // applies burning for 2 turns
+// uses a modified burning that doesn't tick on apply
 
 new entry "Projectile_FireBolt"
 type "SpellData"
 data "SpellType" "Projectile"
 using "Projectile_FireBolt"
-data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Fire,Magical);AI_IGNORE:ApplyStatus(BURNING,100,2)"
+data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Fire,Magical);AI_IGNORE:ApplyStatus(YASRM_BURNING,100,2)"
 data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Fire)"
 data "TooltipStatusApply" "ApplyStatus(BURNING,100,2)"
+
+new entry "YASRM_BURNING"
+type "StatusData"
+data "StatusType" "BOOST"
+using "BURNING"
+data "OnApplyFunctors" ""

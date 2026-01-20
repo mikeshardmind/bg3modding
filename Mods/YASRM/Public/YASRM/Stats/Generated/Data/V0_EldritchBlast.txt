@@ -1,8 +1,11 @@
-// EB: Modified cantrip scaling, downgrade to d6
+// EB: Modified cantrip scaling, downgrade to d4
+// d6+2 has same average, but more consistency than d10
+// This is intended to be a nerf while retaining the consistency gain
+// on cantrips overall.
 
 new entry "Projectile_EldritchBlast"
 type "SpellData"
 data "SpellType" "Projectile"
 using "Projectile_EldritchBlast"
-data "SpellSuccess" "DealDamage(1d6+2,Force,Magical);IF(HasPassive('RepellingBlast',context.Source)):Force(4.5)"
-data "TooltipDamageList" "DealDamage(1d6+2,Force)"
+data "SpellSuccess" "DealDamage(1d4+2,Force,Magical);IF(HasPassive('RepellingBlast',context.Source)):Force(4.5)"
+data "TooltipDamageList" "DealDamage(1d4+2,Force)"
