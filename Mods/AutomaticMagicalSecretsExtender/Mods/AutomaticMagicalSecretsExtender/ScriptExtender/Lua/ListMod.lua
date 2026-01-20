@@ -43,6 +43,15 @@ local never_include_as_secrets = {
     ["Shout_ShadowBlade_Spell"] = true,
 }
 
+-- avoid duplicates from a few other known large spell mods
+-- Currently, this prefers ATT provided high level spells
+-- if both ATT and 5e spell implementations found for these
+local conditional_removals = {
+    ["Projectile_VlaakithBeam"] = "Target_FingerOfDeath",
+    ["Shout_ATT_HolyAura"] = "Shout_HolyAura",
+}
+
+
 local sortv_cache = {}
 local spell_list_cache = {}
 
@@ -236,6 +245,15 @@ local function subtract_setlists(l1, l2)
     return ret
 end
 
+local function DoConditionalRemovals(working_list)
+    local to_remove = {}
+    for _idx, name in ipairs(working_list) do
+        local l = conditional_removals[name]
+        if l then to_remove[l] = true end
+    end
+    return subtract_setlists(working_list, to_remove)
+end
+
 
 local function GetAllValidSecrets()
 
@@ -362,8 +380,6 @@ function ModifyLists()
         end
     end
 
-    local seen_spells = {}
-
     for _, progguid in ipairs(has_secrets) do
         local pd = Ext.StaticData.Get(progguid, "Progression")
         local secret_spell_level = (pd.Level > 17) and 9 or ((pd.Level + 1) // 2)
@@ -376,12 +392,9 @@ function ModifyLists()
                     local working_list = {}
 
                     for _, spell in pairs(spell_list.Spells) do
-                        if seen_spells[spell] == nil then
-                            local spell_data = get_spell_with_validation(spell, this_select.SpellUUID, "Bard")
-                            if spell_data ~= nil then
-                                table.insert(working_list, spell)
-                            end
-
+                        local spell_data = get_spell_with_validation(spell, this_select.SpellUUID, "Bard")
+                        if spell_data ~= nil then
+                            table.insert(working_list, spell)
                         end
 
                     for lv, spells in pairs(all_secret_spells) do
@@ -392,8 +405,9 @@ function ModifyLists()
                         end
                     end
 
-                    working_list = subtract_setlists(working_list, seen_spells)
+                    working_list = DoConditionalRemovals(working_list)
                     spell_list.Spells = subtract_setlists(working_list, to_subtract)
+
                     SortSpellList(spell_list, this_select.SpellUUID)
                     end
                 end
