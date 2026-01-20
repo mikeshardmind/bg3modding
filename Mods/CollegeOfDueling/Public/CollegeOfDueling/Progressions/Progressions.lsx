@@ -41,7 +41,7 @@
           <attribute id="Boosts" type="LSString" value="Proficiency(MediumArmor);Proficiency(Shields)"/>
           <attribute id="PassivesAdded" type="LSString" value="CollegeOfDueling_AlwaysReadyToDuel;CollegeOfDueling_AtYourFingertips;CollegeOfDueling_AtYourFingertips_TechRefund" />
           <attribute id="ProgressionType" type="uint8" value="1" />
-          <attribute id="Selectors" type="LSString" value="SelectSpells(485a68b4-c678-4888-be63-4a702efbe391,1,0,DuelistsCantrip,,,AlwaysPrepared)" />
+          <attribute id="Selectors" type="LSString" value="SelectSpells(5a7a26ae-8ec1-4d74-b3a6-d8384ae854bb,2,0,DuelistsCantrip,,,AlwaysPrepared)" />
           <attribute id="TableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
           <attribute id="UUID" type="guid" value="1344384e-44f7-4dc6-a383-590c5ab2d2a4" />
         </node>
@@ -64,7 +64,7 @@
         <node id="Progression">
           <attribute id="Level" type="uint8" value="11" />
           <attribute id="Name" type="LSString" value="Spellslinger's Secrets" />
-          <attribute id="Selectors" type="LSString" value="SelectSpells(c935609e-7e1d-46cb-b4aa-21e35e7939a8,1,0,BardMagicalSecrets,,,AlwaysPrepared);SelectSpells(485a68b4-c678-4888-be63-4a702efbe391,1,1,DuelistsCantrip,,,AlwaysPrepared)" />
+          <attribute id="Selectors" type="LSString" value="SelectSpells(c935609e-7e1d-46cb-b4aa-21e35e7939a8,1,0,BardMagicalSecrets,,,AlwaysPrepared);SelectSpells(5a7a26ae-8ec1-4d74-b3a6-d8384ae854bb,2,0,DuelistsCantrip,,,AlwaysPrepared)" />
           <attribute id="ProgressionType" type="uint8" value="1" />
           <attribute id="TableUUID" type="guid" value="c940851e-212b-4761-b449-934b4dc01d58" />
           <attribute id="UUID" type="guid" value="54da812e-90b8-4b99-bbee-f4779146014f" />
