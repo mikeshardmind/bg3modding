@@ -18,6 +18,7 @@ local spells_to_remove = {
     ["Target_SilveryBarbs"] = true,
     ["Projectile_SappingSting"] = true,
     ["Target_TrueStrike"] = true,
+    ["Projectile_IllusionaryDart"] = true,
 }
 
 -- todo, generic framework
