@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="7" revision="1" build="3"/>
+  <region id="Feats">
+    <node id="root">
+      <children>
+        <node id="Feat">
+          <attribute id="CanBeTakenMultipleTimes" type="bool" value="true"/>
+          <attribute id="Name" type="FixedString" value="Mikeshardmind_FightingInitiate"/>
+          <attribute id="Selectors" type="LSString" value="SelectPassives(769c453b-ab3d-44d6-894f-169685f8c1e7,1,FightingStyle)"/>
+          <attribute id="UUID" type="guid" value="b622511d-28c1-4665-aace-884844850c2d"/>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>

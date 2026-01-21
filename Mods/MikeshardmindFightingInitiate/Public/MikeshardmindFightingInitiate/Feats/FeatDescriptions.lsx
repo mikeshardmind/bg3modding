@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+  <version major="4" minor="7" revision="1" build="3"/>
+  <region id="FeatDescriptions">
+    <node id="root">
+      <children>
+        <node id="FeatDescription">
+          <attribute id="DisplayName" type="TranslatedString" handle="hf64c520bgd561g4d60ga485gee7244628225" version="1"/>
+          <attribute id="Description" type="TranslatedString" handle="hd4fa66e2gfbddg4310g941cga20a00332ae6" version="1"/>
+          <attribute id="ExactMatch" type="FixedString" value="Mikeshardmind_FightingInitiate"/>
+          <attribute id="UUID" type="guid" value="419cecb9-c129-4b99-a880-48f09b1dd2a3"/>
+        </node>
+      </children>
+    </node>
+  </region>
+</save>
