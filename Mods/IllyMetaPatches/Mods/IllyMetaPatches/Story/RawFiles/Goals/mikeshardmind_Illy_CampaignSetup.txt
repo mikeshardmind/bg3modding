@@ -42,6 +42,9 @@ DB_Avatars(_Character)
 AND
 NOT DB_mikeshardmind_Illy_StartingEquip(_Character)
 THEN
+TemplateAddTo(TOOL_GEN_ThievesTools_A_Open_A_e32a200c-5b63-414d-ae57-00e7b38f125b, _Character, 10, 0);
+TemplateAddTo(TOOL_GEN_Disam_Toolkit_A_22c74b5e-bef2-41b1-b9ed-f4acc766d4ee, _Character, 5, 0);
+TemplateAddTo(TOOL_GEN_Shovel_A_73efd1f7-5616-4ca8-84e6-6128aa6efaea, _Character, 1, 0);
 TemplateAddTo(WPN_HUM_Shield_A_0_d2af60ea-1b72-4d25-a188-6d8bc4fe255b, _Character, 1, 0);
 TemplateAddTo(WPN_HUM_Shortsword_A_0_467ddb4f-6791-41fa-99f7-ee8620d63bbe, _Character, 2, 0);
 TemplateAddTo(WPN_HUM_Spear_A_0_9f0f1c0e-012d-44e1-9b29-86c64d2bf675, _Character, 1, 0);
