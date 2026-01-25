@@ -27,21 +27,20 @@
 
 ---@class (exact) SpellListScope
 ---@field kind "spell_list"
----@field uuid string
+---@field uuid string[]
+
+---@class (exact) PassiveScope
+---@field kind "passive"
+---@field uuid string[]
 
 ---@class (exact) ClassScope
 ---@field kind "class"
----@field uuid string
+---@field uuid string[]
 
----@class (exact) SubclassScope
----@field kind "subclass"
----@field uuid string
+---@class (exact) ScopeName
+---@field kind ("spell_list"| "passive" | "class")
 
----@class (exact) WildcardScope
----@field kind "*"
-
--- note: Not all scopes supported yet
----@alias Scope SpellListScope | WildcardScope
+---@alias Scope SpellListScope | ClassScope| PassiveScope
 
 -- Checks that a list has certain spells or not
 ---@class (exact) HasAnySpellFilter
@@ -62,5 +61,6 @@
 ---@field name string
 ---@field description string?
 ---@field rules Rule[]
----@field scopes Scope[]
 ---@field spell_filters SpellFilter[]
+---@field scopes table<ScopeName, string[]>
+---@field wildcards table<ScopeName, true>

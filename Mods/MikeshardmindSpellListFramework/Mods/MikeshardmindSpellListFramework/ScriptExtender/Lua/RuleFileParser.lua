@@ -1,4 +1,5 @@
 Ext.Require("Settings.lua")
+Ext.Require("utils.lua")
 
 ArrayRulesMinimum = {
     ["add"] = 1,
@@ -7,11 +8,9 @@ ArrayRulesMinimum = {
     ["has_any"] = 1,
     ["has_all"] = 1,
     ["has_none"] = 1,
-    ["scope"] = 1,
-}
-
-local IsUUIDScopeName = {
-    ["spell_list"] = true,
+    ["spell_list"] = 1,
+    ["class"] = 1,
+    ["passive"] = 1,
 }
 
 local RawText = {
@@ -25,40 +24,18 @@ local IsSpellFilter = {
     ["has_none"] = true,
 }
 
-local IsScope = {["scope"] = true}
+---@type table<ScopeName, boolean>
+IsScope = {
+    ["spell_list"] = true,
+    ["class"] = true,
+    ["passive"] = true,
+}
 
 local IsRule = {
     ["add"] = true,
     ["remove"] = true,
     ["prefer"] = true,
 }
-
--- only neded because I'm rejecting `,,`
-local function split(s, sep, plain)
-   local start = 1
-   local done = false
-   local function pass(i, j, ...)
-      if i then
-         local seg = s:sub(start, i - 1)
-         start = j + 1
-         return seg, ...
-      else
-         done = true
-         return s:sub(start)
-      end
-   end
-   return function()
-      if done then
-         return
-       end
-      if sep == '' then
-         done = true
-         return s
-      end
-      return pass(s:find(sep, start, plain))
-   end
-end
-
 
 ---@param lines string[]
 ---@return RuleGroup
@@ -69,7 +46,7 @@ local function StructureGroup(lines)
     end
 
     ---@type RuleGroup
-    local ret = {name = "", rules = {}, scopes = {}, spell_filters = {}}
+    local ret = {name = "", rules = {}, scopes = {}, spell_filters = {}, wildcards = {}}
 
     for i = 2, #lines do
         ---@type string?
@@ -90,7 +67,7 @@ local function StructureGroup(lines)
             local required_number = ArrayRulesMinimum[kind]
             if required_number then
                 local entries = {}
-                for e in split(data, ",", 1) do
+                for e in StringSplit(data, ",", true) do
                     e = e:match("^%s*(.-)%s*$")
                     if not e or #e == 0 then error(("Invalid rulegroup entry %s"):format(line)) end
                     table.insert(entries, e)
@@ -104,28 +81,32 @@ local function StructureGroup(lines)
                     table.insert(ret.spell_filters, {kind = kind, spells = entries})
                 elseif IsRule[kind] then
                     table.insert(ret.rules, {kind = kind, spells = entries})
+                elseif IsScope[kind] then
+                    local scopes = ret.scopes[kind] or {}
+                    for _, e in pairs(entries) do
+                        if e == "*" then ret.wildcards[kind] = true end
+                        scopes[kind][e] = true
+                    end
+                    ret.scopes[kind] = scopes
                 end
             end
 
-            -- scopes
-            if IsScope[kind] then
-                data = data:match("^%s*(.-)%s*$")
-                if data == "*" then
-                    table.insert(ret.scopes, {kind="*"})
-                else
-                    local scope_kind, scope_uuid = data:match("^([%W]+):([%W]+)$")
-                    if scope_kind and scope_uuid and IsUUIDScopeName[scope_kind] then
-                        table.insert(ret.scopes, {kind=scope_kind, uuid=scope_uuid})
-                    else
-                        error(("Invalid scope: %s"):format(data))
-                    end
-                end
-            end
         end
     end
 
-    -- implicit apply to everything
-    if #ret.scopes == 0 then table.insert(ret.scopes, {kind="*"}) end
+    local scope_count = 0
+    for scope_kind, _ in pairs(IsScope) do
+        scope_count = scope_count + #ret.scopes[scope_kind]
+    end
+    if scope_count == 0 then
+        for scope_kind, _ in pairs(IsScope) do
+            ret.wildcards[scope_kind] = true
+        end
+    end
+    for scope_kind, _ in pairs(IsScope) do
+        if ret.wildcards[scope_kind] then ret.scopes[scope_kind] = {} end
+    end
+
     if #ret.rules == 0 then error("rule group must have at least 1 rule") end
     return ret
 end

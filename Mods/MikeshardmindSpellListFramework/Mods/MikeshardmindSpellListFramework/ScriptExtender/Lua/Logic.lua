@@ -1,6 +1,7 @@
 Ext.Require("Spells.lua")
 Ext.Require("Settings.lua")
 Ext.Require("RuleFileParser.lua")
+Ext.Require("Utils.lua")
 
 
 local missing_rule_messages = {
@@ -40,12 +41,10 @@ local function TrimRuleGroup(g)
     return g
 end
 
-
-
 ---@param config SLFrameworkConfig
----@return table<string, RuleGroup>
+---@return RuleGroup[]
 local function GetActiveRules(config)
-    ---@type table<string, RuleGroup>
+    ---@type RuleGroup[]
     local working_table = {}
     local loaded_cache = {}
     local valid_namespaces = {}
@@ -71,7 +70,7 @@ local function GetActiveRules(config)
             local g = namespaced_rules[localname]
             local trimmed_g = TrimRuleGroup(g)
             if trimmed_g then
-                working_table[namespaced_name] = g
+                table.insert(working_table, trimmed_g)
             else
                 Ext.Utils.PrintWarning(missing_rule_messages["name"]:format(localname, namespace))
             end
@@ -79,32 +78,6 @@ local function GetActiveRules(config)
     end
 
     return working_table
-end
-
-
----@class GroupedByScope
----@field all RuleGroup[]
----@field spell_list table <string, RuleGroup[]>
-
----@param  groups_by_id table<string, RuleGroup>
----@return GroupedByScope
-local function RuleGroupsByScope(groups_by_id)
-    local ret = {
-        ["all"] = {},
-        ["spell_list"] = {}
-    }
-    for _, rg in pairs(groups_by_id) do
-        for _, scope in pairs(rg.scopes) do
-            if scope.kind == "*" then
-                table.insert(ret["all"], rg)
-            else
-                local s = ret[scope.kind][scope.uuid] or {}
-                table.insert(s, rg)
-                ret[scope.kind][scope.uuid] = s
-            end
-        end
-    end
-    return ret
 end
 
 
@@ -124,7 +97,6 @@ local function GetValidSpellTable(spell_list)
     end
     return working_table
 end
-
 
 local function check_filter(rg, spell_table)
     local failed_filter = false
@@ -151,12 +123,77 @@ local function check_filter(rg, spell_table)
     return not failed_filter
 end
 
+---@param passive_data any
+---@param groups RuleGroup[]
+function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
+
+    -- add isn't supported on passives
+
+    local pass_through = {}
+    local unlock = {}
+    local seen = {}
+
+    for str in passive_data.Boosts:gmatch("([^;]+)") do
+        local unlocks_spell = str:match("UnlockSpell%(([^,%)])")
+        if unlocks_spell then
+            if unlock[unlocks_spell] == nil then
+                unlock[unlocks_spell] = str
+                table.insert(seen, str)
+            end
+        else
+            table.insert(pass_through, str)
+        end
+    end
+
+    local spell_table = GetValidSpellTable(seen)
+
+    for _, rg in pairs(groups) do
+        if check_filter(rg, spell_table) then
+            for _, rule in pairs(rg.rules) do
+                if rule.kind == "prefer" then
+                    local seen_any = false
+                    for _, spell in pairs(rule.spells) do
+                        if spell_table[spell] then
+                            if not seen_any then
+                                unlock[rule.spells[1]] = unlock[spell]:replace(spell,rule.spells[1])
+                                seen_any = true
+                            end
+                            spell_table[spell] = nil
+                        end
+                    end
+                    if seen_any then spell_table[rule.spells[1]] = true end
+                end
+            end
+        end
+    end
+
+    for _, rg in pairs(groups) do
+        if check_filter(rg, spell_table) then
+            for _, rule in pairs(rg.rules) do
+                if rule.kind == "remove" then
+                    for _, spell in pairs(rule.spells) do
+                        spell_table[spell] = nil
+                    end
+                end
+            end
+        end
+    end
+
+    for spell, _ in pairs(spell_table) do
+        if unlock[spell] then
+            table.insert(pass_through, unlock[spell])
+        end
+    end
+
+    passive_data.Boosts = table.concat(pass_through, ";")
+
+end
 
 
 ---@param spell_list string[]
 ---@param groups RuleGroup[]
 ---@return string[]
-local function ApplyRuleGroups(spell_list, groups)
+local function ApplyRuleGroupsToLists(spell_list, groups)
     local spell_table = GetValidSpellTable(spell_list)
 
     --- rules are prioritized by type for predictable behavior
@@ -196,7 +233,7 @@ local function ApplyRuleGroups(spell_list, groups)
             for _, rule in pairs(rg.rules) do
                 if rule.kind == "remove" then
                     for _, spell in pairs(rule.spells) do
-                        to_add[spell] = nil
+                        spell_table[spell] = nil
                     end
                 end
             end
@@ -209,6 +246,88 @@ local function ApplyRuleGroups(spell_list, groups)
     return ret
 end
 
+---@return table<string,table<string, true>>, table<string,table<string, true>>
+function GetListsAndPassives()
+    ---@type table<string,table<string, true>>
+    local spell_lists = {}
+    ---@type table<string,table<string, true>>
+    local passives = {}
+
+    local prog_to_class = {}
+
+    for class_uuid, desc in StaticDataIterator("ClassDescription") do
+        prog_to_class[desc.ProgressionTableUUID] = class_uuid
+        spell_lists[class_uuid] = {}
+        passives[class_uuid] = {}
+    end
+
+    for _, pd in StaticDataIterator("Progression") do
+        local class_uuid = prog_to_class[pd.TableUUID]
+        if class_uuid then
+            for _, this_select in ipairs(pd["AddSpells"]) do
+                spell_lists[class_uuid][this_select.SpellUUID] = true
+            end
+            for _, this_select in ipairs(pd["SelectSpells"]) do
+                spell_lists[class_uuid][this_select.SpellUUID] = true
+            end
+
+            local passives_added = pd.PassivesAdded or ""
+            for passive in StringSplit(passives_added, ";", true) do
+                passives[class_uuid][passive] = true
+            end
+
+            for _, this_select in ipairs(pd["SelectPassives"]) do
+                local passive_list = Ext.StaticData.Get(this_select.UUID, "PassiveList")
+                if passive_list then
+                    for passive in passive_list.Passives do
+                        passives[class_uuid][passive] = true
+                    end
+                end
+            end
+
+        end
+    end
+
+    return spell_lists, passives
+end
+
+---@class (exact) SCG
+---@field class table<string, RuleGroup[]>
+---@field passive table<string, RuleGroup[]>
+---@field spell_list table<string, RuleGroup[]>
+
+---@class (exact) WCG
+---@field class RuleGroup[]
+---@field passive RuleGroup[]
+---@field spell_list RuleGroup[]
+
+
+---@param rules RuleGroup[]
+---@return SCG, WCG
+local function grouped_by_scope_id(rules)
+    ---@type SCG
+    local grouped = {class = {}, passive = {}, spell_list = {}}
+    ---@type WCG
+    local wildcards = {class = {}, passive = {}, spell_list = {}}
+
+    for _, rg in pairs(rules) do
+        for scope_name, _ in pairs(IsScope) do
+            if rg.wildcards[scope_name] then
+                table.insert(wildcards[scope_name], rg)
+            else
+                for uuid, _ in rg.scopes[scope_name] do
+                    local t = grouped[scope_name][uuid] or {}
+                    table.insert(t, rg)
+                    grouped[scope_name][uuid] = t
+                end
+            end
+        end
+
+    end
+
+    return grouped, wildcards
+end
+
 
 function ModifyLists()
 
@@ -219,16 +338,69 @@ function ModifyLists()
     end
 
     local active_rules = GetActiveRules(config)
-    local groups_by_scope = RuleGroupsByScope(active_rules)
+    local sc_groups, wildcards = grouped_by_scope_id(active_rules)
+    local spell_lists_by_class, passives_by_class = GetListsAndPassives()
 
-    for _, uuid in pairs(Ext.StaticData.GetAll("SpellList")) do
-        local sl = Ext.StaticData.Get(uuid, "SpellList")
-        if sl then
-            local groups = groups_by_scope["spell_list"][uuid] or {}
-            for _, rg in pairs(groups_by_scope.all) do
+    --- avoid modifying repeating alterations
+    --- use class data to augment spell list and passive rules
+
+    for _, rg in pairs(wildcards.class) do
+        for _class_uuid, spell_lists in pairs(spell_lists_by_class) do
+            for sl_uuid, _ in pairs(spell_lists) do
+                local groups = sc_groups.spell_list[sl_uuid] or {}
                 table.insert(groups, rg)
+                sc_groups.spell_list[sl_uuid] = groups
             end
-            sl.Spells = ApplyRuleGroups(sl.Spells, groups)
+        end
+
+        for _class_uuid, passives in pairs(spell_lists_by_class) do
+            for passive, _ in pairs(passives) do
+                local groups = sc_groups.passive[passive] or {}
+                table.insert(groups, rg)
+                sc_groups.passive[passive] = groups
+            end
         end
     end
+
+    for uuid, rules in pairs(sc_groups.class) do
+        local spell_lists = spell_lists_by_class[uuid]
+        if spell_lists then
+            for sl_uuid, _ in pairs(spell_lists) do
+                local groups = sc_groups.spell_list[sl_uuid] or {}
+                for _, rg in pairs(rules) do table.insert(groups, rg) end
+                sc_groups["spell_list"][sl_uuid] = groups
+            end
+        end
+
+        local passives = passives_by_class[uuid]
+        if passives then
+            for passive, _ in pairs(passives) do
+                local groups = sc_groups["passive"][passive] or {}
+                for _, rg in pairs(rules) do table.insert(groups, rg) end
+                sc_groups["passive"][passive] = groups
+            end
+        end
+    end
+
+    for uuid, sl in StaticDataIterator("SpellList") do
+        local groups = sc_groups.spell_list[uuid] or {}
+        for _, rg in pairs(wildcards.spell_list) do
+            table.insert(groups, rg)
+        end
+        --- do this unconditionally, it includes a bugfix
+        --- related to not having enough spells to select
+        --- when "missing" spells even when we didnt cause it.
+        sl.Spells = ApplyRuleGroupsToLists(sl.Spells, groups)
+    end
+
+    for name, stats in StatsIterator("PassiveData") do
+        local groups = sc_groups.passive[name] or {}
+        for _, rg in pairs(wildcards.passive) do
+            table.insert(groups, rg)
+        end
+
+        if #groups > 0 then ApplyRuleGroupsToPassiveBoosts(stats, groups) end
+
+    end
+
 end

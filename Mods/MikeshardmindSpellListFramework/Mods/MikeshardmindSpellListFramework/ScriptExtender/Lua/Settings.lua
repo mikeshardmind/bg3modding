@@ -1,3 +1,4 @@
+Ext.Require("utils.lua")
 
 ---@class (exact) ExpectedUserConfig
 ---@field user_rule_namespaces string[]
@@ -57,22 +58,7 @@ local expected_type_error_messages = {
 }
 
 
----@generic T
----@param t T
----@return T
-local function deepcopy(t)
-    local typ = type(t)
 
-    if typ == "thread" then error("unsupported type") end
-    if typ == "userdata" then error("unsupported type") end
-    if typ ~= "table" then return t end
-
-    local ret = {}
-    for k, v in pairs(t) do
-        ret[k] = deepcopy(v)
-    end
-    return ret
-end
 
 ---@return SLFrameworkConfig
 function LoadUserSettings()
@@ -87,7 +73,7 @@ function LoadUserSettings()
     for key, value in pairs(default_user_settings) do
         if type(ret[key]) == "nil" then
             needs_rewrite = true
-            ret[key] = deepcopy(value)
+            ret[key] = DeepCopy(value)
         elseif not expected_type_validators[key] then
             local msg = fatal_config_format:format(filename, expected_type_error_messages[key])
             error(msg)
@@ -113,7 +99,8 @@ local example_text = [[
 [rulegroup]
 name: BladeCantrips
 description: Add Blade Cantrips to anyone with any blade cantrip, trimming to preferences
-scope: *
+spell_list: *
+class: *
 has_any: Target_BoomingBlade_5e, Target_BoomingBlade, Target_Sparking_Blade, Target_GreenFlameBlade, Target_BoomingBladeMove, Target_GreenFlameBlade
 add: Target_BoomingBlade_5e, Target_BoomingBlade, Target_Sparking_Blade, Target_GreenFlameBlade, Target_BoomingBladeMove, Target_GreenFlameBlade
 prefer: Target_BoomingBlade_5e, Target_BoomingBlade, Target_BoomingBladeMove
