@@ -54,7 +54,7 @@ local function GetActiveRules(config)
     end
     for _, namespaced_name in pairs(config.active_user_rules) do
 
-        namespaced_name = namespaced_name:match("^%s*(.-)%s*$")
+        namespaced_name = Trim(namespaced_name)
         local namespace, localname = namespaced_name:match("^([%w]+)%.([%w]+)$")
         if not namespace then
             Ext.Utils.PrintError(missing_rule_messages["invalid_rule_name"]:format(namespaced_name))
@@ -133,25 +133,27 @@ end
 ---@param groups RuleGroup[]
 function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
 
-    -- add isn't supported on passives
+    -- add isn't supported on passives (yet?)
 
     local pass_through = {}
     local unlock = {}
-    local seen = {}
+    local seen_unlocks = {}
+    local seen_spells = {}
 
-    for str in passive_data.Boosts:gmatch("([^;]+)") do
-        local unlocks_spell = str:match("UnlockSpell%(([^,%)])")
+    for str in StringSplit(passive_data.Boosts, ";", true) do
+        local unlocks_spell = str:match("UnlockSpell%(([^,%)]+)")
         if unlocks_spell then
             if unlock[unlocks_spell] == nil then
                 unlock[unlocks_spell] = str
-                table.insert(seen, str)
+                table.insert(seen_unlocks, str)
+                table.insert(seen_spells, unlocks_spell)
             end
         else
             table.insert(pass_through, str)
         end
     end
 
-    local spell_table = GetValidSpellTable(seen)
+    local spell_table = GetValidSpellTable(seen_spells)
 
     for _, rg in pairs(groups) do
         if check_filter(rg, spell_table) then
@@ -161,7 +163,7 @@ function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
                     for _, spell in pairs(rule.spells) do
                         if spell_table[spell] then
                             if not seen_any then
-                                unlock[rule.spells[1]] = unlock[spell]:replace(spell,rule.spells[1])
+                                unlock[rule.spells[1]] = PlainReplace(unlock[spell], spell, rule.spells[1])
                                 seen_any = true
                             end
                             spell_table[spell] = nil

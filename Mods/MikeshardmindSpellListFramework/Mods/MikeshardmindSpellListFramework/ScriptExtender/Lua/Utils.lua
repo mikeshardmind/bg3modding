@@ -75,3 +75,25 @@ function StringSplit(s, sep, plain)
       return pass(s:find(sep, start, plain))
    end
 end
+
+
+local function pattern_escape(str)
+    return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1")
+end
+
+---@param s string
+---@return string
+function Trim(s)
+    return s:match("^%s*(.-)%s*$")
+end
+
+---@param s string
+---@param target string
+---@param replacement string
+---@return string
+function PlainReplace(s, target, replacement)
+    local tr = pattern_escape(target)
+    local rr = replacement:gsub("%%", "%%%%")
+    local r, c = s:gsub(tr, rr)
+    return r
+end

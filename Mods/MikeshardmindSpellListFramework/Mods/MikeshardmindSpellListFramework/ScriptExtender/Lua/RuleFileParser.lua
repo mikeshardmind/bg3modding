@@ -54,15 +54,15 @@ local function StructureGroup(lines)
 
     for i = 2, #lines do
         ---@type string?
-        local line = (lines[i]):match("^%s*(.-)%s*$")
+        local line = Trim(lines[i])
         if line then
             local kind, data = line:match("^([^:]+):(.*)$")
 
             if not kind then
                 error(("Invalid rulegroup entry %s"):format(line))
             end
-            kind = kind:match("^%s*(.-)%s*$")
-            data = data:match("^%s*(.-)%s*$")
+            kind = Trim(kind)
+            data = Trim(data)
 
             -- key-valued
             if RawText[kind] then
@@ -74,7 +74,7 @@ local function StructureGroup(lines)
             if required_number then
                 local entries = {}
                 for e in StringSplit(data, ",", true) do
-                    e = e:match("^%s*(.-)%s*$")
+                    e = Trim(e)
                     if not e or #e == 0 then error(("Invalid rulegroup entry %s"):format(line)) end
                     table.insert(entries, e)
                 end
@@ -130,7 +130,7 @@ local function ParseRules(text, namespace)
     ---@type table<string, RuleGroup>
     local groups = {}
     for s in text:gmatch("[^\r\n]+") do
-        s = s:match("^%s*(.-)%s*$")
+        s = Trim(s)
         if s == "[rulegroup]" then
             if #line_cache > 0 then
                 local rg = StructureGroup(line_cache)
