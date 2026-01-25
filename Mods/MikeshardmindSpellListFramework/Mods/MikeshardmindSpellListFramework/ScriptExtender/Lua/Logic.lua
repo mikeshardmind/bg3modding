@@ -5,6 +5,7 @@ Ext.Require("Utils.lua")
 
 
 local missing_rule_messages = {
+    ['invalid_rule_name'] = "[SpellListFramework]%s is not a valid rule name",
     ["namespace"] = "[SpellListFramework]%s references rule namespace %s not declared in config.",
     ["name"] = "[SpellListFramework]Rule named %s not declared in namespace %s",
 }
@@ -48,31 +49,36 @@ local function GetActiveRules(config)
     local working_table = {}
     local loaded_cache = {}
     local valid_namespaces = {}
-    for _, namespace in pairs(config.user_rule_files) do
+    for _, namespace in pairs(config.user_rule_namespaces) do
         valid_namespaces[namespace] = true
     end
     for _, namespaced_name in pairs(config.active_user_rules) do
 
-        local namespace, localname = namespaced_name:match("^([%W]+):([%W]+)$")
-        if not valid_namespaces[namespace] then
-            Ext.Utils.PrintWarning(missing_rule_messages["namespace"]:format(namespaced_name, namespace))
-        end
-
-        local namespaced_rules = loaded_cache[namespace]
-        if not namespaced_rules then
-            namespaced_rules = LoadRulesFromFile(namespace)
-            if not namespaced_rules then
-                valid_namespaces[namespace] = nil
+        namespaced_name = namespaced_name:match("^%s*(.-)%s*$")
+        local namespace, localname = namespaced_name:match("^([%w]+)%.([%w]+)$")
+        if not namespace then
+            Ext.Utils.PrintError(missing_rule_messages["invalid_rule_name"]:format(namespaced_name))
+        else
+            if not valid_namespaces[namespace] then
+                Ext.Utils.PrintWarning(missing_rule_messages["namespace"]:format(namespaced_name, namespace))
             end
-        end
 
-        if namespaced_rules then
-            local g = namespaced_rules[localname]
-            local trimmed_g = TrimRuleGroup(g)
-            if trimmed_g then
-                table.insert(working_table, trimmed_g)
-            else
-                Ext.Utils.PrintWarning(missing_rule_messages["name"]:format(localname, namespace))
+            local namespaced_rules = loaded_cache[namespace]
+            if not namespaced_rules then
+                namespaced_rules = LoadRulesFromFile(namespace)
+                if not namespaced_rules then
+                    valid_namespaces[namespace] = nil
+                end
+            end
+
+            if namespaced_rules then
+                local g = namespaced_rules[localname]
+                local trimmed_g = TrimRuleGroup(g)
+                if trimmed_g then
+                    table.insert(working_table, trimmed_g)
+                else
+                    Ext.Utils.PrintWarning(missing_rule_messages["name"]:format(localname, namespace))
+                end
             end
         end
     end
@@ -108,11 +114,11 @@ local function check_filter(rg, spell_table)
                 end
             elseif filter.kind == "has_any" then
                 failed_filter = true
-                for _, spell in (filter.spells) do
+                for _, spell in pairs(filter.spells) do
                     if spell_table[spell] then failed_filter = false end
                 end
             elseif filter.kind == "has_none" then
-                for _, spell in (filter.spells) do
+                for _, spell in pairs(filter.spells) do
                     if spell_table[spell] then failed_filter = true end
                 end
             else
@@ -279,7 +285,7 @@ function GetListsAndPassives()
             for _, this_select in ipairs(pd["SelectPassives"]) do
                 local passive_list = Ext.StaticData.Get(this_select.UUID, "PassiveList")
                 if passive_list then
-                    for passive in passive_list.Passives do
+                    for _, passive in pairs(passive_list.Passives) do
                         passives[class_uuid][passive] = true
                     end
                 end

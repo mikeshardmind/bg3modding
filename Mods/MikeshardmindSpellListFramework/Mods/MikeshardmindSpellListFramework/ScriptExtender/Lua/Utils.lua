@@ -2,21 +2,21 @@
 function StaticDataIterator(kind)
     local co = coroutine.create(
         function()
-            for _, uuid in Ext.StaticData.GetAll(kind) do
+            for _, uuid in pairs(Ext.StaticData.GetAll(kind)) do
                 coroutine.yield(uuid, Ext.StaticData.Get(uuid, kind))
             end
         end
     )
     return function()
-        local ok, result = coroutine.resume(co)
-        if ok then return result end
+        local ok, uuid, data = coroutine.resume(co)
+        return uuid, data
     end
 end
 
 function StatsIterator(kind)
     local co = coroutine.create(
         function()
-            for _, name in Ext.Stats.GetStats(kind) do
+            for _, name in pairs(Ext.Stats.GetStats(kind)) do
                 local stats = Ext.Stats.Get(name)
                 if stats then
                     coroutine.yield(name, stats)
@@ -25,8 +25,8 @@ function StatsIterator(kind)
         end
     )
     return function()
-        local ok, result = coroutine.resume(co)
-        if ok then return result end
+        local ok, name, stats = coroutine.resume(co)
+        return name, stats
     end
 end
 
