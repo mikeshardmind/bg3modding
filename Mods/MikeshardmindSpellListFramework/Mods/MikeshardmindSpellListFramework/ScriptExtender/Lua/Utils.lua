@@ -1,4 +1,30 @@
 
+-- Contains structural typing for the fields used
+-- not comprehensive, despite listing (exact) as it's intended
+-- to limit api surface I should both use and care about
+
+---@class (exact) ExtStaticData_SpellSelector
+---@field SpellUUID string
+
+---@class (exact) ExtStaticData_UUIDSelector
+---@field UUID string
+
+---@class (exact) ExtStaticData_Progression
+---@field AddSpells ExtStaticData_SpellSelector[]
+---@field SelectSpells ExtStaticData_SpellSelector[]
+---@field PassivesAdded string
+---@field SelectPassives ExtStaticData_UUIDSelector[]
+---@field TableUUID string
+
+---@class (exact) ExtStaticData_ClassDescription
+---@field ProgressionTableUUID string
+
+---@class (exact) ExtStaticData_SpellList
+---@field Spells string[]
+
+---@overload fun(kind: "ClassDescription"): fun(): string, ExtStaticData_ClassDescription
+---@overload fun(kind: "Progression"): fun(): string, ExtStaticData_Progression
+---@overload fun(kind: "SpellList"): fun(): string, ExtStaticData_SpellList
 function StaticDataIterator(kind)
     local co = coroutine.create(
         function()
@@ -13,6 +39,21 @@ function StaticDataIterator(kind)
     end
 end
 
+---@class (Exact) ExtStaticData_PassiveList
+---@field Passives string[]
+
+
+---@param uuid string
+---@return ExtStaticData_PassiveList?
+function GetExtPassiveList(uuid)
+    return Ext.StaticData.Get(uuid, "PassiveList")
+end
+
+
+---@class (exact) ExtStats_PassiveData
+---@field Boosts string
+
+---@overload fun(kind: "PassiveData"): fun(): string, ExtStats_PassiveData
 function StatsIterator(kind)
     local co = coroutine.create(
         function()

@@ -20,6 +20,7 @@ local function TrimRuleGroup(g)
     local rule_working_list = {}
 
     for _, rule in pairs(g.rules) do
+        ---@type table<string, boolean>
         local seen = {}
         ---@type string[]
         local spell_working_list = {}
@@ -47,7 +48,9 @@ end
 local function GetActiveRules(config)
     ---@type RuleGroup[]
     local working_table = {}
+    ---@type table<string,table<string, RuleGroup>?>
     local loaded_cache = {}
+    ---@type table<string, boolean>
     local valid_namespaces = {}
     for _, namespace in pairs(config.user_rule_namespaces) do
         valid_namespaces[namespace] = true
@@ -55,6 +58,7 @@ local function GetActiveRules(config)
     for _, namespaced_name in pairs(config.active_user_rules) do
 
         namespaced_name = Trim(namespaced_name)
+        ---@type string?, string?
         local namespace, localname = namespaced_name:match("^([%w]+)%.([%w]+)$")
         if not namespace then
             Ext.Utils.PrintError(missing_rule_messages["invalid_rule_name"]:format(namespaced_name))
@@ -68,10 +72,13 @@ local function GetActiveRules(config)
                 namespaced_rules = LoadRulesFromFile(namespace)
                 if not namespaced_rules then
                     valid_namespaces[namespace] = nil
+                else
+                    loaded_cache[namespace] = namespaced_rules
                 end
             end
 
             if namespaced_rules then
+                ---@type RuleGroup
                 local g = namespaced_rules[localname]
                 local trimmed_g = TrimRuleGroup(g)
                 if trimmed_g then
@@ -86,10 +93,10 @@ local function GetActiveRules(config)
     return working_table
 end
 
-
 ---@param spell_list string[]
 ---@return table<string, boolean>
 local function GetValidSpellTable(spell_list)
+    ---@type table <string, boolean>
     local seen = {}
     ---@type table<string, boolean>
     local working_table = {}
@@ -104,6 +111,9 @@ local function GetValidSpellTable(spell_list)
     return working_table
 end
 
+---@param rg RuleGroup
+---@param spell_table table<string, boolean>
+---@return boolean
 local function check_filter(rg, spell_table)
     local failed_filter = false
     if #rg.spell_filters > 0 then
@@ -129,15 +139,18 @@ local function check_filter(rg, spell_table)
     return not failed_filter
 end
 
----@param passive_data any
+---@param passive_data ExtStats_PassiveData
 ---@param groups RuleGroup[]
 function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
 
     -- add isn't supported on passives (yet?)
-
+    ---@type string[]
     local pass_through = {}
+    ---@type table<string, string>
     local unlock = {}
+    ---@type string[]
     local seen_unlocks = {}
+    ---@type string[]
     local seen_spells = {}
 
     for str in StringSplit(passive_data.Boosts, ";", true) do
@@ -197,7 +210,6 @@ function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
 
 end
 
-
 ---@param spell_list string[]
 ---@param groups RuleGroup[]
 ---@return string[]
@@ -248,6 +260,7 @@ local function ApplyRuleGroupsToLists(spell_list, groups)
         end
     end
 
+    ---@type string[]
     local ret = {}
     for spell, _ in pairs(spell_table) do table.insert(ret, spell) end
     table.sort(ret, SpellSortFunc)
@@ -272,10 +285,10 @@ function GetListsAndPassives()
     for _, pd in StaticDataIterator("Progression") do
         local class_uuid = prog_to_class[pd.TableUUID]
         if class_uuid then
-            for _, this_select in ipairs(pd["AddSpells"]) do
+            for _, this_select in ipairs(pd.AddSpells) do
                 spell_lists[class_uuid][this_select.SpellUUID] = true
             end
-            for _, this_select in ipairs(pd["SelectSpells"]) do
+            for _, this_select in ipairs(pd.SelectSpells) do
                 spell_lists[class_uuid][this_select.SpellUUID] = true
             end
 
@@ -284,8 +297,8 @@ function GetListsAndPassives()
                 passives[class_uuid][passive] = true
             end
 
-            for _, this_select in ipairs(pd["SelectPassives"]) do
-                local passive_list = Ext.StaticData.Get(this_select.UUID, "PassiveList")
+            for _, this_select in ipairs(pd.SelectPassives) do
+                local passive_list = GetExtPassiveList(this_select.UUID)
                 if passive_list then
                     for _, passive in pairs(passive_list.Passives) do
                         passives[class_uuid][passive] = true
@@ -308,7 +321,6 @@ end
 ---@field class RuleGroup[]
 ---@field passive RuleGroup[]
 ---@field spell_list RuleGroup[]
-
 
 ---@param rules RuleGroup[]
 ---@return SCG, WCG
@@ -335,7 +347,6 @@ local function grouped_by_scope_id(rules)
 
     return grouped, wildcards
 end
-
 
 function ModifyLists()
 
@@ -376,16 +387,16 @@ function ModifyLists()
             for sl_uuid, _ in pairs(spell_lists) do
                 local groups = sc_groups.spell_list[sl_uuid] or {}
                 for _, rg in pairs(rules) do table.insert(groups, rg) end
-                sc_groups["spell_list"][sl_uuid] = groups
+                sc_groups.spell_list[sl_uuid] = groups
             end
         end
 
         local passives = passives_by_class[uuid]
         if passives then
             for passive, _ in pairs(passives) do
-                local groups = sc_groups["passive"][passive] or {}
+                local groups = sc_groups.passive[passive] or {}
                 for _, rg in pairs(rules) do table.insert(groups, rg) end
-                sc_groups["passive"][passive] = groups
+                sc_groups.passive[passive] = groups
             end
         end
     end
