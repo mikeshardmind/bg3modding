@@ -28,13 +28,13 @@ local function is_alphanum_string_array(t)
     return true
 end
 
-local function is_array_of_col_sep_strings(t)
+local function is_array_of_dot_sep_strings(t)
     if type(t) ~= "table" then return false end
     local i = 0
     for _ in pairs(t) do
         i = i + 1
         if type(t[i]) ~= "string" then return false end
-        local lhs , rhs = t[i]:match("^([%w]+):([%w]+)$")
+        local lhs , rhs = t[i]:match("^([%w]+).([%w]+)$")
         if not (lhs and rhs) then return false end
     end
     return true
@@ -43,7 +43,7 @@ end
 
 local expected_type_validators = {
     user_rule_namespaces = is_alphanum_string_array,
-    active_user_rules = is_array_of_col_sep_strings,
+    active_user_rules = is_array_of_dot_sep_strings,
 }
 
 local fatal_config_format = [[
@@ -71,7 +71,7 @@ function LoadUserSettings()
         if type(ret[key]) == "nil" then
             needs_rewrite = true
             ret[key] = DeepCopy(value)
-        elseif not expected_type_validators[key] then
+        elseif not expected_type_validators[key](value) then
             local msg = fatal_config_format:format(filename, expected_type_error_messages[key])
             error(msg)
         end
@@ -92,6 +92,23 @@ end
 function GetUserRuleFilePath(rule_file_name)
     local mod_dir = Ext.Mod.GetMod("c78d58b7-2bc5-4a13-975c-cd7cf9a42630").Info.Directory
     return ("%s/user_rules/%s.txt"):format(mod_dir, rule_file_name)
+end
+
+
+---@param mod_id string
+---@param rule_file_name string
+---@return string
+function GetModProvidedFilePath(mod_id, rule_file_name)
+    local mod_dir = Ext.Mod.GetMod(mod_id).Info.Directory
+    return ("%s/packaged_rules/%s.txt"):format(mod_dir, rule_file_name)
+end
+
+
+---@param mod_id string
+---@return string
+function GetModProvidedConfigPath(mod_id)
+    local mod_dir = Ext.Mod.GetMod(mod_id).Info.Directory
+    return ("%s/SpellListFramework.json"):format(mod_dir)
 end
 
 
