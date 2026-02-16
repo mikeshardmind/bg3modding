@@ -1,3 +1,5 @@
+Ext.Require("Utils.lua")
+
 local bard_guid = "92cd50b6-eb1b-4824-8adb-853e90c34c90"
 
 
@@ -43,18 +45,8 @@ local never_include_as_secrets = {
     ["Shout_ShadowBlade_Spell"] = true,
 }
 
--- avoid duplicates from a few other known large spell mods
--- Currently, this prefers ATT provided high level spells
--- if both ATT and 5e spell implementations found for these
-local conditional_removals = {
-    ["Projectile_VlaakithBeam"] = "Target_FingerOfDeath",
-    ["Shout_ATT_HolyAura"] = "Shout_HolyAura",
-}
-
 
 local sortv_cache = {}
-local spell_list_cache = {}
-
 local validated_spells_cache = {}
 local has_warned_broken = {}
 local has_warned_broken_list = {
@@ -68,6 +60,18 @@ local broken_warn_formats = {
     MissingSpell = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained a spell that isn't defined named %s",
     InvalidSpellName = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list: %s contains an invalid spell name",
 }
+
+local function generate_sort_key_for_spell(spell_name, spell)
+    if sortv_cache[spell_name] ~= nil then
+        return true
+    end
+
+    local translated_name = Ext.Loca.GetTranslatedString(spell.DisplayName)
+    local sort_name = (translated_name or "") .. spell_name
+
+    sortv_cache[spell_name] = {["Level"] = spell.Level, ["Name"] = sort_name}
+    return true
+end
 
 ---@param name string
 ---@param list_guid string
@@ -102,23 +106,25 @@ local function get_spell_with_validation(name, list_guid, classnames, debug)
         return nil
     end
 
-    local ok, modlistype = pcall(function() return spell.ModifierList end)
+    local ok, result
 
-    if not ok or type(modlistype) ~= "string" or modlistype ~= "SpellData" then
+    ok, result = pcall(function() return spell.ModifierList end)
+
+    if not ok or type(result) ~= "string" or result ~= "SpellData" then
         Ext.Utils.PrintWarning(broken_warn_formats.NotSpell:format(classnames, list_guid, name))
         has_warned_broken[name] = true
         return nil
     end
 
-    local ok, container_id = pcall(function() return spell.SpellContainerID end)
-    if not ok or type(container_id) ~= "string" then
+    ok, result = pcall(function() return spell.SpellContainerID end)
+    if not ok or type(result) ~= "string" then
         Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellContainerID:format(name))
         has_warned_broken[name] = true
         return nil
     end
 
-    local ok, spell_level = pcall(function() return spell.Level end)
-    if not ok or type(spell_level) ~= "number" then
+    ok, result = pcall(function() return spell.Level end)
+    if not ok or type(result) ~= "number" then
         Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellLevel:format(name))
         has_warned_broken[name] = true
         return nil
@@ -129,22 +135,11 @@ local function get_spell_with_validation(name, list_guid, classnames, debug)
     end
 
     validated_spells_cache[name] = spell
+    generate_sort_key_for_spell(name, spell)
     return spell
 
 end
 
-
-local function generate_sort_key_for_spell(spell_name, spell)
-    if sortv_cache[spell_name] ~= nil then
-        return true
-    end
-
-    local translated_name = Ext.Loca.GetTranslatedString(spell.DisplayName)
-    local sort_name = (translated_name or "") .. spell_name
-
-    sortv_cache[spell_name] = {["Level"] = spell.Level, ["Name"] = sort_name}
-    return true
-end
 
 local function sort_func(a, b)
 
@@ -157,105 +152,11 @@ local function sort_func(a, b)
     return lhs.Name < rhs.Name
 end
 
-local function SortSpellWorkingList(working_list)
-    local ret = {}
-    for spell_name, spell_object in pairs(working_list) do
-        if generate_sort_key_for_spell(spell_name, spell_object) then
-            table.insert(ret, spell_name)
-        end
-    end
-    table.sort(ret, sort_func)
-    return ret
 
-end
+local function CrawlProgressionData()
 
-local function SortSpellList(spell_list, guid)
-    if spell_list_cache[guid] ~= nil then
-        if spell_list ~= nil then
-            spell_list.Spells = spell_list_cache[guid]
-        end
-    else
-        local checked_names = {}
-        local working_list = {}
-        if spell_list ~= nil then
-            for _, spell_name in pairs(spell_list.Spells) do
-                if checked_names[spell_name] == nil then
-                    local spell = get_spell_with_validation(spell_name, guid, "Bard")
-                    if spell ~= nil then
-                        working_list[spell_name] = spell
-                    end
-                end
-                checked_names[spell_name] = true
-            end
-        end
-        local sorted = SortSpellWorkingList(working_list)
-        spell_list_cache[guid] = sorted
-        spell_list.Spells = sorted
-    end
-end
-
-
-
-local function MagicalSecretsProgressions()
-
-    local ret = {}
-    local ids = {}
-    for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
-        local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
-        if resourceGuid == bard_guid or desc.ParentGuid == bard_guid then
-            ids[desc.ProgressionTableUUID] = true
-        end
-    end
-
-    for _, progguid in pairs(Ext.StaticData.GetAll("Progression")) do
-        local pd = Ext.StaticData.Get(progguid, "Progression")
-        if ids[pd.TableUUID] ~= nil then
-            for _, this_select in ipairs(pd["SelectSpells"]) do
-                if magical_secrets_select[this_select.SelectorId] ~= nil then
-                    table.insert(ret, progguid)
-                end
-            end
-        end
-    end
-
-    return ret
-end
-
-local function subtract_setlists(l1, l2)
-    -- creates a new list from unique values of l1
-    -- that are neither a key or value of l2
-
-    local sub_table = {}
-    for key, item in pairs(l2) do
-        sub_table[item] = true
-        sub_table[key] = true
-    end
-
-    local ret = {}
-    local seen = {}
-    for _, item in pairs(l1) do
-        if sub_table[item] == nil then
-            if seen[item] == nil then
-                table.insert(ret, item)
-                seen[item] = true
-            end
-        end
-    end
-
-    return ret
-end
-
-local function DoConditionalRemovals(working_list)
-    local to_remove = {}
-    for _idx, name in ipairs(working_list) do
-        local l = conditional_removals[name]
-        if l then to_remove[l] = true end
-    end
-    return subtract_setlists(working_list, to_remove)
-end
-
-
-local function GetAllValidSecrets()
+    local bard_prog_table_ids = {}
+    local bard_secrets_progression_ids = {}
 
     local all_spells = {
         [0] = {},
@@ -290,8 +191,12 @@ local function GetAllValidSecrets()
     local collected_warlock_progs = {}
     local warlock_spell_table_assoc = {}
 
-    for _, resourceGuid in pairs(Ext.StaticData.GetAll("ClassDescription")) do
-        local desc = Ext.StaticData.Get(resourceGuid, "ClassDescription")
+    for resourceGuid, desc in StaticDataIterator("ClassDescription") do
+
+        if resourceGuid == bard_guid or desc.ParentGuid == bard_guid then
+            bard_prog_table_ids[desc.ProgressionTableUUID] = true
+        end
+
         local class_name = supprted_secrets_classes[resourceGuid]
         if class_name ~= nil then
             if desc.SpellList ~= nil then
@@ -308,10 +213,18 @@ local function GetAllValidSecrets()
         end
     end
 
-    for _, progguid in pairs(Ext.StaticData.GetAll("Progression")) do
-        local pd = Ext.StaticData.Get(progguid, "Progression")
+    for progguid, pd in StaticDataIterator("Progression") do
+
+        if bard_prog_table_ids[pd.TableUUID] ~= nil then
+            for this_select in ListIter(pd["SelectSpells"]) do
+                if magical_secrets_select[this_select.SelectorId] ~= nil then
+                    table.insert(bard_secrets_progression_ids, progguid)
+                end
+            end
+        end
+
         if collected_prog_ids[pd.TableUUID] ~= nil then
-            for _, this_select in ipairs(pd["SelectSpells"]) do
+            for this_select in ListIter(pd["SelectSpells"]) do
                 collected_spell_lists[this_select.SpellUUID] = true
                 local list_class_assoc = spell_list_to_class[this_select.SpellUUID] or {}
                 list_class_assoc[prog_to_classname[pd.TableUUID]] = true
@@ -319,10 +232,10 @@ local function GetAllValidSecrets()
             end
         end
         if collected_warlock_progs[pd.TableUUID] ~= nil then
-            for _, this_select in ipairs(pd["SelectSpells"]) do
+            for this_select in ListIter(pd["SelectSpells"]) do
                 local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                 if spell_list ~= nil then
-                    for _, spell_name in pairs(spell_list.Spells) do
+                    for spell_name in ListIter(spell_list.Spells) do
                         if get_spell_with_validation(spell_name, this_select.SpellUUID, "Warlock") then
                             local assoc = warlock_spell_table_assoc[spell_name] or {}
                             assoc[pd.TableUUID] = true
@@ -340,15 +253,15 @@ local function GetAllValidSecrets()
         end
     end
 
-    for list_uuid, _ in pairs(collected_spell_lists) do
+    for list_uuid in SetIter(collected_spell_lists) do
         local spell_list = Ext.StaticData.Get(list_uuid, "SpellList")
         if spell_list ~= nil then
             local class_names = {}
-            for cl, _ in pairs(spell_list_to_class[list_uuid]) do
+            for cl in SetIter(spell_list_to_class[list_uuid]) do
                 table.insert(class_names, cl)
             end
             local names = table.concat(class_names, ",")
-            for _, spell_name in pairs(spell_list.Spells) do
+            for spell_name in ListIter(spell_list.Spells) do
                 if get_spell_with_validation(spell_name, list_uuid, names) then
                     collected_spells[spell_name] = true
                 end
@@ -356,60 +269,67 @@ local function GetAllValidSecrets()
         end
     end
 
-    for spell_name, _ in pairs(collected_spells) do
+    for spell_name in SetIter(collected_spells) do
         local spell = get_spell_with_validation(spell_name, "IGNORE", "IGNORE")
         if spell ~= nil then
             all_spells[spell.Level][spell_name] = true
         end
     end
 
-    return all_spells
+    return bard_secrets_progression_ids, all_spells
 
 end
 
 function ModifyLists()
 
-    local has_secrets = MagicalSecretsProgressions()
-    local all_secret_spells = GetAllValidSecrets()
+    local has_secrets, all_secret_spells = CrawlProgressionData()
     local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
     local to_subtract = never_include_as_secrets
 
     if use_mystras_with_5e_loaded then
-        for spell_name, _ in pairs(known_5e_with_mystras_duplicates) do
+        for spell_name, _ in SetIter(known_5e_with_mystras_duplicates) do
             to_subtract[spell_name] = true
         end
     end
 
-    for _, progguid in ipairs(has_secrets) do
+    for progguid in ListIter(has_secrets) do
         local pd = Ext.StaticData.Get(progguid, "Progression")
         local secret_spell_level = (pd.Level > 17) and 9 or ((pd.Level + 1) // 2)
 
-        for _, this_select in ipairs(pd["SelectSpells"]) do
+        for this_select in ListIter(pd["SelectSpells"]) do
             if magical_secrets_select[this_select.SelectorId] ~= nil then
                 local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                 if spell_list ~= nil then
 
-                    local working_list = {}
-
-                    for _, spell in pairs(spell_list.Spells) do
-                        local spell_data = get_spell_with_validation(spell, this_select.SpellUUID, "Bard")
-                        if spell_data ~= nil then
-                            table.insert(working_list, spell)
-                        end
-
-                    for lv, spells in pairs(all_secret_spells) do
-                        if lv <= secret_spell_level then
-                            for spell, _ in pairs(spells) do
-                                table.insert(working_list, spell)
+                    local co = coroutine.create(
+                        function()
+                            for spell in ListIter(spell_list.Spells) do
+                                local spell_data = get_spell_with_validation(spell, this_select.SpellUUID, "Bard")
+                                if spell_data ~= nil then
+                                    coroutine.yield(spell)
+                                end
                             end
+
+                            for lv, spells in pairs(all_secret_spells) do
+                                if lv <= secret_spell_level then
+                                    for spell in SetIter(spells) do
+                                        coroutine.yield(spell)
+                                    end
+                                end
+                            end
+
                         end
+                    )
+                    local it = function()
+                        local _, value = coroutine.resume(co)
+                        return value
                     end
 
-                    working_list = DoConditionalRemovals(working_list)
-                    spell_list.Spells = subtract_setlists(working_list, to_subtract)
-
-                    SortSpellList(spell_list, this_select.SpellUUID)
+                    local sorted = {}
+                    for spell in Unique(it, to_subtract) do
+                        BinInsert(sorted, spell, sort_func)
                     end
+                    spell_list.Spells = sorted
                 end
             end
         end
