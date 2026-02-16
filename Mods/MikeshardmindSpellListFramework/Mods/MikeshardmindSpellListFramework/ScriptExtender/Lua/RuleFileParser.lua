@@ -118,13 +118,13 @@ local function StructureGroup(lines)
 end
 
 
-local duplicated_entry_msg = "[SpellListFramework] Rules namespace %s contains duplicated rule named %s"
+local duplicated_entry_msg = "[SpellListFramework] contains duplicated rule named %s"
 
 
 ---@param text string
----@param namespace string
+---@param prefix string
 ---@return table<string, RuleGroup>
-local function ParseRules(text, namespace)
+local function ParseRules(text, prefix)
 
     local line_cache = {}
     ---@type table<string, RuleGroup>
@@ -135,7 +135,7 @@ local function ParseRules(text, namespace)
             if #line_cache > 0 then
                 local rg = StructureGroup(line_cache)
                 if groups[rg.name] then
-                    Ext.Utils.PrintWarning(duplicated_entry_msg:format(namespace, rg.name))
+                    Ext.Utils.PrintWarning(duplicated_entry_msg:format(prefix, rg.name))
                 end
                 groups[rg.name] = rg
                 line_cache = {}
@@ -147,7 +147,7 @@ local function ParseRules(text, namespace)
     if #line_cache > 0 then
         local rg = StructureGroup(line_cache)
         if groups[rg.name] then
-            Ext.Utils.PrintWarning(duplicated_entry_msg:format(namespace, rg.name))
+            Ext.Utils.PrintWarning(duplicated_entry_msg:format(prefix, rg.name))
         end
         groups[rg.name] = rg
     end
@@ -156,18 +156,35 @@ local function ParseRules(text, namespace)
 end
 
 
----@param namespace string
+---@param filename string
+---@param prefix string
 ---@return table<string, RuleGroup>?
-function LoadRulesFromFile(namespace)
-    local filename = GetUserRuleFilePath(namespace)
+local function load_rules_file(filename, prefix)
+
     local text = Ext.IO.LoadFile(filename)
     if not text then return end
 
-    local ok, result = pcall(ParseRules, text, namespace)
+    local ok, result = pcall(ParseRules, text, prefix)
     if not ok then
         Ext.Utils.PrintWarning(("[SpellListFramework] Invalid rules file %s"):format(filename))
         Ext.Utils.PrintError(result)
     else
         return result
     end
+
+end
+
+---@param namespace string
+---@return table<string, RuleGroup>?
+function LoadUserRulesFromFile(namespace)
+    local filename = GetUserRuleFilePath(namespace)
+    return load_rules_file(filename, "User rule namespace ".. namespace)
+end
+
+---@param uuid string
+---@return table<string, RuleGroup>?
+function LoadModRulesFromFile(uuid)
+    local filename = GetModProvidedRuleFilePath(uuid)
+    if not filename then return end
+    return load_rules_file(filename, "Mod provided rules: ".. uuid)
 end

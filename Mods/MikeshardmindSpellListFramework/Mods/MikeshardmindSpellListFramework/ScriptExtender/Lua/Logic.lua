@@ -5,9 +5,10 @@ Ext.Require("Utils.lua")
 
 
 local missing_rule_messages = {
-    ['invalid_rule_name'] = "[SpellListFramework]%s is not a valid rule name",
+    ["invalid_rule_name"] = "[SpellListFramework]%s is not a valid rule name",
     ["namespace"] = "[SpellListFramework]%s references rule namespace %s not declared in config.",
     ["name"] = "[SpellListFramework]Rule named %s not declared in namespace %s",
+    ["missing_mod_provided"] = "[SpellListFramework] missing requested mod provided rule from modid %s named %s",
 }
 
 ---@param g RuleGroup?
@@ -43,7 +44,42 @@ local function TrimRuleGroup(g)
     return g
 end
 
----@param config SLFrameworkConfig
+
+
+---@overload fun(config: SLFrameworkUserConfig): fun(): RuleGroup
+function ModRulesIterator(config)
+    local active = GetEnabledModRules(config)
+    local co = coroutine.create(
+        function()
+            for uuid, rules in pairs(active) do
+                if #rules > 0 then
+                    local rulegroups = LoadModRulesFromFile(uuid)
+                    if rulegroups then
+                        for _, rule in ipairs(rules) do
+                            local rulegroup = rulegroups[rule]
+                            if rulegroup then
+                                local trimmed_g = TrimRuleGroup(rulegroup)
+                                if trimmed_g then
+                                    coroutine.yield(trimmed_g)
+                                end
+                            else
+                                local fmt = missing_rule_messages["missing_mod_provided"]
+                                Ext.Utils.PrintWarning(fmt:format(uuid, rule))
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    )
+    return function()
+        local ok, group = coroutine.resume(co)
+        return group
+    end
+end
+
+
+---@param config SLFrameworkUserConfig
 ---@return RuleGroup[]
 local function GetActiveRules(config)
     ---@type RuleGroup[]
@@ -69,7 +105,7 @@ local function GetActiveRules(config)
 
             local namespaced_rules = loaded_cache[namespace]
             if not namespaced_rules then
-                namespaced_rules = LoadRulesFromFile(namespace)
+                namespaced_rules = LoadUserRulesFromFile(namespace)
                 if not namespaced_rules then
                     valid_namespaces[namespace] = nil
                 else
@@ -88,6 +124,10 @@ local function GetActiveRules(config)
                 end
             end
         end
+    end
+
+    for rule in ModRulesIterator(config) do
+        table.insert(working_table, rule)
     end
 
     return working_table
