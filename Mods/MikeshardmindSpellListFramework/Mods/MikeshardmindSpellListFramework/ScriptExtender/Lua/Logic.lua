@@ -73,7 +73,7 @@ function ModRulesIterator(config)
         end
     )
     return function()
-        local ok, group = coroutine.resume(co)
+        local _, group = coroutine.resume(co)
         return group
     end
 end
@@ -404,7 +404,7 @@ function ModifyLists()
     --- use class data to augment spell list and passive rules
 
     for _, rg in pairs(wildcards.class) do
-        for _class_uuid, spell_lists in pairs(spell_lists_by_class) do
+        for _, spell_lists in pairs(spell_lists_by_class) do
             for sl_uuid, _ in pairs(spell_lists) do
                 local groups = sc_groups.spell_list[sl_uuid] or {}
                 table.insert(groups, rg)
@@ -412,7 +412,7 @@ function ModifyLists()
             end
         end
 
-        for _class_uuid, passives in pairs(spell_lists_by_class) do
+        for _, passives in pairs(spell_lists_by_class) do
             for passive, _ in pairs(passives) do
                 local groups = sc_groups.passive[passive] or {}
                 table.insert(groups, rg)
