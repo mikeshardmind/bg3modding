@@ -173,7 +173,7 @@ function API_WizModifyLists(class_guid, OursRitual)
     for _, pd in ipairs(prog_data) do
         local spell_lv = max_spell_lv
 
-        for idx, this_select in ipairs(pd["SelectSpells"]) do
+        for _, this_select in ipairs(pd["SelectSpells"]) do
 
             if this_select.PrepareType == "Unknown" then
                 if seen_lists[this_select.SpellUUID] == nil then
@@ -226,7 +226,6 @@ function API_WizModifyLists(class_guid, OursRitual)
         [9] = {},
     }
 
-    local all_rituals = {}
     local dead_spell_entries = {}
 
     for _, spellname in ipairs(seen_class_spells) do
@@ -234,7 +233,6 @@ function API_WizModifyLists(class_guid, OursRitual)
         if spell ~= nil then
             if #spell.RitualCosts:match("^%s*(.-)%s*$") > 0 then
                 table.insert(leveled_ritual_lists[spell.Level], spellname)
-                all_rituals[spellname] = true
             end
         else
             dead_spell_entries[spellname] = true
@@ -243,8 +241,7 @@ function API_WizModifyLists(class_guid, OursRitual)
 
     for spell_list_id, _ in pairs(seen_lists) do
         local spell_list = Ext.StaticData.Get(spell_list_id, "SpellList")
-        local sl = subtract_setlists(spell_list.Spells, all_rituals)
-        spell_list.Spells = subtract_setlists(sl, dead_spell_entries)
+        spell_list.Spells = subtract_setlists(spell_list.Spells, dead_spell_entries)
     end
 
     for i, data in pairs(leveled_ritual_lists) do
