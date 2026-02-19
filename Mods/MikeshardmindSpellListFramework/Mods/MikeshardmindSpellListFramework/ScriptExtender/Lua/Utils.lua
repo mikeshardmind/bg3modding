@@ -138,3 +138,114 @@ function PlainReplace(s, target, replacement)
     local r, c = s:gsub(tr, rr)
     return r
 end
+
+
+---@generic T
+---@param t T[]
+---@return fun(): T
+function ListIter(t)
+    local co = coroutine.create(
+        function()
+            for _, value in pairs(t) do
+                coroutine.yield(value)
+
+            end
+        end
+    )
+    return function()
+        local _, value = coroutine.resume(co)
+        return value
+    end
+end
+
+---@generic T
+---@param t table<T, true>
+---@return fun(): T
+function SetIter(t)
+     local co = coroutine.create(
+        function()
+            for value, _ in pairs(t) do
+                coroutine.yield(value)
+
+            end
+        end
+    )
+    return function()
+        local _, value = coroutine.resume(co)
+        return value
+    end
+end
+
+
+---@generic T
+---@param prod fun(): T
+---@param predicate fun(x: T): boolean
+---@return fun(): T
+function Filter(predicate, prod)
+
+    local co = coroutine.create(
+        function()
+            for value in prod do
+                if predicate(value) then
+                    coroutine.yield(value)
+                end
+            end
+        end
+    )
+    return function()
+        local _, value = coroutine.resume(co)
+        return value
+    end
+
+end
+
+
+---@generic T
+---@param prod fun(): T
+---@param seen table<`T`, true>?
+---@return fun(): T
+function Unique(prod, seen)
+    seen = seen or {}
+    local co = coroutine.create(
+        function()
+            for value in prod do
+                if not seen[value] then
+                    coroutine.yield(value)
+                    seen[value] = true
+                end
+            end
+        end
+    )
+
+    return function()
+        local _, value = coroutine.resume(co)
+        return value
+    end
+end
+
+---@generic T
+---@param t T[]
+---@param value T
+---@param cmp fun(T, T): boolean
+function BinInsert(t, value, cmp)
+    local front,back,mid,state = 1,#t,1,0
+    while front <= back do
+        mid = (front+back) // 2
+        if cmp( value,t[mid] ) then
+        back,state = mid - 1,0
+        else
+        front,state = mid + 1,1
+        end
+    end
+    table.insert( t,(mid+state),value )
+    return (mid+state)
+end
+
+---@generic T
+---@param list T[]
+---@return table<T, true>
+function SetFromListValues(list)
+    local ret = {}
+    for value in ListIter(list) do ret[value] = true end
+    return ret
+end

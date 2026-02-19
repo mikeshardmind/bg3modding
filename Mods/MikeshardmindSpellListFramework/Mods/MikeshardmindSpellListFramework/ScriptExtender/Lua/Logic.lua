@@ -20,18 +20,13 @@ local function TrimRuleGroup(g)
     ---@type Rule[]
     local rule_working_list = {}
 
-    for _, rule in pairs(g.rules) do
-        ---@type table<string, boolean>
-        local seen = {}
+    for rule in ListIter(g.rules) do
+
         ---@type string[]
         local spell_working_list = {}
-        for _, spell_name in pairs(rule.spells) do
-            if not seen[spell_name] then
-                if CheckSpellExists(spell_name) then
-                    table.insert(spell_working_list, spell_name)
-                end
-                seen[spell_name] = true
-            end
+
+        for spell_name in Filter(CheckSpellExists, Unique(ListIter(rule.spells))) do
+            table.insert(spell_working_list, spell_name)
         end
         if ArrayRulesMinimum[rule.kind] <= #spell_working_list then
             rule.spells = spell_working_list
@@ -55,7 +50,7 @@ function ModRulesIterator(config)
                 if #rules > 0 then
                     local rulegroups = LoadModRulesFromFile(uuid)
                     if rulegroups then
-                        for _, rule in ipairs(rules) do
+                        for rule in ListIter(rules) do
                             local rulegroup = rulegroups[rule]
                             if rulegroup then
                                 local trimmed_g = TrimRuleGroup(rulegroup)
@@ -87,11 +82,9 @@ local function GetActiveRules(config)
     ---@type table<string,table<string, RuleGroup>?>
     local loaded_cache = {}
     ---@type table<string, boolean>
-    local valid_namespaces = {}
-    for _, namespace in pairs(config.user_rule_namespaces) do
-        valid_namespaces[namespace] = true
-    end
-    for _, namespaced_name in pairs(config.active_user_rules) do
+    local valid_namespaces = SetFromListValues(config.user_rule_namespaces)
+
+    for namespaced_name in ListIter(config.active_user_rules) do
 
         namespaced_name = Trim(namespaced_name)
         ---@type string?, string?
@@ -101,26 +94,27 @@ local function GetActiveRules(config)
         else
             if not valid_namespaces[namespace] then
                 Ext.Utils.PrintWarning(missing_rule_messages["namespace"]:format(namespaced_name, namespace))
-            end
+            else
+                local namespaced_rules = loaded_cache[namespace]
 
-            local namespaced_rules = loaded_cache[namespace]
-            if not namespaced_rules then
-                namespaced_rules = LoadUserRulesFromFile(namespace)
                 if not namespaced_rules then
-                    valid_namespaces[namespace] = nil
-                else
-                    loaded_cache[namespace] = namespaced_rules
+                    namespaced_rules = LoadUserRulesFromFile(namespace)
+                    if not namespaced_rules then
+                        valid_namespaces[namespace] = nil
+                    else
+                        loaded_cache[namespace] = namespaced_rules
+                    end
                 end
-            end
 
-            if namespaced_rules then
-                ---@type RuleGroup
-                local g = namespaced_rules[localname]
-                local trimmed_g = TrimRuleGroup(g)
-                if trimmed_g then
-                    table.insert(working_table, trimmed_g)
-                else
-                    Ext.Utils.PrintWarning(missing_rule_messages["name"]:format(localname, namespace))
+                if namespaced_rules then
+                    ---@type RuleGroup
+                    local g = namespaced_rules[localname]
+                    local trimmed_g = TrimRuleGroup(g)
+                    if trimmed_g then
+                        table.insert(working_table, trimmed_g)
+                    else
+                        Ext.Utils.PrintWarning(missing_rule_messages["name"]:format(localname, namespace))
+                    end
                 end
             end
         end
@@ -136,47 +130,51 @@ end
 ---@param spell_list string[]
 ---@return table<string, boolean>
 local function GetValidSpellTable(spell_list)
-    ---@type table <string, boolean>
-    local seen = {}
     ---@type table<string, boolean>
     local working_table = {}
-    for _, spell in pairs(spell_list) do
-        if seen[spell] == nil then
-            if CheckSpellExists(spell) then
-                working_table[spell] = true
-            end
-            seen[spell] = true
-        end
+
+    for spell in Filter(CheckSpellExists, Unique(ListIter(spell_list))) do
+        working_table[spell] = true
     end
+
     return working_table
 end
 
----@param rg RuleGroup
----@param spell_table table<string, boolean>
----@return boolean
-local function check_filter(rg, spell_table)
-    local failed_filter = false
-    if #rg.spell_filters > 0 then
-        for _, filter in pairs(rg.spell_filters) do
-            if filter.kind == "has_all" then
-                for _, spell in pairs(filter.spells) do
-                    if not spell_table[spell] then failed_filter = true end
+
+
+---@param spell_table string[]
+---@return fun(rg: RuleGroup): boolean
+local function GetFilter(spell_table)
+
+    ---@param rg RuleGroup
+    ---@return boolean
+    local function check_filter(rg)
+        local failed_filter = false
+        if #rg.spell_filters > 0 then
+            for filter in ListIter(rg.spell_filters) do
+                if filter.kind == "has_all" then
+                    for spell in ListIter(filter.spells) do
+                        if not spell_table[spell] then failed_filter = true end
+                    end
+                elseif filter.kind == "has_any" then
+                    failed_filter = true
+                    for spell in ListIter(filter.spells) do
+                        if spell_table[spell] then failed_filter = false end
+                    end
+                elseif filter.kind == "has_none" then
+                    for spell in ListIter(filter.spells) do
+                        if spell_table[spell] then failed_filter = true end
+                    end
+                else
+                    error("wtf...")
                 end
-            elseif filter.kind == "has_any" then
-                failed_filter = true
-                for _, spell in pairs(filter.spells) do
-                    if spell_table[spell] then failed_filter = false end
-                end
-            elseif filter.kind == "has_none" then
-                for _, spell in pairs(filter.spells) do
-                    if spell_table[spell] then failed_filter = true end
-                end
-            else
-                error("wtf...")
             end
         end
+        return not failed_filter
     end
-    return not failed_filter
+
+    return check_filter
+
 end
 
 ---@param passive_data ExtStats_PassiveData
@@ -201,46 +199,44 @@ function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
                 table.insert(seen_unlocks, str)
                 table.insert(seen_spells, unlocks_spell)
             end
-        else
+        elseif str ~= "" then
             table.insert(pass_through, str)
         end
     end
 
     local spell_table = GetValidSpellTable(seen_spells)
 
-    for _, rg in pairs(groups) do
-        if check_filter(rg, spell_table) then
-            for _, rule in pairs(rg.rules) do
-                if rule.kind == "prefer" then
-                    local seen_any = false
-                    for _, spell in pairs(rule.spells) do
-                        if spell_table[spell] then
-                            if not seen_any then
-                                unlock[rule.spells[1]] = PlainReplace(unlock[spell], spell, rule.spells[1])
-                                seen_any = true
-                            end
-                            spell_table[spell] = nil
-                        end
-                    end
-                    if seen_any then spell_table[rule.spells[1]] = true end
-                end
-            end
-        end
-    end
 
-    for _, rg in pairs(groups) do
-        if check_filter(rg, spell_table) then
-            for _, rule in pairs(rg.rules) do
-                if rule.kind == "remove" then
-                    for _, spell in pairs(rule.spells) do
+    for rg in Filter(GetFilter(spell_table), ListIter(groups)) do
+
+        for rule in ListIter(rg.rules) do
+            if rule.kind == "prefer" then
+                local seen_any = false
+                for spell in ListIter(rule.spells) do
+                    if spell_table[spell] then
+                        if not seen_any then
+                            unlock[rule.spells[1]] = PlainReplace(unlock[spell], spell, rule.spells[1])
+                            seen_any = true
+                        end
                         spell_table[spell] = nil
                     end
                 end
+                if seen_any then spell_table[rule.spells[1]] = true end
             end
         end
     end
 
-    for spell, _ in pairs(spell_table) do
+    for rg in Filter(GetFilter(spell_table), ListIter(groups)) do
+        for rule in ListIter(rg.rules) do
+            if rule.kind == "remove" then
+                for spell in ListIter(rule.spells) do
+                    spell_table[spell] = nil
+                end
+            end
+        end
+    end
+
+    for spell in SetIter(spell_table) do
         if unlock[spell] then
             table.insert(pass_through, unlock[spell])
         end
@@ -258,43 +254,40 @@ local function ApplyRuleGroupsToLists(spell_list, groups)
 
     --- rules are prioritized by type for predictable behavior
     local to_add = {}
-    for _, rg in pairs(groups) do
-        if check_filter(rg, spell_table) then
-            for _, rule in pairs(rg.rules) do
-                if rule.kind == "add" then
-                    for _, spell in pairs(rule.spells) do
-                        to_add[spell] = true
-                    end
-                end
-            end
-        end
-    end
-    for spell, _ in pairs(to_add) do spell_table[spell] = true end
-
-    for _, rg in pairs(groups) do
-        if check_filter(rg, spell_table) then
-            for _, rule in pairs(rg.rules) do
-                if rule.kind == "prefer" then
-                    local seen_any = false
-                    for _, spell in pairs(rule.spells) do
-                        if spell_table[spell] then
-                            seen_any = true
-                            spell_table[spell] = nil
-                        end
-                    end
-                    if seen_any then spell_table[rule.spells[1]] = true end
+    for rg in Filter(GetFilter(spell_table), ListIter(groups)) do
+        for rule in ListIter(rg.rules) do
+            if rule.kind == "add" then
+                for _, spell in pairs(rule.spells) do
+                    to_add[spell] = true
                 end
             end
         end
     end
 
-    for _, rg in pairs(groups) do
-        if check_filter(rg, spell_table) then
-            for _, rule in pairs(rg.rules) do
-                if rule.kind == "remove" then
-                    for _, spell in pairs(rule.spells) do
+    for spell in SetIter(to_add) do
+        spell_table[spell] = true
+    end
+
+    for rg in Filter(GetFilter(spell_table), ListIter(groups)) do
+        for rule in ListIter(rg.rules) do
+            if rule.kind == "prefer" then
+                local seen_any = false
+                for spell in ListIter(rule.spells) do
+                    if spell_table[spell] then
+                        seen_any = true
                         spell_table[spell] = nil
                     end
+                end
+                if seen_any then spell_table[rule.spells[1]] = true end
+            end
+        end
+    end
+
+    for rg in Filter(GetFilter(spell_table), ListIter(groups)) do
+        for _, rule in pairs(rg.rules) do
+            if rule.kind == "remove" then
+                for _, spell in pairs(rule.spells) do
+                    spell_table[spell] = nil
                 end
             end
         end
@@ -302,7 +295,7 @@ local function ApplyRuleGroupsToLists(spell_list, groups)
 
     ---@type string[]
     local ret = {}
-    for spell, _ in pairs(spell_table) do table.insert(ret, spell) end
+    for spell in SetIter(spell_table) do table.insert(ret, spell) end
     table.sort(ret, SpellSortFunc)
     return ret
 end
@@ -370,12 +363,12 @@ local function grouped_by_scope_id(rules)
     ---@type WCG
     local wildcards = {class = {}, passive = {}, spell_list = {}}
 
-    for _, rg in pairs(rules) do
-        for scope_name, _ in pairs(IsScope) do
+    for rg in ListIter(rules) do
+        for scope_name in SetIter(IsScope) do
             if rg.wildcards[scope_name] then
                 table.insert(wildcards[scope_name], rg)
             else
-                for uuid, _ in rg.scopes[scope_name] do
+                for uuid in SetIter(rg.scopes[scope_name]) do
                     local t = grouped[scope_name][uuid] or {}
                     table.insert(t, rg)
                     grouped[scope_name][uuid] = t
@@ -403,17 +396,18 @@ function ModifyLists()
     --- avoid modifying repeating alterations
     --- use class data to augment spell list and passive rules
 
-    for _, rg in pairs(wildcards.class) do
-        for _, spell_lists in pairs(spell_lists_by_class) do
-            for sl_uuid, _ in pairs(spell_lists) do
+    for rg in ListIter(wildcards.class) do
+
+        for spell_lists in ListIter(spell_lists_by_class) do
+            for sl_uuid in SetIter(spell_lists) do
                 local groups = sc_groups.spell_list[sl_uuid] or {}
                 table.insert(groups, rg)
                 sc_groups.spell_list[sl_uuid] = groups
             end
         end
 
-        for _, passives in pairs(spell_lists_by_class) do
-            for passive, _ in pairs(passives) do
+        for passives in ListIter(passives_by_class) do
+            for passive in SetIter(passives) do
                 local groups = sc_groups.passive[passive] or {}
                 table.insert(groups, rg)
                 sc_groups.passive[passive] = groups
@@ -424,18 +418,18 @@ function ModifyLists()
     for uuid, rules in pairs(sc_groups.class) do
         local spell_lists = spell_lists_by_class[uuid]
         if spell_lists then
-            for sl_uuid, _ in pairs(spell_lists) do
+            for sl_uuid in SetIter(spell_lists) do
                 local groups = sc_groups.spell_list[sl_uuid] or {}
-                for _, rg in pairs(rules) do table.insert(groups, rg) end
+                for rg in ListIter(rules) do table.insert(groups, rg) end
                 sc_groups.spell_list[sl_uuid] = groups
             end
         end
 
         local passives = passives_by_class[uuid]
         if passives then
-            for passive, _ in pairs(passives) do
+            for passive in SetIter(passives) do
                 local groups = sc_groups.passive[passive] or {}
-                for _, rg in pairs(rules) do table.insert(groups, rg) end
+                for rg in ListIter(rules) do table.insert(groups, rg) end
                 sc_groups.passive[passive] = groups
             end
         end
@@ -443,7 +437,7 @@ function ModifyLists()
 
     for uuid, sl in StaticDataIterator("SpellList") do
         local groups = sc_groups.spell_list[uuid] or {}
-        for _, rg in pairs(wildcards.spell_list) do
+        for rg in ListIter(wildcards.spell_list) do
             table.insert(groups, rg)
         end
         --- do this unconditionally, it includes a bugfix
@@ -454,7 +448,7 @@ function ModifyLists()
 
     for name, stats in StatsIterator("PassiveData") do
         local groups = sc_groups.passive[name] or {}
-        for _, rg in pairs(wildcards.passive) do
+        for rg in ListIter(wildcards.passive) do
             table.insert(groups, rg)
         end
 
