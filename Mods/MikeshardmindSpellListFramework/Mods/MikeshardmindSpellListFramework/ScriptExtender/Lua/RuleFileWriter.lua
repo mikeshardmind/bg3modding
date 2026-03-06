@@ -1,4 +1,5 @@
 Ext.Require("Utils.lua")
+Ext.Require("Settings.lua")
 
 
 ---@param rg RuleGroup
@@ -32,4 +33,16 @@ function RuleGroupToString(rg)
     end
 
     return table.concat(buffer, "\n")
+end
+
+---@param namespace string
+---@param rgs RuleGroup[]
+function UserRuleGroupsToFile(namespace, rgs)
+
+    local data = {}
+    for rg in ListIter(rgs) do
+        table.insert(data, RuleGroupToString(rg))
+    end
+
+    Ext.IO.SaveFile(GetUserRuleFilePath(namespace), table.concat(data, "\n"))
 end
