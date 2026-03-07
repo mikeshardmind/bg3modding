@@ -1,4 +1,3 @@
-
 -- Contains structural typing for the fields used
 -- not comprehensive, despite listing (exact) as it's intended
 -- to limit api surface I should both use and care about
@@ -49,7 +48,6 @@ function GetExtPassiveList(uuid)
     return Ext.StaticData.Get(uuid, "PassiveList")
 end
 
-
 ---@class (exact) ExtStats_PassiveData
 ---@field Boosts string
 
@@ -70,7 +68,6 @@ function StatsIterator(kind)
         return name, stats
     end
 end
-
 
 ---@generic T
 ---@param t T
@@ -93,30 +90,29 @@ end
 ---@param sep string
 ---@param plain boolean?
 function StringSplit(s, sep, plain)
-   local start = 1
-   local done = false
-   local function pass(i, j, ...)
-      if i then
-         local seg = s:sub(start, i - 1)
-         start = j + 1
-         return seg, ...
-      else
-         done = true
-         return s:sub(start)
-      end
-   end
-   return function()
-      if done then
-         return
-       end
-      if sep == '' then
-         done = true
-         return s
-      end
-      return pass(s:find(sep, start, plain))
-   end
+    local start = 1
+    local done = false
+    local function pass(i, j, ...)
+        if i then
+            local seg = s:sub(start, i - 1)
+            start = j + 1
+            return seg, ...
+        else
+            done = true
+            return s:sub(start)
+        end
+    end
+    return function()
+        if done then
+            return
+        end
+        if sep == '' then
+            done = true
+            return s
+        end
+        return pass(s:find(sep, start, plain))
+    end
 end
-
 
 local function pattern_escape(str)
     return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1")
@@ -139,7 +135,6 @@ function PlainReplace(s, target, replacement)
     return r
 end
 
-
 ---@generic T
 ---@param t T[]
 ---@return fun(): T
@@ -148,7 +143,6 @@ function ListIter(t)
         function()
             for _, value in pairs(t) do
                 coroutine.yield(value)
-
             end
         end
     )
@@ -162,11 +156,10 @@ end
 ---@param t table<T, true>
 ---@return fun(): T
 function SetIter(t)
-     local co = coroutine.create(
+    local co = coroutine.create(
         function()
             for value, _ in pairs(t) do
                 coroutine.yield(value)
-
             end
         end
     )
@@ -176,13 +169,11 @@ function SetIter(t)
     end
 end
 
-
 ---@generic T
 ---@param prod fun(): T
 ---@param predicate fun(x: T): boolean
 ---@return fun(): T
 function Filter(predicate, prod)
-
     local co = coroutine.create(
         function()
             for value in prod do
@@ -196,9 +187,7 @@ function Filter(predicate, prod)
         local _, value = coroutine.resume(co)
         return value
     end
-
 end
-
 
 ---@generic T
 ---@param prod fun(): T
@@ -228,17 +217,17 @@ end
 ---@param value T
 ---@param cmp fun(T, T): boolean
 function BinInsert(t, value, cmp)
-    local front,back,mid,state = 1,#t,1,0
+    local front, back, mid, state = 1, #t, 1, 0
     while front <= back do
-        mid = (front+back) // 2
-        if cmp( value,t[mid] ) then
-        back,state = mid - 1,0
+        mid = (front + back) // 2
+        if cmp(value, t[mid]) then
+            back, state = mid - 1, 0
         else
-        front,state = mid + 1,1
+            front, state = mid + 1, 1
         end
     end
-    table.insert( t,(mid+state),value )
-    return (mid+state)
+    table.insert(t, (mid + state), value)
+    return (mid + state)
 end
 
 ---@generic T

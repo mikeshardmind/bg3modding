@@ -1,5 +1,3 @@
-
-
 --[[
 sapping sting
 ]]
@@ -12,7 +10,7 @@ for _, z in pairs(Ext.StaticData.GetAll("SpellDefaultValues")) do
   data[z] = Ext.Json.Parse(Ext.DumpExport(default))
 end
 Ext.IO.SaveFile("spellpreps.json", Ext.Json.Stringify(data))
-]]--
+]] --
 
 Static_data_names = {
     "SkillDefaultValues",
@@ -33,7 +31,6 @@ local function dump_name(name)
 end
 
 function Dump_interesting_static_data(_, name)
-
     if name ~= nil then
         dump_name(name)
     else

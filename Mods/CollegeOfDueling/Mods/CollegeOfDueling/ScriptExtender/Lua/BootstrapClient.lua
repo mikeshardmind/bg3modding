@@ -12,7 +12,6 @@ function EnsureSubclass()
 end
 
 local function IsHarmfulSingleTargetOrProjectileCantrip(sd)
-
     local is_spell = false
     local is_harmful = false
 
@@ -40,23 +39,21 @@ local function IsHarmfulSingleTargetOrProjectileCantrip(sd)
     end
 
     return sd.Level == 0 and is_spell and is_harmful
-
 end
 
 local cantrip_lists = {
-    "3cae2e56-9871-4cef-bba6-96845ea765fa",  -- wiz
-    "61f79a30-2cac-4a7a-b5fe-50c89d307dd6",  -- bard
-    "485a68b4-c678-4888-be63-4a702efbe391",  -- sorcerer
-    "2f43a103-5bf1-4534-b14f-663decc0c525",  -- cleric
-    "b8faf12f-ca42-45c0-84f8-6951b526182a",  -- druid
-    "f5c4af9c-5d8d-4526-9057-94a4b243cd40",  -- warlock
+    "3cae2e56-9871-4cef-bba6-96845ea765fa", -- wiz
+    "61f79a30-2cac-4a7a-b5fe-50c89d307dd6", -- bard
+    "485a68b4-c678-4888-be63-4a702efbe391", -- sorcerer
+    "2f43a103-5bf1-4534-b14f-663decc0c525", -- cleric
+    "b8faf12f-ca42-45c0-84f8-6951b526182a", -- druid
+    "f5c4af9c-5d8d-4526-9057-94a4b243cd40", -- warlock
 }
 
 local our_list_id = "5a7a26ae-8ec1-4d74-b3a6-d8384ae854bb"
 
 
 function ModifyCantripList()
-
     local seen = {}
     local found = {}
 
@@ -76,8 +73,7 @@ function ModifyCantripList()
 
     local our_list = Ext.StaticData.Get(our_list_id, "SpellList")
     our_list.Spells = found
-
 end
 
-Ext.Events.StatsLoaded:Subscribe(EnsureSubclass, {Priority = -1})
-Ext.Events.StatsLoaded:Subscribe(ModifyCantripList, {Priority = -1})
+Ext.Events.StatsLoaded:Subscribe(EnsureSubclass, { Priority = -1 })
+Ext.Events.StatsLoaded:Subscribe(ModifyCantripList, { Priority = -1 })

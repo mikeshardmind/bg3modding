@@ -1,4 +1,3 @@
-
 -- Contains structural typing for the fields used
 -- not comprehensive, despite listing (exact) as it's intended
 -- to limit api surface I should both use and care about
@@ -42,14 +41,13 @@ function StaticDataIterator(kind)
     end
 end
 
-
 ---@generic T
 ---@param t T[]
 ---@return fun(): T
 function ListIter(t)
     local i = 0
     local n = #t
-    return function ()
+    return function()
         i = i + 1
         if i <= n then return t[i] end
     end
@@ -59,11 +57,10 @@ end
 ---@param t table<T, true>
 ---@return fun(): T
 function SetIter(t)
-     local co = coroutine.create(
+    local co = coroutine.create(
         function()
             for value, _ in pairs(t) do
                 coroutine.yield(value)
-
             end
         end
     )
@@ -72,7 +69,6 @@ function SetIter(t)
         return value
     end
 end
-
 
 ---@generic T
 ---@param prod fun(): T
@@ -102,15 +98,15 @@ end
 ---@param value T
 ---@param cmp fun(T, T): boolean
 function BinInsert(t, value, cmp)
-    local front,back,mid,state = 1,#t,1,0
+    local front, back, mid, state = 1, #t, 1, 0
     while front <= back do
-        mid = (front+back) // 2
-        if cmp( value,t[mid] ) then
-        back,state = mid - 1,0
+        mid = (front + back) // 2
+        if cmp(value, t[mid]) then
+            back, state = mid - 1, 0
         else
-        front,state = mid + 1,1
+            front, state = mid + 1, 1
         end
     end
-    table.insert( t,(mid+state),value )
-    return (mid+state)
+    table.insert(t, (mid + state), value)
+    return (mid + state)
 end

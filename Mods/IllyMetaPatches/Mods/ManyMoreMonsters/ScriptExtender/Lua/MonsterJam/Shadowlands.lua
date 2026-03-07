@@ -1,4 +1,3 @@
-
 -- SRC:
 -- https://github.com/Difficulty-Immersion-Quality/DIQ-Misc-Patches/blob/main/DIQ%20Misc%20Patches/Mods/ManyMoreMonsters/ScriptExtender/Lua/MonsterJam/Shadowlands.lua
 
@@ -192,11 +191,11 @@ end
 
 local function ModifyMonstersShadowlands()
     if Osi.GetFlag(Act1bAdamFlag, Null) == 1 and
-    Osi.GetFlag(Act1bMikeFlag, Null) == 1 and
-    Osi.GetFlag(Act1bLiamFlag, Null) == 1 and
-    Osi.GetFlag(Act2AdamFlag, Null) == 0 and
-    Osi.GetFlag(Act2MikeFlag, Null) == 0 and
-    Osi.GetFlag(Act2LiamFlag, Null) == 0 then
+        Osi.GetFlag(Act1bMikeFlag, Null) == 1 and
+        Osi.GetFlag(Act1bLiamFlag, Null) == 1 and
+        Osi.GetFlag(Act2AdamFlag, Null) == 0 and
+        Osi.GetFlag(Act2MikeFlag, Null) == 0 and
+        Osi.GetFlag(Act2LiamFlag, Null) == 0 then
         Osi.SetOnStage(Adam2, 1)
         Osi.SetOnStage(Mike2, 1)
         Osi.SetOnStage(Liam2, 1)
@@ -217,12 +216,15 @@ end
 
 --Create Mimics
 local function CreateAct2Mimics()
-    local Act2ChestList = { Act2Chest1, Act2Chest2, Act2Chest3, Act2Chest4, Act2Chest5, Act2Chest6, Act2Chest7, Act2Chest8, Act2Chest9, Act2Chest10,
-                            Act2Chest11, Act2Chest12, Act2Chest13, Act2Chest14, Act2Chest15, Act2Chest16, Act2Chest17, Act2Chest18, Act2Chest19, Act2Chest20,
-                            Act2Chest21, Act2Chest22, Act2Chest23, Act2Chest24, Act2Chest25, Act2Chest26, Act2Chest27, Act2Chest28, Act2Chest29, Act2Chest30,
-                            Act2Chest31, Act2Chest32, Act2Chest33 }
-    for _,PossibleMimic in ipairs(Act2ChestList) do
-    local IsItAMimic = Ext.Utils.Random(1,5)
+    local Act2ChestList = { Act2Chest1, Act2Chest2, Act2Chest3, Act2Chest4, Act2Chest5, Act2Chest6, Act2Chest7,
+        Act2Chest8, Act2Chest9, Act2Chest10,
+        Act2Chest11, Act2Chest12, Act2Chest13, Act2Chest14, Act2Chest15, Act2Chest16, Act2Chest17, Act2Chest18,
+        Act2Chest19, Act2Chest20,
+        Act2Chest21, Act2Chest22, Act2Chest23, Act2Chest24, Act2Chest25, Act2Chest26, Act2Chest27, Act2Chest28,
+        Act2Chest29, Act2Chest30,
+        Act2Chest31, Act2Chest32, Act2Chest33 }
+    for _, PossibleMimic in ipairs(Act2ChestList) do
+        local IsItAMimic = Ext.Utils.Random(1, 5)
         if IsItAMimic == 1 then
             print("Mimic")
             Osi.ApplyStatus(PossibleMimic, "MMM_MIMIC2", -1, 1, PossibleMimic)
@@ -244,13 +246,15 @@ function TurnIntoMimic2(item, character)
     if Osi.IsDead(item) == 1 then
         return
     end
-    local x,y,z = Osi.GetPosition(item)
+    local x, y, z = Osi.GetPosition(item)
     local MimicSpawnID = Osi.CreateAt(Act2Mimic, x, y, z, 0, 1, '')
     if MimicSpawnID then
-        if (Osi.HasActiveStatus(character,"AMBUSH_IMMUNITY") == 1 or Osi.HasPassive(character, "Alert") == 1 or Osi.HasPassive(character, "Surprise_Immunity") == 1) and Osi.IsPlayer(character) == 1 then
-            Osi.QRY_StartDialogCustom_Fixed("GLO_PAD_Mimic_Revealed_55471c86-3b69-ccae-d0e3-e8749cf41d9e", character, Null, Null, Null, Null, Null, 1, 1, -1, 1 )
-        elseif Osi.HasActiveStatus(character,"AMBUSH_IMMUNITY") ~= 1 and Osi.HasPassive(character, "Alert") ~= 1 and Osi.HasPassive(character, "Surprise_Immunity") ~= 1 and Osi.IsPlayer(character) == 1 then
-            Osi.QRY_StartDialogCustom_Fixed("GLO_PAD_Mimic_Surprised_cb5f94c8-ee5b-c17a-959c-64bc6f88b417", character, Null, Null, Null, Null, Null, 1, 1, -1, 1 )
+        if (Osi.HasActiveStatus(character, "AMBUSH_IMMUNITY") == 1 or Osi.HasPassive(character, "Alert") == 1 or Osi.HasPassive(character, "Surprise_Immunity") == 1) and Osi.IsPlayer(character) == 1 then
+            Osi.QRY_StartDialogCustom_Fixed("GLO_PAD_Mimic_Revealed_55471c86-3b69-ccae-d0e3-e8749cf41d9e", character,
+                Null, Null, Null, Null, Null, 1, 1, -1, 1)
+        elseif Osi.HasActiveStatus(character, "AMBUSH_IMMUNITY") ~= 1 and Osi.HasPassive(character, "Alert") ~= 1 and Osi.HasPassive(character, "Surprise_Immunity") ~= 1 and Osi.IsPlayer(character) == 1 then
+            Osi.QRY_StartDialogCustom_Fixed("GLO_PAD_Mimic_Surprised_cb5f94c8-ee5b-c17a-959c-64bc6f88b417", character,
+                Null, Null, Null, Null, Null, 1, 1, -1, 1)
         end
         Osi.MoveAllItemsTo(item, MimicSpawnID, 0, 0, 1)
     end
@@ -332,7 +336,8 @@ local function BalthazarEventTown()
         Ext.Timer.WaitFor(3000, function()
             Osi.ApplyStatus(BalthazarEvent1, "MMM_BALTHAZARSPEAK1", 6, 1, BalthazarEvent1)
             Ext.Timer.WaitFor(4000, function()
-                Osi.PlayEffectAtPosition("55015577-edce-13a7-bfc7-a71f41994b01", -19.632179260254, 27.7001953125, 217.4959564209, 1)
+                Osi.PlayEffectAtPosition("55015577-edce-13a7-bfc7-a71f41994b01", -19.632179260254, 27.7001953125,
+                    217.4959564209, 1)
                 Ext.Timer.WaitFor(900, function()
                     Osi.SetOnStage(BalthazarEvent1, 0)
                     Osi.RemoveStatus(GraveyardTorch1, "BURNING")
@@ -564,7 +569,8 @@ local function ChildWraithEvent()
     Ext.Timer.WaitFor(1500, function()
         Osi.ApplyStatus(ChildWraithKid, "MMM_CHILDWRAITHSPEAK1", 6, 1, ChildWraithKid)
         Ext.Timer.WaitFor(2500, function()
-            Osi.PlayEffectAtPosition("55015577-edce-13a7-bfc7-a71f41994b01", 140.89486694336, 55.865234375, 65.303916931152, 1)
+            Osi.PlayEffectAtPosition("55015577-edce-13a7-bfc7-a71f41994b01", 140.89486694336, 55.865234375,
+                65.303916931152, 1)
             Ext.Timer.WaitFor(900, function()
                 Osi.SetOnStage(ChildWraithKid, 0)
                 Osi.SetOnStage(ChildWraithUndead, 1)
@@ -584,11 +590,12 @@ local function ReturnRingEvent()
         Osi.ApplyStatus(EllieMay, "MMM_ELLIEMAYSPEAK1", 6, 1, EllieMay)
         Ext.Timer.WaitFor(3000, function()
             Osi.SetHasDialog(EllieMay, 1)
-            for i,v in ipairs(Ext.Entity.GetAllEntitiesWithComponent("ServerCharacter")) do
+            for i, v in ipairs(Ext.Entity.GetAllEntitiesWithComponent("ServerCharacter")) do
                 Ext.Timer.WaitFor(100, function()
                     local EllieMayTextBox = v.Uuid.EntityUuid
                     if IsPlayer(EllieMayTextBox) == 1 then
-                        Osi.OpenMessageBox(EllieMayTextBox, Osi.ResolveTranslatedString("ha6267b39ga602g434cg9db1g557da2a3e17b"))
+                        Osi.OpenMessageBox(EllieMayTextBox,
+                            Osi.ResolveTranslatedString("ha6267b39ga602g434cg9db1g557da2a3e17b"))
                     end
                 end)
             end
@@ -600,17 +607,20 @@ local function BalthazarEventMausoleum()
     Ext.Timer.WaitFor(500, function()
         Osi.SetOnStage(BalthazarEvent2, 1)
         Osi.PlayEffect(BalthazarEvent2, "3c48f934-629d-0e94-4b6f-66f359cafb03", "", 4)
-        local SkeletonSpawnAura = Osi.PlayLoopEffectAtPosition("05e6b214-4477-644e-5c88-ac9a488bdc1e", -155.55741882324, 31.7490234375, 70.596000671387, 1)
+        local SkeletonSpawnAura = Osi.PlayLoopEffectAtPosition("05e6b214-4477-644e-5c88-ac9a488bdc1e", -155.55741882324,
+            31.7490234375, 70.596000671387, 1)
         Ext.Timer.WaitFor(3000, function()
             Osi.ApplyStatus(BalthazarEvent2, "MMM_BALTHAZARSPEAK2", 6, 1, BalthazarEvent1)
             Ext.Timer.WaitFor(4000, function()
-                Osi.PlayEffectAtPosition("55015577-edce-13a7-bfc7-a71f41994b01", -155.74822998047, 31.6103515625, 64.118644714355, 1)
+                Osi.PlayEffectAtPosition("55015577-edce-13a7-bfc7-a71f41994b01", -155.74822998047, 31.6103515625,
+                    64.118644714355, 1)
                 Ext.Timer.WaitFor(900, function()
                     Osi.SetOnStage(BalthazarEvent2, 0)
                     Ext.Timer.WaitFor(100, function()
                         Osi.SetOnStage(BalthazarSkeletonBoss, 1)
                         Osi.PlayEffect(BalthazarSkeletonBoss, "0fd4132b-444c-a82d-d844-c4ee70706def", "", 4)
-                        Osi.CharacterMoveToPosition(BalthazarSkeletonBoss, -155.67816162109, 31.529359817505, 62.25838470459, "Walk", "", 0)
+                        Osi.CharacterMoveToPosition(BalthazarSkeletonBoss, -155.67816162109, 31.529359817505,
+                            62.25838470459, "Walk", "", 0)
                         Ext.Timer.WaitFor(3000, function()
                             Osi.StopLoopEffect(SkeletonSpawnAura)
                             Osi.SetCanFight(BalthazarSkeletonBoss, 1)
@@ -640,7 +650,7 @@ Ext.Events.SessionLoaded:Subscribe(function()
 end)
 
 local function PreparedBoost()
-    for i,v in ipairs(Ext.Entity.GetAllEntitiesWithComponent("ServerCharacter")) do
+    for i, v in ipairs(Ext.Entity.GetAllEntitiesWithComponent("ServerCharacter")) do
         local charIDprepared = v.Uuid.EntityUuid
         if Osi.IsTagged(charIDprepared, "25bf5042-5bf6-4360-8df8-ab107ccb0d37") == 1 then
             Osi.ApplyStatus(charIDprepared, "MMM_PREPARED", PrepareDuration, 1, charIDprepared)
@@ -673,7 +683,7 @@ Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level_n
 end)
 
 --Enter Combat Listener
-Ext.Osiris.RegisterListener("EnteredCombat", 2, "after", function (object, combatGuid)
+Ext.Osiris.RegisterListener("EnteredCombat", 2, "after", function(object, combatGuid)
     if object == BalthazarZombie1 then
         local BaltZombieFightID = combatGuid
         ZombieSpeakSelector1()
@@ -689,36 +699,47 @@ Ext.Osiris.RegisterListener("TurnStarted", 1, "before", function(object)
     if object == SpiderKing and Osi.IsInCombat(SpiderKing) == 1 and Osi.GetFlag(Act2SpiderKingWave1Flag, Null) == 0 then
         Osi.SetFlag(Act2SpiderKingWave1Flag, Null, 0, 1)
         Osi.ApplyStatus(SpiderKing, "MMM_MORESPIDERS", 1)
-        local SpiderKingSpawnMidCombat1 = Osi.CreateAt(SpiderKingSummon, 304.29098510742, 0.0283203125, -705.29028320312, 0, 1, "")
-        local SpiderKingSpawnMidCombat2 = Osi.CreateAt(SpiderKingSummon, 311.21820068359, 0.1220703125, -706.70056152344, 0, 1, "")
-        local SpiderKingSpawnMidCombat3 = Osi.CreateAt(SpiderKingSummon, 320.95999145508, 1.70703125, -703.29797363281, 0, 1, "")
-        local SpiderKingSpawnMidCombat4 = Osi.CreateAt(SpiderKingSummon, 319.86599731445, 0.3916015625, -713.99682617188, 0, 1, "")
+        local SpiderKingSpawnMidCombat1 = Osi.CreateAt(SpiderKingSummon, 304.29098510742, 0.0283203125, -705.29028320312,
+            0, 1, "")
+        local SpiderKingSpawnMidCombat2 = Osi.CreateAt(SpiderKingSummon, 311.21820068359, 0.1220703125, -706.70056152344,
+            0, 1, "")
+        local SpiderKingSpawnMidCombat3 = Osi.CreateAt(SpiderKingSummon, 320.95999145508, 1.70703125, -703.29797363281, 0,
+            1, "")
+        local SpiderKingSpawnMidCombat4 = Osi.CreateAt(SpiderKingSummon, 319.86599731445, 0.3916015625, -713.99682617188,
+            0, 1, "")
     elseif object == SpiderKing and Osi.IsInCombat(SpiderKing) == 1 and Osi.GetFlag(Act2SpiderKingWave1Flag, Null) == 1 and Osi.GetFlag(Act2SpiderKingWave2Flag, Null) == 0 then
         Osi.SetFlag(Act2SpiderKingWave2Flag, Null, 0, 1)
         Osi.ApplyStatus(SpiderKing, "MMM_EVENMORESPIDERS", 1)
-        local SpiderKingSpawnMidCombat1 = Osi.CreateAt(SpiderKingSummon, 304.29098510742, 0.0283203125, -705.29028320312, 0, 1, "")
-        local SpiderKingSpawnMidCombat2 = Osi.CreateAt(SpiderKingSummon, 311.21820068359, 0.1220703125, -706.70056152344, 0, 1, "")
-        local SpiderKingSpawnMidCombat3 = Osi.CreateAt(SpiderKingSummon, 320.95999145508, 1.70703125, -703.29797363281, 0, 1, "")
-        local SpiderKingSpawnMidCombat4 = Osi.CreateAt(SpiderKingSummon, 319.86599731445, 0.3916015625, -713.99682617188, 0, 1, "")
+        local SpiderKingSpawnMidCombat1 = Osi.CreateAt(SpiderKingSummon, 304.29098510742, 0.0283203125, -705.29028320312,
+            0, 1, "")
+        local SpiderKingSpawnMidCombat2 = Osi.CreateAt(SpiderKingSummon, 311.21820068359, 0.1220703125, -706.70056152344,
+            0, 1, "")
+        local SpiderKingSpawnMidCombat3 = Osi.CreateAt(SpiderKingSummon, 320.95999145508, 1.70703125, -703.29797363281, 0,
+            1, "")
+        local SpiderKingSpawnMidCombat4 = Osi.CreateAt(SpiderKingSummon, 319.86599731445, 0.3916015625, -713.99682617188,
+            0, 1, "")
     elseif object == SpiderKing and Osi.IsInCombat(SpiderKing) == 1 and Osi.GetFlag(Act2SpiderKingWave1Flag, Null) == 1 and Osi.GetFlag(Act2SpiderKingWave2Flag, Null) == 1 then
-        local SpiderKingSpawnMidCombat1 = Osi.CreateAt(SpiderKingSummon, 304.29098510742, 0.0283203125, -705.29028320312, 0, 1, "")
-        local SpiderKingSpawnMidCombat2 = Osi.CreateAt(SpiderKingSummon, 311.21820068359, 0.1220703125, -706.70056152344, 0, 1, "")
+        local SpiderKingSpawnMidCombat1 = Osi.CreateAt(SpiderKingSummon, 304.29098510742, 0.0283203125, -705.29028320312,
+            0, 1, "")
+        local SpiderKingSpawnMidCombat2 = Osi.CreateAt(SpiderKingSummon, 311.21820068359, 0.1220703125, -706.70056152344,
+            0, 1, "")
         --local SpiderKingSpawnMidCombat3 = Osi.CreateAt(SpiderKingSummon, 320.95999145508, 1.70703125, -703.29797363281, 0, 1, "")
         --local SpiderKingSpawnMidCombat4 = Osi.CreateAt(SpiderKingSummon, 319.86599731445, 0.3916015625, -713.99682617188, 0, 1, "")
     end
     if object == SpiderKing and Osi.IsDead(SpiderKing) == 0 and Osi.GetHitpoints(SpiderKing) <= 100 then
         Osi.Die("MMM_SPIDERKING_0683b560-c29e-4a0b-b15f-f02703d3e219", 5, Null, 0, 1, 500)
-        local x,y,z = Osi.GetPosition(SpiderKing)
+        local x, y, z = Osi.GetPosition(SpiderKing)
         local ChestbursterSpawnID = Osi.CreateAt(SpiderKingChestburster, x, y, z, 0, 1, '')
     end
 end)
 
 --Osi.AttackedBy
-Ext.Osiris.RegisterListener("AttackedBy", 7, "after", function(defender, attackerOwner, attacker2, damageType, damageAmount, damageCause, storyActionID)
-    if defender == BalthazarEvent1 then
-        Osi.UseSpell(BalthazarEvent1, "CURSE_SKIP_TURN", attackerOwner)
-    end
-end)
+Ext.Osiris.RegisterListener("AttackedBy", 7, "after",
+    function(defender, attackerOwner, attacker2, damageType, damageAmount, damageCause, storyActionID)
+        if defender == BalthazarEvent1 then
+            Osi.UseSpell(BalthazarEvent1, "CURSE_SKIP_TURN", attackerOwner)
+        end
+    end)
 
 --Death listener
 Ext.Osiris.RegisterListener("Died", 1, "after", function(character)
@@ -807,7 +828,7 @@ Ext.Osiris.RegisterListener("UseStarted", 2, "after", function(character, item)
         end)
     end
     if item == SquirrelChest and
-    Osi.IsOnStage(CrazedSquirrel1) == 0 then
+        Osi.IsOnStage(CrazedSquirrel1) == 0 then
         CrazedSquirrelEvent()
     end
     if Osi.HasActiveStatus(item, "MMM_MIMIC2") == 1 then
@@ -826,7 +847,7 @@ end)
 --Destroy object listener
 Ext.Osiris.RegisterListener("DestroyedBy", 4, "before", function(item, destroyer, destroyerOwner, storyActionID)
     if item == SquirrelChest and
-    Osi.IsOnStage(CrazedSquirrel1) == 0 then
+        Osi.IsOnStage(CrazedSquirrel1) == 0 then
         CrazedSquirrelEvent()
     end
     if Osi.HasActiveStatus(item, "MMM_MIMIC2") == 1 then
@@ -844,8 +865,8 @@ end)
 --Saw something listener
 Ext.Osiris.RegisterListener("Saw", 3, "after", function(character, targetcharacter, targetwassneaking)
     if character == ChildWraithKid and
-    Osi.IsTagged(targetcharacter, "25bf5042-5bf6-4360-8df8-ab107ccb0d37") == 1 and
-    Osi.GetFlag(Act2ChildWraithFlag, Null) == 0 then
+        Osi.IsTagged(targetcharacter, "25bf5042-5bf6-4360-8df8-ab107ccb0d37") == 1 and
+        Osi.GetFlag(Act2ChildWraithFlag, Null) == 0 then
         Osi.SetFlag(Act2ChildWraithFlag, Null, 0, 1)
         ChildWraithEvent()
         local CWEntity = Ext.Entity.Get(ChildWraithKid)
@@ -854,15 +875,17 @@ Ext.Osiris.RegisterListener("Saw", 3, "after", function(character, targetcharact
             Playeruuid = entity.Uuid.EntityUuid
             if IsPlayer(Playeruuid) == 1 then
                 local CWtarget = entity.Transform.Transform.Translate
-                local distance = math.sqrt((CWpos[1] - CWtarget[1])^2 + (CWpos[2] - CWtarget[2])^2 + (CWpos[3] - CWtarget[3])^2)
+                local distance = math.sqrt((CWpos[1] - CWtarget[1]) ^ 2 + (CWpos[2] - CWtarget[2]) ^ 2 +
+                (CWpos[3] - CWtarget[3]) ^ 2)
                 if distance <= 30 then
-                    Osi.RequestPassiveRoll(Playeruuid, ChildWraithKid, "", "Arcana", "Act1_Challenging_5e7ff0e9-6c80-459c-a636-3a3e8417a61a", 0, "ChildWrathRoll")
+                    Osi.RequestPassiveRoll(Playeruuid, ChildWraithKid, "", "Arcana",
+                        "Act1_Challenging_5e7ff0e9-6c80-459c-a636-3a3e8417a61a", 0, "ChildWrathRoll")
                 end
             end
         end
     end
     if character == BalthazerTrigger2 and
-    Osi.IsTagged(targetcharacter, "25bf5042-5bf6-4360-8df8-ab107ccb0d37") == 1 then
+        Osi.IsTagged(targetcharacter, "25bf5042-5bf6-4360-8df8-ab107ccb0d37") == 1 then
         BalthazarEventMausoleum()
         Osi.SetOnStage(BalthazerTrigger2, 0)
     end
@@ -884,7 +907,7 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "before", function(object, statu
         BalthazarEventTown()
     end
     if status == "MMM_THIEFTRIOPIXIEATTACK" and
-    Osi.IsTagged(object, "25bf5042-5bf6-4360-8df8-ab107ccb0d37") == 1 then
+        Osi.IsTagged(object, "25bf5042-5bf6-4360-8df8-ab107ccb0d37") == 1 then
         Osi.ApplyStatus(ThiefPixie, "MMM_THIEFPIXIESPEAK2", 6, 1, ThiefPixie)
         Ext.Timer.WaitFor(3000, function()
             Osi.PlayEffect(ThiefPixie, "1b923cb2-133a-25bd-6cbf-f808ca1cb8d2", "", 1)
@@ -896,17 +919,18 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "before", function(object, statu
 end)
 
 --Roll listener
-Ext.Osiris.RegisterListener("RollResult", 6, "after", function(eventName, roller, rollsubject, resultType, isActiveRoll, criticality)
-    if eventName == ChildWrathRoll then
-        if resultType == 1 then
-            ShowNotification(roller, "You sense evil magic at work in the child.")
-            PrepareDuration = 12
-            PreparedBoost()
-        elseif resultType == 2 then
-            return
+Ext.Osiris.RegisterListener("RollResult", 6, "after",
+    function(eventName, roller, rollsubject, resultType, isActiveRoll, criticality)
+        if eventName == ChildWrathRoll then
+            if resultType == 1 then
+                ShowNotification(roller, "You sense evil magic at work in the child.")
+                PrepareDuration = 12
+                PreparedBoost()
+            elseif resultType == 2 then
+                return
+            end
         end
-    end
-end)
+    end)
 
 --Flag listener
 Ext.Osiris.RegisterListener("FlagSet", 3, "after", function(flag, speaker, dialogInstance)

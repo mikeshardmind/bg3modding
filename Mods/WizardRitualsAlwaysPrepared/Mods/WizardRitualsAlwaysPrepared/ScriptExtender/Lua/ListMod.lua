@@ -10,7 +10,7 @@ local OursRitual = {
     "4fe7fcb3-6130-4e19-9a57-aec2061eeadc",
     "e3becc0a-1ee6-4eeb-a5cb-f53001ae92b4",
     "74ca601b-2269-444d-bc6c-023dd9780ed0",
-    "d74612e2-d3db-41ca-8341-0f6da0f4935b",
+    "d74612e2-d3db-41ca-8341-0f6Fda0f4935b",
     "70b128bc-ff15-450c-999c-61e751cc3443",
 }
 

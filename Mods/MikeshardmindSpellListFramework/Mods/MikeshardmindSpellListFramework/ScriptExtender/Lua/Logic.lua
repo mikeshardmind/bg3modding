@@ -21,7 +21,6 @@ local function TrimRuleGroup(g)
     local rule_working_list = {}
 
     for rule in ListIter(g.rules) do
-
         ---@type string[]
         local spell_working_list = {}
 
@@ -73,7 +72,6 @@ function ModRulesIterator(config)
     end
 end
 
-
 ---@param config SLFrameworkUserConfig
 ---@return RuleGroup[]
 local function GetActiveRules(config)
@@ -85,7 +83,6 @@ local function GetActiveRules(config)
     local valid_namespaces = SetFromListValues(config.user_rule_namespaces)
 
     for namespaced_name in ListIter(config.active_user_rules) do
-
         namespaced_name = Trim(namespaced_name)
         ---@type string?, string?
         local namespace, localname = namespaced_name:match("^([%w]+)%.([%w]+)$")
@@ -145,7 +142,6 @@ end
 ---@param spell_table string[]
 ---@return fun(rg: RuleGroup): boolean
 local function GetFilter(spell_table)
-
     ---@param rg RuleGroup
     ---@return boolean
     local function check_filter(rg)
@@ -174,13 +170,11 @@ local function GetFilter(spell_table)
     end
 
     return check_filter
-
 end
 
 ---@param passive_data ExtStats_PassiveData
 ---@param groups RuleGroup[]
 function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
-
     -- add isn't supported on passives (yet?)
     ---@type string[]
     local pass_through = {}
@@ -208,7 +202,6 @@ function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
 
 
     for rg in Filter(GetFilter(spell_table), ListIter(groups)) do
-
         for rule in ListIter(rg.rules) do
             if rule.kind == "prefer" then
                 local seen_any = false
@@ -243,7 +236,6 @@ function ApplyRuleGroupsToPassiveBoosts(passive_data, groups)
     end
 
     passive_data.Boosts = table.concat(pass_through, ";")
-
 end
 
 ---@param spell_list string[]
@@ -338,7 +330,6 @@ function GetListsAndPassives()
                     end
                 end
             end
-
         end
     end
 
@@ -359,9 +350,9 @@ end
 ---@return SCG, WCG
 local function grouped_by_scope_id(rules)
     ---@type SCG
-    local grouped = {class = {}, passive = {}, spell_list = {}}
+    local grouped = { class = {}, passive = {}, spell_list = {} }
     ---@type WCG
-    local wildcards = {class = {}, passive = {}, spell_list = {}}
+    local wildcards = { class = {}, passive = {}, spell_list = {} }
 
     for rg in ListIter(rules) do
         for scope_name in SetIter(IsScope) do
@@ -375,14 +366,12 @@ local function grouped_by_scope_id(rules)
                 end
             end
         end
-
     end
 
     return grouped, wildcards
 end
 
 function ModifyLists()
-
     local ok, config = pcall(LoadUserSettings)
     if not ok then
         Ext.Log.PrintError(config)
@@ -397,7 +386,6 @@ function ModifyLists()
     --- use class data to augment spell list and passive rules
 
     for rg in ListIter(wildcards.class) do
-
         for spell_lists in ListIter(spell_lists_by_class) do
             for sl_uuid in SetIter(spell_lists) do
                 local groups = sc_groups.spell_list[sl_uuid] or {}
@@ -453,7 +441,5 @@ function ModifyLists()
         end
 
         if #groups > 0 then ApplyRuleGroupsToPassiveBoosts(stats, groups) end
-
     end
-
 end

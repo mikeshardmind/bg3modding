@@ -6,5 +6,5 @@ local function on_swap_level(event)
 	end
 end
 
-Ext.Events.GameStateChanged:Subscribe(on_swap_level, {Priority = -600})
-Ext.Events.ResetCompleted:Subscribe(RemoveBardSpellsFromBardSecrets(), {Priority = -600})
+Ext.Events.GameStateChanged:Subscribe(on_swap_level, { Priority = -600 })
+Ext.Events.ResetCompleted:Subscribe(RemoveBardSpellsFromBardSecrets(), { Priority = -600 })

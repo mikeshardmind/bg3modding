@@ -1,7 +1,6 @@
-
 local bard_guid = "92cd50b6-eb1b-4824-8adb-853e90c34c90"
 
-local magical_secrets_select = {["BardMagicalSecrets"] = true}
+local magical_secrets_select = { ["BardMagicalSecrets"] = true }
 
 ---@class config
 ---@field enabled boolean
@@ -22,7 +21,6 @@ local function LoadConfig(filename)
     local ret = file and Ext.Json.Parse(file) or {}
 
     for key, default in pairs(defaultConfig) do
-
         local expected_type = type(default)
 
         if type(ret[key]) == "nil" then
@@ -34,11 +32,9 @@ local function LoadConfig(filename)
     end
 
     return ret
-
 end
 
 local function MagicalSecretsLists()
-
     local ret = {}
     local ids = {}
     local all_bard = ""
@@ -51,7 +47,6 @@ local function MagicalSecretsLists()
         if resourceGuid == bard_guid then
             all_bard = desc.SpellList
         end
-
     end
 
     for _, progguid in pairs(Ext.StaticData.GetAll("Progression")) do
@@ -71,7 +66,6 @@ end
 local list_cache = {}
 
 function RemoveBardSpellsFromBardSecrets()
-
     local config = LoadConfig("BardicPreparation.json")
     if not config.enabled then return end
 
@@ -104,4 +98,3 @@ function RemoveBardSpellsFromBardSecrets()
         end
     end
 end
-

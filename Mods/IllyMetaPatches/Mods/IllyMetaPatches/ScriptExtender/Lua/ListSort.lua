@@ -40,12 +40,11 @@ local function generate_sort_key_for_spell(spell_name, spell)
     local translated_name = Ext.Loca.GetTranslatedString(spell.DisplayName)
     local sort_name = (translated_name or "") .. spell_name
 
-    sortv_cache[spell_name] = {["Level"] = spell.Level, ["Name"] = sort_name}
+    sortv_cache[spell_name] = { ["Level"] = spell.Level, ["Name"] = sort_name }
     return true
 end
 
 local function sort_func(a, b)
-
     local lhs = sortv_cache[a]
     local rhs = sortv_cache[b]
 
@@ -66,14 +65,13 @@ local function SortSpellWorkingList(working_list)
     end
     table.sort(ret, sort_func)
     return ret
-
 end
 
 local function HandleSpecialCases()
     -- Not crawling all passives for granting true strike
     -- Might do something more later if I don't make my own true strike
     local mage_breaker = Ext.Stats.Get("FavoredEnemy_MageBreaker")
-    local temp_t = {"UnlockSpell(Target_LightningLure,,,,Wisdom)"}
+    local temp_t = { "UnlockSpell(Target_LightningLure,,,,Wisdom)" }
     for str in mage_breaker.Boosts:gmatch("([^;]+)") do
         if not str:find("UnlockSpell%(Target_TrueStrike") then
             table.insert(temp_t, str:match("^%s*(.-)%s*$"))
@@ -83,7 +81,6 @@ local function HandleSpecialCases()
 end
 
 function ModifyLists()
-
     for _, guid in pairs(Ext.StaticData.GetAll("SpellList")) do
         local spell_list = Ext.StaticData.Get(guid, "SpellList")
         if spell_list_cache[guid] ~= nil then

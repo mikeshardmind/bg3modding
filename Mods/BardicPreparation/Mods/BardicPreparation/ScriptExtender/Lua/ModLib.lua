@@ -63,7 +63,8 @@ local defaultConfig = {
 }
 
 local invalid_config_messages = {
-    ["boolean"] = '[BardicPreparation] Invalid entry for key "%s" (expected: true or false) in config file, disabling mod'
+    ["boolean"] =
+    '[BardicPreparation] Invalid entry for key "%s" (expected: true or false) in config file, disabling mod'
 }
 
 ---@param filename string
@@ -75,7 +76,6 @@ local function LoadConfig(filename)
     local needs_rewrite = false
 
     for key, default in pairs(defaultConfig) do
-
         local expected_type = type(default)
 
         if type(ret[key]) == "nil" then
@@ -94,7 +94,6 @@ local function LoadConfig(filename)
     end
 
     return ret
-
 end
 
 local validated_spells_cache = {}
@@ -291,7 +290,6 @@ end
 ---@param Ours table<integer, string>
 ---@param OursRitual table<integer, string>
 function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, OursRitual)
-
     local config = LoadConfig(filename)
     if config.enabled ~= true then
         return
@@ -314,14 +312,12 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
 
         local to_remove = {}
         for idx, this_select in ipairs(pd["SelectSpells"]) do
-
             if this_select.PrepareType == "Unknown" and RemainSelectSpellsSelectors[this_select.SelectorId] == nil then
                 table.insert(to_remove, idx)
                 if seen_lists[this_select.SpellUUID] == nil then
                     local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                     if spell_list ~= nil then
                         for _, spell in pairs(spell_list.Spells) do
-
                             local spell_data = get_spell_with_validation(spell, this_select.SpellUUID)
                             if spell_data ~= nil and spell_data.Level > spell_lv then
                                 spell_lv = spell_data.Level
@@ -330,14 +326,12 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
                             table.insert(seen_class_spells, spell)
                         end
                     end
-
                 end
                 seen_lists[this_select.SpellUUID] = true
             end
-
         end
 
-        table.sort(to_remove, function (a, b) return a > b end)
+        table.sort(to_remove, function(a, b) return a > b end)
         for _, idx in ipairs(to_remove) do
             pd["SelectSpells"][idx] = nil
         end
@@ -371,12 +365,11 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
 
         local to_remove = {}
         for idx, this_select in ipairs(pd["SelectSpells"]) do
-
             if this_select.PrepareType == "Unknown" and RemainSelectSpellsSelectors[this_select.SelectorId] == nil then
                 table.insert(to_remove, idx)
             end
         end
-        table.sort(to_remove, function (a, b) return a > b end)
+        table.sort(to_remove, function(a, b) return a > b end)
         for _, idx in ipairs(to_remove) do
             pd["SelectSpells"][idx] = nil
         end
@@ -389,15 +382,15 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
     class_list.Spells = total_list
 
     local leveled_lists = {
-        [1] = {["prep"] = {}, ["ritual"] = {}},
-        [2] = {["prep"] = {}, ["ritual"] = {}},
-        [3] = {["prep"] = {}, ["ritual"] = {}},
-        [4] = {["prep"] = {}, ["ritual"] = {}},
-        [5] = {["prep"] = {}, ["ritual"] = {}},
-        [6] = {["prep"] = {}, ["ritual"] = {}},
-        [7] = {["prep"] = {}, ["ritual"] = {}},
-        [8] = {["prep"] = {}, ["ritual"] = {}},
-        [9] = {["prep"] = {}, ["ritual"] = {}},
+        [1] = { ["prep"] = {}, ["ritual"] = {} },
+        [2] = { ["prep"] = {}, ["ritual"] = {} },
+        [3] = { ["prep"] = {}, ["ritual"] = {} },
+        [4] = { ["prep"] = {}, ["ritual"] = {} },
+        [5] = { ["prep"] = {}, ["ritual"] = {} },
+        [6] = { ["prep"] = {}, ["ritual"] = {} },
+        [7] = { ["prep"] = {}, ["ritual"] = {} },
+        [8] = { ["prep"] = {}, ["ritual"] = {} },
+        [9] = { ["prep"] = {}, ["ritual"] = {} },
     }
 
     for _, spellname in ipairs(seen_class_spells) do
@@ -425,5 +418,4 @@ function API_ModifyLists(class_guid, spell_action_resource, filename, Ours, Ours
             ritual_list.Spells = ritual
         end
     end
-
 end

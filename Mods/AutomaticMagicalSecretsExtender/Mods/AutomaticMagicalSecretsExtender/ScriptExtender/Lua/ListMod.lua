@@ -3,7 +3,7 @@ Ext.Require("Utils.lua")
 local bard_guid = "92cd50b6-eb1b-4824-8adb-853e90c34c90"
 
 
-local magical_secrets_select = {["BardMagicalSecrets"] = true}
+local magical_secrets_select = { ["BardMagicalSecrets"] = true }
 
 -- Matches the removal done by
 -- "Use 5e spells with Mystra's Spells" Mod.
@@ -54,11 +54,15 @@ local has_warned_broken_list = {
 }
 
 local broken_warn_formats = {
-    NotSpell = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained something other than a spell. The bad entry is named %s",
+    NotSpell =
+    "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained something other than a spell. The bad entry is named %s",
     InvalidSpellLevel = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid level",
-    InvalidSpellContainerID = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid container ID specified",
-    MissingSpell = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained a spell that isn't defined named %s",
-    InvalidSpellName = "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list: %s contains an invalid spell name",
+    InvalidSpellContainerID =
+    "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid container ID specified",
+    MissingSpell =
+    "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained a spell that isn't defined named %s",
+    InvalidSpellName =
+    "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list: %s contains an invalid spell name",
 }
 
 local function generate_sort_key_for_spell(spell_name, spell)
@@ -69,7 +73,7 @@ local function generate_sort_key_for_spell(spell_name, spell)
     local translated_name = Ext.Loca.GetTranslatedString(spell.DisplayName)
     local sort_name = (translated_name or "") .. spell_name
 
-    sortv_cache[spell_name] = {["Level"] = spell.Level, ["Name"] = sort_name}
+    sortv_cache[spell_name] = { ["Level"] = spell.Level, ["Name"] = sort_name }
     return true
 end
 
@@ -137,12 +141,10 @@ local function get_spell_with_validation(name, list_guid, classnames, debug)
     validated_spells_cache[name] = spell
     generate_sort_key_for_spell(name, spell)
     return spell
-
 end
 
 
 local function sort_func(a, b)
-
     local lhs = sortv_cache[a]
     local rhs = sortv_cache[b]
 
@@ -154,7 +156,6 @@ end
 
 
 local function CrawlProgressionData()
-
     local bard_prog_table_ids = {}
     local bard_secrets_progression_ids = {}
 
@@ -192,7 +193,6 @@ local function CrawlProgressionData()
     local warlock_spell_table_assoc = {}
 
     for resourceGuid, desc in StaticDataIterator("ClassDescription") do
-
         if resourceGuid == bard_guid or desc.ParentGuid == bard_guid then
             bard_prog_table_ids[desc.ProgressionTableUUID] = true
         end
@@ -214,7 +214,6 @@ local function CrawlProgressionData()
     end
 
     for progguid, pd in StaticDataIterator("Progression") do
-
         if bard_prog_table_ids[pd.TableUUID] ~= nil then
             for this_select in ListIter(pd["SelectSpells"]) do
                 if magical_secrets_select[this_select.SelectorId] ~= nil then
@@ -277,11 +276,9 @@ local function CrawlProgressionData()
     end
 
     return bard_secrets_progression_ids, all_spells
-
 end
 
 function ModifyLists()
-
     local has_secrets, all_secret_spells = CrawlProgressionData()
     local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
     local to_subtract = never_include_as_secrets
@@ -300,7 +297,6 @@ function ModifyLists()
             if magical_secrets_select[this_select.SelectorId] ~= nil then
                 local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                 if spell_list ~= nil then
-
                     local co = coroutine.create(
                         function()
                             for spell in ListIter(spell_list.Spells) do
@@ -317,7 +313,6 @@ function ModifyLists()
                                     end
                                 end
                             end
-
                         end
                     )
                     local it = function()

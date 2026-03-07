@@ -41,7 +41,8 @@ local defaultConfig = {
 }
 
 local invalid_config_messages = {
-    ["boolean"] = '[EldritchPreparation] Invalid entry for key "%s" (expected: true or false) in config file, disabling mod'
+    ["boolean"] =
+    '[EldritchPreparation] Invalid entry for key "%s" (expected: true or false) in config file, disabling mod'
 }
 
 ---@param filename string
@@ -53,7 +54,6 @@ local function LoadConfig(filename)
     local needs_rewrite = false
 
     for key, default in pairs(defaultConfig) do
-
         local expected_type = type(default)
 
         if type(ret[key]) == "nil" then
@@ -72,7 +72,6 @@ local function LoadConfig(filename)
     end
 
     return ret
-
 end
 
 local function subtract_setlists(l1, l2)
@@ -220,7 +219,6 @@ local function ModifyDescriptionsAndCollectProgressions(config, class_guid)
             for _, this_select in ipairs(pd["AddSpells"]) do
                 this_select.PrepareType = "AlwaysPrepared"
             end
-
         end
     end
 
@@ -237,7 +235,6 @@ end
 ---@param spell_action_resource string
 ---@param filename string
 function API_ModifyLists(class_guid, spell_action_resource, filename)
-
     local config = LoadConfig(filename)
     if config.enabled ~= true then
         return
@@ -258,7 +255,6 @@ function API_ModifyLists(class_guid, spell_action_resource, filename)
     table.sort(stable_order)
 
     for _, prog_table_id in ipairs(stable_order) do
-
         local subclass_progdata = prog_data[prog_table_id]
         local mc_subclass_progdata = mc_prog_data[prog_table_id]
 
@@ -278,15 +274,11 @@ function API_ModifyLists(class_guid, spell_action_resource, filename)
 
             local to_remove = {}
             for idx, this_select in ipairs(pd["SelectSpells"]) do
-
                 if this_select.PrepareType == "Unknown" then
-
-
                     local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                     if spell_list ~= nil then
                         local is_leveled = false
                         for _, spell in pairs(spell_list.Spells) do
-
                             local spell_data = get_spell_with_validation(spell, this_select.SpellUUID)
                             if spell_data ~= nil and spell_data.Level > spell_lv then
                                 spell_lv = spell_data.Level
@@ -305,12 +297,10 @@ function API_ModifyLists(class_guid, spell_action_resource, filename)
                             this_select.PrepareType = "AlwaysPrepared"
                         end
                     end
-
                 end
-
             end
 
-            table.sort(to_remove, function (a, b) return a > b end)
+            table.sort(to_remove, function(a, b) return a > b end)
             for _, idx in ipairs(to_remove) do
                 pd["SelectSpells"][idx] = nil
             end
@@ -340,7 +330,6 @@ function API_ModifyLists(class_guid, spell_action_resource, filename)
                 if spell_list ~= nil then
                     local is_leveled = false
                     for _, spell in pairs(spell_list.Spells) do
-
                         local spell_data = get_spell_with_validation(spell, this_select.SpellUUID)
                         if spell_data ~= nil and spell_data.Level > spell_lv then
                             spell_lv = spell_data.Level
@@ -358,12 +347,10 @@ function API_ModifyLists(class_guid, spell_action_resource, filename)
                     end
                 end
             end
-            table.sort(to_remove, function (a, b) return a > b end)
+            table.sort(to_remove, function(a, b) return a > b end)
             for _, idx in ipairs(to_remove) do
                 pd["SelectSpells"][idx] = nil
             end
-
-
         end
 
         local leveled_lists = {

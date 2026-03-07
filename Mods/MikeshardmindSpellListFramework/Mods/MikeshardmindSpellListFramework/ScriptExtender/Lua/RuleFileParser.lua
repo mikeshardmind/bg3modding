@@ -40,13 +40,12 @@ local IsRule = {
 ---@param lines string[]
 ---@return RuleGroup
 local function StructureGroup(lines)
-
     if lines[1] ~= "[rulegroup]" then
         error("Invalid rules file, data outside [rulegroup]")
     end
 
     ---@type RuleGroup
-    local ret = {name = "", rules = {}, scopes = {}, spell_filters = {}, wildcards = {}}
+    local ret = { name = "", rules = {}, scopes = {}, spell_filters = {}, wildcards = {} }
 
     for sk, _ in pairs(IsScope) do
         ret.scopes[sk] = {}
@@ -84,9 +83,9 @@ local function StructureGroup(lines)
                 end
 
                 if IsSpellFilter[kind] then
-                    table.insert(ret.spell_filters, {kind = kind, spells = entries})
+                    table.insert(ret.spell_filters, { kind = kind, spells = entries })
                 elseif IsRule[kind] then
-                    table.insert(ret.rules, {kind = kind, spells = entries})
+                    table.insert(ret.rules, { kind = kind, spells = entries })
                 elseif IsScope[kind] then
                     local scopes = ret.scopes[kind] or {}
                     for _, e in pairs(entries) do
@@ -96,7 +95,6 @@ local function StructureGroup(lines)
                     ret.scopes[kind] = scopes
                 end
             end
-
         end
     end
 
@@ -125,7 +123,6 @@ local duplicated_entry_msg = "[SpellListFramework] contains duplicated rule name
 ---@param prefix string
 ---@return table<string, RuleGroup>
 local function ParseRules(text, prefix)
-
     local line_cache = {}
     ---@type table<string, RuleGroup>
     local groups = {}
@@ -160,7 +157,6 @@ end
 ---@param prefix string
 ---@return table<string, RuleGroup>?
 local function load_rules_file(filename, prefix)
-
     local text = Ext.IO.LoadFile(filename)
     if not text then return end
 
@@ -171,14 +167,13 @@ local function load_rules_file(filename, prefix)
     else
         return result
     end
-
 end
 
 ---@param namespace string
 ---@return table<string, RuleGroup>?
 function LoadUserRulesFromFile(namespace)
     local filename = GetUserRuleFilePath(namespace)
-    return load_rules_file(filename, "User rule namespace ".. namespace)
+    return load_rules_file(filename, "User rule namespace " .. namespace)
 end
 
 ---@param uuid string
@@ -186,5 +181,5 @@ end
 function LoadModRulesFromFile(uuid)
     local filename = GetModProvidedRuleFilePath(uuid)
     if not filename then return end
-    return load_rules_file(filename, "Mod provided rules: ".. uuid)
+    return load_rules_file(filename, "Mod provided rules: " .. uuid)
 end

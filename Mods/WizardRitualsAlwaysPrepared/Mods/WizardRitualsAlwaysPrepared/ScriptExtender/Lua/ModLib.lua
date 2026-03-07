@@ -83,7 +83,8 @@ local has_warned_broken_list = {
 }
 
 local broken_warn_formats = {
-    NotSpell = "[WizardRitualsAlwaysPrepared] Spell list %s contained something other than a spell. The bad entry is named %s",
+    NotSpell =
+    "[WizardRitualsAlwaysPrepared] Spell list %s contained something other than a spell. The bad entry is named %s",
     InvalidSpellLevel = "[WizardRitualsAlwaysPrepared] The spell named %s has an invalid level",
     InvalidSpellContainerID = "[WizardRitualsAlwaysPrepared] The spell named %s has an invalid container ID specified",
     MissingSpell = "[WizardRitualsAlwaysPrepared] Spell list %s contained a spell that isn't defined named %s",
@@ -161,7 +162,6 @@ end
 ---@param class_guid string
 ---@param OursRitual table<integer, string>
 function API_WizModifyLists(class_guid, OursRitual)
-
     local seen_lists = {}
     local seen_class_spells = {}
 
@@ -174,13 +174,11 @@ function API_WizModifyLists(class_guid, OursRitual)
         local spell_lv = max_spell_lv
 
         for _, this_select in ipairs(pd["SelectSpells"]) do
-
             if this_select.PrepareType == "Unknown" then
                 if seen_lists[this_select.SpellUUID] == nil then
                     local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                     if spell_list ~= nil then
                         for _, spell in pairs(spell_list.Spells) do
-
                             local spell_data = get_spell_with_validation(spell, this_select.SpellUUID)
                             if spell_data ~= nil and spell_data.Level > spell_lv then
                                 spell_lv = spell_data.Level
@@ -189,11 +187,9 @@ function API_WizModifyLists(class_guid, OursRitual)
                             table.insert(seen_class_spells, spell)
                         end
                     end
-
                 end
                 seen_lists[this_select.SpellUUID] = true
             end
-
         end
 
         if spell_lv > max_spell_lv then
@@ -251,5 +247,4 @@ function API_WizModifyLists(class_guid, OursRitual)
             ritual_list.Spells = ritual
         end
     end
-
 end

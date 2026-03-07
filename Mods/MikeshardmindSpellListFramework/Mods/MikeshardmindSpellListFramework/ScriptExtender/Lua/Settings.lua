@@ -13,12 +13,12 @@ Ext.Require("Utils.lua")
 
 ---@type SLFrameworkUserConfig
 local default_user_settings = {
-    user_rule_namespaces = {"examples"},
+    user_rule_namespaces = { "examples" },
     active_user_rules = {},
-    inactive_user_rules = {"examples.BladeCantrips"},
+    inactive_user_rules = { "examples.BladeCantrips" },
     active_mod_provided_rules = {},
     inactive_mod_provided_rules = {},
-    use_mod_provided_settings = {"*"},
+    use_mod_provided_settings = { "*" },
 }
 
 ---@return boolean
@@ -40,7 +40,7 @@ local function is_array_of_dot_sep_strings(t)
     for _ in pairs(t) do
         i = i + 1
         if type(t[i]) ~= "string" then return false end
-        local lhs , rhs = t[i]:match("^([%w]+)%.([%w]+)$")
+        local lhs, rhs = t[i]:match("^([%w]+)%.([%w]+)$")
         if not (lhs and rhs) then return false end
     end
     return true
@@ -54,7 +54,7 @@ local uuid_pattern = table.concat({
     ("%x"):rep(12)
 }, '%-')
 
-local uuid_dotsep_match = "^(" ..uuid_pattern.. ")%.([%w]+)$"
+local uuid_dotsep_match = "^(" .. uuid_pattern .. ")%.([%w]+)$"
 
 ---@return boolean
 local function is_uuid_dotsep_name_array(t)
@@ -63,11 +63,10 @@ local function is_uuid_dotsep_name_array(t)
     for _ in pairs(t) do
         i = i + 1
         if type(t[i]) ~= "string" then return false end
-        local lhs , rhs = t[i]:match(uuid_dotsep_match)
+        local lhs, rhs = t[i]:match(uuid_dotsep_match)
         if not (lhs and rhs) then return false end
     end
     return true
-
 end
 
 
@@ -147,7 +146,6 @@ function GetUserRuleFilePath(rule_file_name)
     return ("%s/user_rules/%s.txt"):format(mod_dir, rule_file_name)
 end
 
-
 ---@param mod_id string
 ---@return string?
 function GetModProvidedRuleFilePath(mod_id)
@@ -157,7 +155,6 @@ function GetModProvidedRuleFilePath(mod_id)
     return ("%s/SpellListFrameworkRules.txt"):format(mod_dir)
 end
 
-
 ---@param mod_id string
 ---@return string?
 function GetModProvidedConfigPath(mod_id)
@@ -166,7 +163,6 @@ function GetModProvidedConfigPath(mod_id)
     local mod_dir = mod.Info.Directory
     return ("%s/SpellListFramework.json"):format(mod_dir)
 end
-
 
 local example_text = [[
 [rulegroup]
@@ -190,7 +186,6 @@ function WriteExamples()
     end
 end
 
-
 local mod_provided_config_validators = {
     default_enabled_rules = is_alphanum_string_array,
 }
@@ -208,7 +203,6 @@ Mod provided settings cannot be applied
 ---@param uuid string
 ---@return SLFrameworkModConfig?
 local function parse_mod_provided_settings(uuid)
-
     local filename = GetModProvidedConfigPath(uuid)
     if not filename then return end
 
@@ -219,7 +213,7 @@ local function parse_mod_provided_settings(uuid)
     if not loaded then return end
 
     ---@type SLFrameworkModConfig
-    local ret = {default_enabled_rules = {}}
+    local ret = { default_enabled_rules = {} }
 
     for k, v in pairs(loaded) do
         local validator = mod_provided_config_validators[k]
@@ -236,8 +230,6 @@ local function parse_mod_provided_settings(uuid)
     end
 
     return ret
-
-
 end
 
 
@@ -284,7 +276,6 @@ function GetEnabledModRules(user_config)
             rd[rulename] = true
             disabled[uuid] = rd
         end
-
     end
 
     local seen = {}

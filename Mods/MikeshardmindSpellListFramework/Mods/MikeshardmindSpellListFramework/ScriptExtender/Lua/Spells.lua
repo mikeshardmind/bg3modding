@@ -1,5 +1,3 @@
-
-
 ---@type table<string, boolean>
 local spell_exists_cache = {}
 
@@ -13,7 +11,6 @@ local sortv_cache = {}
 ---@param spell_name string
 ---@param spell any
 local function generate_sort_key_for_spell(spell_name, spell)
-
     if sortv_cache[spell_name] ~= nil then
         return true
     end
@@ -21,7 +18,7 @@ local function generate_sort_key_for_spell(spell_name, spell)
     local translated_name = Ext.Loca.GetTranslatedString(spell.DisplayName)
     local sort_name = (translated_name or "") .. spell_name
 
-    sortv_cache[spell_name] = {["Level"] = spell.Level, ["Name"] = sort_name}
+    sortv_cache[spell_name] = { ["Level"] = spell.Level, ["Name"] = sort_name }
     return true
 end
 
