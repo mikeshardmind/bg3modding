@@ -7,6 +7,7 @@ Ext.Require("Utils.lua")
 ---@field active_mod_provided_rules string[]
 ---@field inactive_mod_provided_rules string[]
 ---@field use_mod_provided_settings string[]
+---@field dump_lists boolean
 
 ---@class (exact) SLFrameworkModConfig
 ---@field default_enabled_rules string[]
@@ -19,6 +20,7 @@ local default_user_settings = {
     active_mod_provided_rules = {},
     inactive_mod_provided_rules = {},
     use_mod_provided_settings = { "*" },
+    dump_lists = false,
 }
 
 ---@return boolean
@@ -81,6 +83,11 @@ local function is_string_array(t)
     return true
 end
 
+---@return boolean
+local function is_boolean(t)
+    return type(t) == "boolean"
+end
+
 local expected_type_validators = {
     user_rule_namespaces = is_alphanum_string_array,
     active_user_rules = is_array_of_dot_sep_strings,
@@ -88,6 +95,7 @@ local expected_type_validators = {
     active_mod_provided_rules = is_uuid_dotsep_name_array,
     inactive_mod_provided_rules = is_uuid_dotsep_name_array,
     use_mod_provided_settings = is_string_array,
+    dump_lists = is_boolean,
 }
 
 local fatal_config_format = [[
@@ -103,6 +111,7 @@ local expected_type_error_messages = {
     active_mod_provided_rules = "active_mod_provided_rules should be a list of strings",
     inactive_mod_provided_rules = "active_mod_provided_rules should be a list of strings",
     use_mod_provided_settings = "use_mod_provided_settings should be a list of strings",
+    dump_lists = "dump_lists should be either `true` or `false`"
 }
 
 ---@return SLFrameworkUserConfig

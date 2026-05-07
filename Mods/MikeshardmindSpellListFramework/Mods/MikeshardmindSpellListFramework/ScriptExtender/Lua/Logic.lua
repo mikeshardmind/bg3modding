@@ -382,6 +382,25 @@ function ModifyLists()
     local sc_groups, wildcards = grouped_by_scope_id(active_rules)
     local spell_lists_by_class, passives_by_class = GetListsAndPassives()
 
+    local dump_lists_by_class = {}
+    local dump_before_spell_lists = {}
+    local dump_after_spell_lists = {}
+
+    local dump_map = {
+        ["/class_lists.json"] = dump_lists_by_class,
+        ["/spell_lists_before.json"] = dump_before_spell_lists,
+        ["/spell_lists_after.json"] = dump_after_spell_lists,
+    }
+
+    if config.dump_lists then
+        for class_uuid, spell_lists in pairs(dump_lists_by_class) do
+            dump_lists_by_class[class_uuid] = {}
+            for sl_uuid in ListIter(spell_lists) do
+                table.insert(dump_lists_by_class[class_uuid], sl_uuid)
+            end
+        end
+    end
+
     --- avoid modifying repeating alterations
     --- use class data to augment spell list and passive rules
 
@@ -428,10 +447,26 @@ function ModifyLists()
         for rg in ListIter(wildcards.spell_list) do
             table.insert(groups, rg)
         end
+
+        if config.dump_lists then
+            dump_before_spell_lists[uuid] = {}
+            for _, spell_name in pairs(sl.Spells) do
+                table.insert(dump_before_spell_lists, spell_name)
+            end
+        end
+
         --- do this unconditionally, it includes a bugfix
         --- related to not having enough spells to select
         --- when "missing" spells even when we didnt cause it.
         sl.Spells = ApplyRuleGroupsToLists(sl.Spells, groups)
+
+        if config.dump_lists then
+            dump_after_spell_lists[uuid] = {}
+            for _, spell_name in pairs(sl.Spells) do
+                table.insert(dump_after_spell_lists, spell_name)
+            end
+        end
+
     end
 
     for name, stats in StatsIterator("PassiveData") do
@@ -442,4 +477,13 @@ function ModifyLists()
 
         if #groups > 0 then ApplyRuleGroupsToPassiveBoosts(stats, groups) end
     end
+
+    if config.dump_lists then
+        local mod_dir = Ext.Mod.GetMod("c78d58b7-2bc5-4a13-975c-cd7cf9a42630").Info.Directory
+        for filename_fragment, data in pairs(dump_map) do
+            local filename = mod_dir .. filename_fragment
+            Ext.IO.SaveFile(filename, Ext.Json.Stringify(data))
+        end
+    end
+
 end
