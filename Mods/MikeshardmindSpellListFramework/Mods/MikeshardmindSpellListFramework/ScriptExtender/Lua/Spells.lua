@@ -29,9 +29,11 @@ function CheckSpellExists(name)
     if ret ~= nil then return ret end
     local spell = Ext.Stats.Get(name)
     if spell then
-        generate_sort_key_for_spell(name, spell)
-        spell_exists_cache[name] = true
-        return true
+        -- Bad Spell Data, see oldest @ https://www.nexusmods.com/baldursgate3/mods/21017?tab=bugs
+        -- Wish nexus allowed linking directly to a bug
+        local ok = pcall(generate_sort_key_for_spell, name, spell)
+        spell_exists_cache[name] = ok
+        return ok
     end
     spell_exists_cache[name] = false
     return false

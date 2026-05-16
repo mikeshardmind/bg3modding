@@ -48,9 +48,16 @@ function GetExtPassiveList(uuid)
     return Ext.StaticData.Get(uuid, "PassiveList")
 end
 
+---@class (Exact) ExtStats_SpellData
+---@field Name string
+---@field OriginalModId string
+---@field Level number
+---@field DisplayName string
+
 ---@class (exact) ExtStats_PassiveData
 ---@field Boosts string
 
+---@overload fun(kind: "SpellData"): fun(): string, ExtStats_SpellData
 ---@overload fun(kind: "PassiveData"): fun(): string, ExtStats_PassiveData
 function StatsIterator(kind)
     local co = coroutine.create(

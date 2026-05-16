@@ -385,11 +385,13 @@ function ModifyLists()
     local dump_lists_by_class = {}
     local dump_before_spell_lists = {}
     local dump_after_spell_lists = {}
+    local dump_spells_mods = {}
 
     local dump_map = {
         ["/class_lists.json"] = dump_lists_by_class,
         ["/spell_lists_before.json"] = dump_before_spell_lists,
         ["/spell_lists_after.json"] = dump_after_spell_lists,
+        ["/spell_mods.json"] = dump_spells_mods,
     }
 
     if config.dump_lists then
@@ -398,6 +400,24 @@ function ModifyLists()
             for sl_uuid in ListIter(spell_lists) do
                 table.insert(dump_lists_by_class[class_uuid], sl_uuid)
             end
+        end
+
+        local mod_cache = {}
+        for name, stats in StatsIterator("SpellData") do
+
+            local mod_name = mod_cache[stats.OriginalModId]
+            if mod_name == nil then
+                mod_name = Ext.Mod.GetMod(stats.OriginalModId).Info.Name
+                mod_cache[stats.OriginalModId] = mod_name
+            end
+
+            dump_spells_mods[name] = {
+                ["Level"] = stats.Level,
+                ["OriginalModId"] = stats.OriginalModId,
+                ["OriginalModName"] = mod_name,
+                ["DisplayName"] = Ext.Loca.GetTranslatedString(stats.DisplayName) or ""
+            }
+
         end
     end
 
