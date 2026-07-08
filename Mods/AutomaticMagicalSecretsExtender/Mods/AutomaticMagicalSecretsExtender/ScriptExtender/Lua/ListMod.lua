@@ -51,6 +51,17 @@ local validated_spells_cache = {}
 local has_warned_broken = {}
 local has_warned_broken_list = {}
 
+function ClearCaches()
+
+    local caches = {sortv_cache, validated_spells_cache, has_warned_broken, has_warned_broken_list}
+
+    for _, cache in pairs(caches) do
+        for k, _ in pairs(cache) do
+            cache[k] = nil
+        end
+    end
+end
+
 local broken_warn_formats = {
     NotSpell =
     "[AutomaticMagicalSecretsExtender] Spell list %s contained something other than a spell. The bad entry is named %s",
