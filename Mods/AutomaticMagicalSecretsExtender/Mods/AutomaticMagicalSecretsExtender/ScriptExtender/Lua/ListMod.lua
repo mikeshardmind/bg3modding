@@ -49,20 +49,18 @@ local never_include_as_secrets = {
 local sortv_cache = {}
 local validated_spells_cache = {}
 local has_warned_broken = {}
-local has_warned_broken_list = {
-    ["IGNORE"] = true
-}
+local has_warned_broken_list = {}
 
 local broken_warn_formats = {
     NotSpell =
-    "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained something other than a spell. The bad entry is named %s",
+    "[AutomaticMagicalSecretsExtender] Spell list %s contained something other than a spell. The bad entry is named %s",
     InvalidSpellLevel = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid level",
     InvalidSpellContainerID =
     "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid container ID specified",
     MissingSpell =
-    "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list %s contained a spell that isn't defined named %s",
+    "[AutomaticMagicalSecretsExtender] Spell list %s contained a spell that isn't defined named %s",
     InvalidSpellName =
-    "[AutomaticMagicalSecretsExtender] [Source class: %s] Spell list: %s contains an invalid spell name",
+    "[AutomaticMagicalSecretsExtender] Spell list: %s contains an invalid spell name",
 }
 
 local function generate_sort_key_for_spell(spell_name, spell)
@@ -79,8 +77,7 @@ end
 
 ---@param name string
 ---@param list_guid string
----@param classnames string
-local function get_spell_with_validation(name, list_guid, classnames, debug)
+local function get_spell_with_validation(name, list_guid)
     --- Gets spell data if it exists, that the attributes we need to be valid are valid,
     --- and the spell data does not indicate that the spell is the interior of a container
     --- logs warnings once per spell with broken attributes
@@ -91,10 +88,9 @@ local function get_spell_with_validation(name, list_guid, classnames, debug)
     end
 
     if type(name) ~= "string" or #name < 1 then
-        local list_key = list_guid .. classnames
-        if debug and has_warned_broken_list[list_key] == nil then
-            Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellName:format(classnames, list_guid))
-            has_warned_broken_list[list_key] = true
+        if has_warned_broken_list[list_guid] == nil then
+            Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellName:format(list_guid))
+            has_warned_broken_list[list_guid] = true
         end
         return nil
     end
@@ -105,7 +101,7 @@ local function get_spell_with_validation(name, list_guid, classnames, debug)
 
     local spell = Ext.Stats.Get(name)
     if spell == nil then
-        Ext.Utils.PrintWarning(broken_warn_formats.MissingSpell:format(classnames, list_guid, name))
+        Ext.Utils.PrintWarning(broken_warn_formats.MissingSpell:format(list_guid, name))
         has_warned_broken[name] = true
         return nil
     end
@@ -115,7 +111,7 @@ local function get_spell_with_validation(name, list_guid, classnames, debug)
     ok, result = pcall(function() return spell.ModifierList end)
 
     if not ok or type(result) ~= "string" or result ~= "SpellData" then
-        Ext.Utils.PrintWarning(broken_warn_formats.NotSpell:format(classnames, list_guid, name))
+        Ext.Utils.PrintWarning(broken_warn_formats.NotSpell:format(list_guid, name))
         has_warned_broken[name] = true
         return nil
     end
@@ -184,94 +180,79 @@ local function CrawlProgressionData()
     }
     local warlock_guid = "b4225a4b-4bbe-4d97-9e3c-4719dbd1487c"
 
-    local collected_spell_lists = {}
-    local spell_list_to_class = {}
     local collected_prog_ids = {}
-    local prog_to_classname = {}
-    local collected_spells = {}
-    local collected_warlock_progs = {}
-    local warlock_spell_table_assoc = {}
+    local collected_spell_lists = {}
+    local collected_warlock_prog_ids = {}
+    local collected_warlock_lists = {}
 
     for resourceGuid, desc in StaticDataIterator("ClassDescription") do
         if resourceGuid == bard_guid or desc.ParentGuid == bard_guid then
             bard_prog_table_ids[desc.ProgressionTableUUID] = true
+        elseif desc.ParentGuid == warlock_guid then
+            collected_warlock_prog_ids[desc.ProgressionTableUUID] = true
         end
 
-        local class_name = supprted_secrets_classes[resourceGuid]
-        if class_name ~= nil then
+        if supprted_secrets_classes[resourceGuid] ~= nil then
             if desc.SpellList ~= nil then
                 collected_spell_lists[desc.SpellList] = true
-                local list_class_assoc = spell_list_to_class[desc.SpellList] or {}
-                list_class_assoc[class_name] = true
-                spell_list_to_class[desc.SpellList] = list_class_assoc
             end
             collected_prog_ids[desc.ProgressionTableUUID] = true
-            prog_to_classname[desc.ProgressionTableUUID] = class_name
-        end
-        if desc.ParentGuid == warlock_guid then
-            collected_warlock_progs[desc.ProgressionTableUUID] = true
         end
     end
 
     for progguid, pd in StaticDataIterator("Progression") do
-        if bard_prog_table_ids[pd.TableUUID] ~= nil then
-            for this_select in ListIter(pd["SelectSpells"]) do
+        for this_select in ListIter(pd["SelectSpells"]) do
+            if bard_prog_table_ids[pd.TableUUID] ~= nil then
                 if magical_secrets_select[this_select.SelectorId] ~= nil then
                     table.insert(bard_secrets_progression_ids, progguid)
                 end
             end
-        end
 
-        if collected_prog_ids[pd.TableUUID] ~= nil then
-            for this_select in ListIter(pd["SelectSpells"]) do
+            if collected_prog_ids[pd.TableUUID] ~= nil then
                 collected_spell_lists[this_select.SpellUUID] = true
-                local list_class_assoc = spell_list_to_class[this_select.SpellUUID] or {}
-                list_class_assoc[prog_to_classname[pd.TableUUID]] = true
-                spell_list_to_class[this_select.SpellUUID] = list_class_assoc
-            end
-        end
-        if collected_warlock_progs[pd.TableUUID] ~= nil then
-            for this_select in ListIter(pd["SelectSpells"]) do
-                local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
-                if spell_list ~= nil then
-                    for spell_name in ListIter(spell_list.Spells) do
-                        if get_spell_with_validation(spell_name, this_select.SpellUUID, "Warlock") then
-                            local assoc = warlock_spell_table_assoc[spell_name] or {}
-                            assoc[pd.TableUUID] = true
-                            warlock_spell_table_assoc[spell_name] = assoc
-                        end
-                    end
-                end
+            elseif collected_warlock_prog_ids[pd.TableUUID] ~= nil then
+                collected_warlock_lists[this_select.SpellUUID] = true
             end
         end
     end
 
-    for spell_name, guids in pairs(warlock_spell_table_assoc) do
-        if #guids >= 3 then
-            collected_spells[spell_name] = true
-        end
-    end
+    local seen_spells_cache = {}
 
     for list_uuid in SetIter(collected_spell_lists) do
         local spell_list = Ext.StaticData.Get(list_uuid, "SpellList")
         if spell_list ~= nil then
-            local class_names = {}
-            for cl in SetIter(spell_list_to_class[list_uuid]) do
-                table.insert(class_names, cl)
-            end
-            local names = table.concat(class_names, ",")
             for spell_name in ListIter(spell_list.Spells) do
-                if get_spell_with_validation(spell_name, list_uuid, names) then
-                    collected_spells[spell_name] = true
+                -- validity won't change on re-seeing the name
+                seen_spells_cache[spell_name] = true
+                local this_spell = get_spell_with_validation(spell_name, list_uuid)
+                if this_spell then
+                    all_spells[this_spell.Level][spell_name] = true
                 end
             end
         end
     end
 
-    for spell_name in SetIter(collected_spells) do
-        local spell = get_spell_with_validation(spell_name, "IGNORE", "IGNORE")
-        if spell ~= nil then
-            all_spells[spell.Level][spell_name] = true
+    -- warlock spell lists work differently and some spells aren't available as secrets.
+    -- we use visibility on 3 or more warlock lists as an accurate heuristic
+    local warlock_seen_counts = {}
+
+    for list_uuid in SetIter(collected_warlock_lists) do
+        local spell_list = Ext.StaticData.Get(list_uuid, "SpellList")
+        if spell_list ~= nil then
+            for spell_name in ListIter(spell_list.Spells) do
+                if seen_spells_cache[spell_name] ~= nil then
+                    local count = (warlock_seen_counts[spell_name] or 0) + 1
+                    warlock_seen_counts[spell_name] = count
+                    if count >= 3 then
+                        -- validity won't change on re-seeing the name
+                        seen_spells_cache[spell_name] = true
+                        local this_spell = get_spell_with_validation(spell_name, list_uuid)
+                        if this_spell then
+                            all_spells[this_spell.Level][spell_name] = true
+                        end
+                    end
+                end
+            end
         end
     end
 
@@ -300,7 +281,7 @@ function ModifyLists()
                     local co = coroutine.create(
                         function()
                             for spell in ListIter(spell_list.Spells) do
-                                local spell_data = get_spell_with_validation(spell, this_select.SpellUUID, "Bard")
+                                local spell_data = get_spell_with_validation(spell, this_select.SpellUUID)
                                 if spell_data ~= nil then
                                     coroutine.yield(spell)
                                 end
