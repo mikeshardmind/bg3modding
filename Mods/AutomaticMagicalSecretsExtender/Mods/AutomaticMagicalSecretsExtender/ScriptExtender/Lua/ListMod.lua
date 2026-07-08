@@ -99,7 +99,8 @@ local function get_spell_with_validation(name, list_guid)
     end
 
     if type(name) ~= "string" or #name < 1 then
-        if has_warned_broken_list[list_guid] == nil then
+        -- This is being hit more than makes sense on DIQ, investigate later.
+        if false then -- has_warned_broken_list[list_guid] == nil then
             Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellName:format(list_guid))
             has_warned_broken_list[list_guid] = true
         end
