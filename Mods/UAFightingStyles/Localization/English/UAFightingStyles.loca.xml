@@ -7,7 +7,7 @@
 	<content contentuid="h3ab5d606gd88ag49e2g8cb1g77903a43752f" version="1">Tunnel Fighter: Defensive Stance</content>
 	<content contentuid="hcb6927adg7d55g409dg983fg4bed97a83d18" version="1">Until the start of your next turn, your &lt;LSTag Tooltip="ArmourClass"&gt;Armor Class&lt;/LSTag&gt; increases by 1 and you gain an extra &lt;LSTag Type="ActionResource" Tooltip="ReactionActionPoint"&gt;Reaction&lt;/LSTag&gt;.</content>
 	<content contentuid="heba6eafbg842cg4242g9215g7bcdc643d52f" version="1">Mariner</content>
-	<content contentuid="hacd63138g0ae8g4344gbaaeg46332292d5fc" version="1">While you are not wearing heavy armor or wielding a shield, your &lt;LSTag Tooltip="ArmourClass"&gt;Armor Class&lt;/LSTag&gt; increases by 1, your &lt;LSTag Tooltip="MovementSpeed"&gt;movement speed&lt;/LSTag&gt; increases by [1], and your jump distance increases by 50%.</content>
+	<content contentuid="hacd63138g0ae8g4344gbaaeg46332292d5fc" version="1">While you are not wearing heavy armor or wielding a shield, your &lt;LSTag Tooltip="ArmourClass"&gt;Armor Class&lt;/LSTag&gt; increases by 1</content>
 	<content contentuid="h0c3365adg4886g476dgaefcg8936a8c52ae2" version="1">Interception</content>
 	<content contentuid="h47772a46g6ab5g43fdg999fg66701da7c282" version="1">When an enemy hits an ally within [1], reduce the damage by 1d10 + Your &lt;LSTag Tooltip="ProficiencyBonus"&gt;Proficiency Bonus&lt;/LSTag&gt;. You must be able to see the attacker.</content>
 	<content contentuid="h92170444g12acg4478gab19g746682a1d35a" version="1">Thrown Weapon Fighting</content>

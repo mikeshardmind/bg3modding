@@ -56,7 +56,7 @@ data "DisplayName" "h0e895e79g47f5g48eega964ga28755a8761d;1"
 data "Description" "h5ab5ce8fg3577g461bg9f69g297467e281b3;1"
 data "Icon" "Spell_Abjuration_Transmutation_Shillelagh"
 data "Properties" "Highlighted"
-data "Boosts" "UnlockSpell(Shout_Shillelagh,,,,Wisdom);UnlockSpell(Target_Guidance,,,,Charisma)"
+data "Boosts" "UnlockSpell(Shout_Shillelagh,,,,Wisdom);UnlockSpell(Target_Guidance,,,,Wisdom)"
 
 new entry "UA_FightingStyle_BlessedWarrior"
 type "PassiveData"
