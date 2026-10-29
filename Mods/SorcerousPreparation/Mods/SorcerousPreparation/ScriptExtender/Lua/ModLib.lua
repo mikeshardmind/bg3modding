@@ -154,10 +154,6 @@ local function get_spell_with_validation(name, list_guid, debug)
         return nil
     end
 
-    if #spell.SpellContainerID:match("^%s*(.-)%s*$") ~= 0 then
-        return nil
-    end
-
     local ok, ritual_costs = pcall(function() return spell.RitualCosts end)
     if not ok or type(ritual_costs) ~= "string" then
         Ext.Utils.PrintWarning(broken_warn_formats.InvalidRitualCosts:format(name))

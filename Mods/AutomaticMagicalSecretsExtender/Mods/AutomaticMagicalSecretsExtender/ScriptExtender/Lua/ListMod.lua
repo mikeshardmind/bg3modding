@@ -35,19 +35,53 @@ local known_5e_with_mystras_duplicates = {
     ["Target_SummonDraconicSpirit"] = true,
 }
 
+-- Handles that vanilla there are 3 shield spells and 2 shadowblade spells
 local never_include_as_secrets = {
-    ["Target_Daylight"] = true,
-    ["Target_EnsnaringStrike"] = true,
     ["Shout_Shield_Sorcerer"] = true,
     ["Shout_Shield_Warlock"] = true,
     ["Shout_ShadowBlade_Spell"] = true,
 }
+
+---@param s string
+---@param sep string
+---@param plain boolean?
+function StringSplit(s, sep, plain)
+    local start = 1
+    local done = false
+    local function pass(i, j, ...)
+        if i then
+            local seg = s:sub(start, i - 1)
+            start = j + 1
+            return seg, ...
+        else
+            done = true
+            return s:sub(start)
+        end
+    end
+    return function()
+        if done then
+            return
+        end
+        if sep == '' then
+            done = true
+            return s
+        end
+        return pass(s:find(sep, start, plain))
+    end
+end
+
+---@param s string
+---@return string
+function Trim(s)
+    return s:match("^%s*(.-)%s*$")
+end
 
 local sortv_cache = {}
 local spell_list_cache = {}
 
 local validated_spells_cache = {}
 local has_warned_broken = {}
+local is_contained_by_container_granting_it = {}
 local has_warned_broken_list = {}
 
 local broken_warn_formats = {
@@ -68,6 +102,10 @@ local function get_spell_with_validation(name, list_guid)
     local maybe_spell = validated_spells_cache[name]
     if maybe_spell then
         return maybe_spell
+    end
+
+    if is_contained_by_container_granting_it[name] then
+        return nil
     end
 
     if type(name) ~= "string" or #name < 1 then
@@ -112,7 +150,16 @@ local function get_spell_with_validation(name, list_guid)
         return nil
     end
 
-    if #spell.SpellContainerID:match("^%s*(.-)%s*$") ~= 0 then
+    if #Trim(spell.SpellContainerID) ~= 0 then
+        local container = get_spell_with_validation(spell.SpellContainerID, list_guid)
+        if container then
+            for contained_spellname in StringSplit(container.ContainerSpells, ";", true) do
+                if contained_spellname == name then
+                    is_contained_by_container_granting_it[name] = true
+                    return nil
+                end
+            end
+        end
         return nil
     end
 
