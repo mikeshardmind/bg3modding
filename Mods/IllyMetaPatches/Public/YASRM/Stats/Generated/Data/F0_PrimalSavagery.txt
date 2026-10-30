@@ -1,6 +1,0 @@
-new entry "Target_PrimalSavagery"
-type "SpellData"
-data "SpellType" "Target"
-using "Target_PrimalSavagery"
-data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D12Cantrip)+2,Acid,Magical)"
-data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D12Cantrip)+2,Acid)"

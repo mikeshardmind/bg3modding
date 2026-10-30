@@ -1,6 +1,0 @@
-new entry "Target_Frostbite"
-type "SpellData"
-data "SpellType" "Target"
-using "Target_Frostbite"
-data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D8Cantrip)+2,Cold,Magical);ApplyStatus(FROSTBITE,100,1);CreateExplosion(Projectile_ColdEffect_Explosion)"
-data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D8Cantrip)+2)/2,Cold,Magical);ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0)"

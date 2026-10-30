@@ -1,7 +1,0 @@
-new entry "Projectile_LarlochsMinorDrain"
-type "SpellData"
-data "SpellType" "Projectile"
-using "Projectile_LarlochsMinorDrain"
-data "SpellSuccess" "DealDamage(LevelMapValue(YASRM_D4Cantrip)+2,Necrotic,Magical);RegainHitPoints(SELF,(DamageDone)/2);"
-data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D4Cantrip)+2)/2,Necrotic,Magical);RegainHitPoints(SELF,(DamageDone)/2);IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL, 100, 0);"
-data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D4Cantrip)+2,Necrotic)"
