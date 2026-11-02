@@ -130,12 +130,16 @@ function LoadUserSettings()
     if not loaded then
         needs_rewrite = true
     else
+        local val
         for key, _ in pairs(default_user_settings) do
-            if type(ret[key]) == "nil" then
+            val = loaded[key]
+            if type(val) == "nil" then
                 needs_rewrite = true
-            elseif not expected_type_validators[key](ret[key]) then
+            elseif not expected_type_validators[key](val) then
                 local msg = fatal_config_format:format(filename, expected_type_error_messages[key])
                 error(msg)
+            else
+                ret[key] = val
             end
         end
     end
