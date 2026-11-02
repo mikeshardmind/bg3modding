@@ -119,9 +119,8 @@ local function IsValidCantrip(sd, config)
 
             for name in sd.ContainerSpells:gmatch("([^;]+)") do
                 local spell = Ext.Stats.Get(name)
-                local ok, result = pcall(InnerIsValidCantrip, spell, config)
-                if ok and result then
-                    if any then return true end
+                if any and spell and InnerIsValidCantrip(spell, config) then
+                    return true
                 elseif all then
                     return false
                 end
