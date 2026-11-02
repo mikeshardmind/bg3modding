@@ -3,43 +3,56 @@ local bard_guid = "92cd50b6-eb1b-4824-8adb-853e90c34c90"
 
 local magical_secrets_select = {["BardMagicalSecrets"] = true}
 
--- Matches the removal done by
--- "Use 5e spells with Mystra's Spells" Mod.
--- See article: https://www.nexusmods.com/baldursgate3/articles/1536
--- only used when this mod is present, otherwise we assume the user
--- wants duplicates as options or is handling it themselves.
-local known_5e_with_mystras_duplicates = {
-    ["Target_BoomingBladeMove"] = true,
-    ["Projectile_Infestation"] = true,
-    ["Projectile_MindSilver"] = true,
-    ["Target_CreateDestroyMoldEarth"] = true,
-    ["Target_ShapeWater_Container"] = true,
-    ["Shout_MagicStone"] = true,
-    ["Shout_AbsorbElementsSpell"] = true,
-    ["Projectile_ChaosBoltNew"] = true,
-    ["Zone_CausticBrew"] = true,
-    ["Zone_AganazzarScorcher"] = true,
-    ["Shout_DustDevil"] = true,
-    ["Target_EarthenGrasp"] = true,
-    ["Target_SnowballStorm"] = true,
-    ["Target_MindWhip"] = true,
-    ["Shout_CreateFoodAndWater"] = true,
-    ["Shout_MelfsMinuteMeteors"] = true,
-    ["Target_SummonFey"] = true,
-    ["Shout_WaterWalk"] = true,
-    ["Target_ArcaneEyeNew"] = true,
-    ["Target_PsychicLance"] = true,
-    ["Target_SummonBeholderkin"] = true,
-    ["Shout_FarStep"] = true,
-    ["Target_SteelWindStrike"] = true,
-    ["Target_SummonDraconicSpirit"] = true,
+---@class (exact) AMSEConfig
+---@field debug boolean
+
+local default_config = {
+    debug = false
 }
 
--- Handles that vanilla there are 3 shield spells and 2 shadowblade spells
+local invalid_config_messages = {
+    ["boolean"] =
+    '[AMSE] Invalid entry for key "%s" (expected: true or false) in config file'
+}
+
+---@return AMSEConfig
+local function LoadConfig()
+    local filename = "AMSEConfig.json"
+    local file = Ext.IO.LoadFile(filename)
+        local ret = file and Ext.Json.Parse(file) or {}
+
+    local needs_rewrite = false
+
+    for key, default in pairs(default_config) do
+        local expected_type = type(default)
+
+        if type(ret[key]) == "nil" then
+            ret[key] = default
+            needs_rewrite = true
+        elseif type(ret[key]) ~= expected_type then
+            Ext.Utils.PrintWarning(invalid_config_messages[expected_type]:format(key))
+            ret.enabled = false
+            return ret
+        end
+    end
+
+    if needs_rewrite then
+        local d = Ext.Json.Stringify(ret)
+        Ext.IO.SaveFile(filename, d)
+    end
+
+    return ret
+end
+
+
+-- Handles that vanilla there are 3 shield spells
+-- We keep the wizard one rather than sorc or warlock
+-- because of interactions with potential multiclassing
+-- and the base game shield interrupts for sorcerer and warlock
+-- both don't interact correctly with arcane ward.
 local never_include_as_secrets = {
     ["Shout_Shield_Sorcerer"] = true,
     ["Shout_Shield_Warlock"] = true,
-    ["Shout_ShadowBlade_Spell"] = true,
 }
 
 ---@param s string
@@ -81,15 +94,14 @@ local spell_list_cache = {}
 
 local validated_spells_cache = {}
 local has_warned_broken = {}
-local is_contained_by_container_granting_it = {}
 local has_warned_broken_list = {}
+local is_contained_by_container_granting_it = {}
 
 local broken_warn_formats = {
     NotSpell = "[AutomaticMagicalSecretsExtender] Spell list %s contained something other than a spell. The bad entry is named %s",
     InvalidSpellLevel = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid level",
     InvalidSpellContainerID = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid container ID specified",
     MissingSpell = "[AutomaticMagicalSecretsExtender] Spell list %s contained a spell that isn't defined named %s",
-    InvalidSpellName = "[AutomaticMagicalSecretsExtender] Spell list: %s contains an invalid spell name",
 }
 
 ---@param name string
@@ -109,8 +121,7 @@ local function get_spell_with_validation(name, list_guid)
     end
 
     if type(name) ~= "string" or #name < 1 then
-        --- This is intentionally stubbed out, TODO
-        if false and has_warned_broken_list[list_guid] == nil then
+        if has_warned_broken_list[list_guid] == nil then
             Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellName:format(list_guid))
             has_warned_broken_list[list_guid] = true
         end
@@ -168,6 +179,63 @@ local function get_spell_with_validation(name, list_guid)
 
 end
 
+---@param name string
+---@param list_guid string
+local function get_spell_skip_pcalls(name, list_guid)
+
+    local maybe_spell = validated_spells_cache[name]
+    if maybe_spell then
+        return maybe_spell
+    end
+
+    if is_contained_by_container_granting_it[name] then
+        return nil
+    end
+
+    if has_warned_broken[name] ~= nil then
+        return nil
+    end
+
+    local spell = Ext.Stats.Get(name)
+    if spell == nil then
+        Ext.Utils.PrintWarning(broken_warn_formats.MissingSpell:format(list_guid, name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    local modlisttype = spell.ModifierList
+
+    if not (modlisttype and modlisttype ~= "SpellData") then
+        Ext.Utils.PrintWarning(broken_warn_formats.NotSpell:format(list_guid, name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    local spell_level = spell.Level
+    if type(spell_level) ~= "number" then
+        Ext.Utils.PrintWarning(broken_warn_formats.InvalidSpellLevel:format(name))
+        has_warned_broken[name] = true
+        return nil
+    end
+
+    if #Trim(spell.SpellContainerID) ~= 0 then
+        local container = get_spell_skip_pcalls(spell.SpellContainerID, list_guid)
+        if container then
+            for contained_spellname in StringSplit(container.ContainerSpells, ";", true) do
+                if contained_spellname == name then
+                    is_contained_by_container_granting_it[name] = true
+                    return nil
+                end
+            end
+        end
+        return nil
+    end
+
+    validated_spells_cache[name] = spell
+    return spell
+
+end
+
 
 local function generate_sort_key_for_spell(spell_name, spell)
     if sortv_cache[spell_name] ~= nil then
@@ -204,7 +272,10 @@ local function SortSpellWorkingList(working_list)
 
 end
 
-local function SortSpellList(spell_list, guid)
+local function SortSpellList(config, spell_list, guid)
+
+    local get_spell_func = config.debug and get_spell_with_validation or get_spell_skip_pcalls
+
     if spell_list_cache[guid] ~= nil then
         if spell_list ~= nil then
             spell_list.Spells = spell_list_cache[guid]
@@ -215,7 +286,7 @@ local function SortSpellList(spell_list, guid)
         if spell_list ~= nil then
             for _, spell_name in pairs(spell_list.Spells) do
                 if checked_names[spell_name] == nil then
-                    local spell = get_spell_with_validation(spell_name, guid)
+                    local spell = get_spell_func(spell_name, guid)
                     if spell ~= nil then
                         working_list[spell_name] = spell
                     end
@@ -281,7 +352,10 @@ local function subtract_setlists(l1, l2)
 end
 
 
-local function GetAllValidSecrets()
+---@param config AMSEConfig
+local function GetAllValidSecrets(config)
+
+    local get_spell_func = config.debug and get_spell_with_validation or get_spell_skip_pcalls
 
     local all_spells = {
         [0] = {},
@@ -349,7 +423,7 @@ local function GetAllValidSecrets()
                 local spell_list = Ext.StaticData.Get(this_select.SpellUUID, "SpellList")
                 if spell_list ~= nil then
                     for _, spell_name in pairs(spell_list.Spells) do
-                        if get_spell_with_validation(spell_name, this_select.SpellUUID) then
+                        if get_spell_func(spell_name, this_select.SpellUUID) then
                             local assoc = warlock_spell_table_assoc[spell_name] or {}
                             assoc[pd.TableUUID] = true
                             warlock_spell_table_assoc[spell_name] = assoc
@@ -369,13 +443,8 @@ local function GetAllValidSecrets()
     for list_uuid, _ in pairs(collected_spell_lists) do
         local spell_list = Ext.StaticData.Get(list_uuid, "SpellList")
         if spell_list ~= nil then
-            local class_names = {}
-            for cl, _ in pairs(spell_list_to_class[list_uuid]) do
-                table.insert(class_names, cl)
-            end
-            local names = table.concat(class_names, ",")
             for _, spell_name in pairs(spell_list.Spells) do
-                if get_spell_with_validation(spell_name, list_uuid) then
+                if get_spell_func(spell_name, list_uuid) then
                     collected_spells[spell_name] = true
                 end
             end
@@ -383,7 +452,7 @@ local function GetAllValidSecrets()
     end
 
     for spell_name, _ in pairs(collected_spells) do
-        local spell = get_spell_with_validation(spell_name, "IGNORE")
+        local spell = get_spell_func(spell_name, "IGNORE")
         if spell ~= nil then
             all_spells[spell.Level][spell_name] = true
         end
@@ -394,19 +463,13 @@ local function GetAllValidSecrets()
 end
 
 function ModifyLists()
-
+    local config = LoadConfig()
     local has_secrets = MagicalSecretsProgressions()
-    local all_secret_spells = GetAllValidSecrets()
-    local use_mystras_with_5e_loaded = Ext.Mod.IsModLoaded("5d1585fa-973a-5721-8bce-4bfbbc84072a")
+    local all_secret_spells = GetAllValidSecrets(config)
     local to_subtract = never_include_as_secrets
-
-    if use_mystras_with_5e_loaded then
-        for spell_name, _ in pairs(known_5e_with_mystras_duplicates) do
-            to_subtract[spell_name] = true
-        end
-    end
-
     local seen_spells = {}
+
+    local get_spell_func = config.debug and get_spell_with_validation or get_spell_skip_pcalls
 
     for _, progguid in ipairs(has_secrets) do
         local pd = Ext.StaticData.Get(progguid, "Progression")
@@ -421,7 +484,7 @@ function ModifyLists()
 
                     for _, spell in pairs(spell_list.Spells) do
                         if seen_spells[spell] == nil then
-                            local spell_data = get_spell_with_validation(spell, this_select.SpellUUID)
+                            local spell_data = get_spell_func(spell, this_select.SpellUUID)
                             if spell_data ~= nil then
                                 table.insert(working_list, spell)
                             end
@@ -438,7 +501,7 @@ function ModifyLists()
 
                     working_list = subtract_setlists(working_list, seen_spells)
                     spell_list.Spells = subtract_setlists(working_list, to_subtract)
-                    SortSpellList(spell_list, this_select.SpellUUID)
+                    SortSpellList(config, spell_list, this_select.SpellUUID)
                     end
                 end
             end
