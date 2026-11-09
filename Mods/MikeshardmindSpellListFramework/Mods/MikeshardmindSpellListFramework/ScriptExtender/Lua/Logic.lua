@@ -395,9 +395,9 @@ function ModifyLists()
     }
 
     if config.dump_lists then
-        for class_uuid, spell_lists in pairs(dump_lists_by_class) do
+        for class_uuid, spell_lists in pairs(spell_lists_by_class) do
             dump_lists_by_class[class_uuid] = {}
-            for sl_uuid in ListIter(spell_lists) do
+            for sl_uuid in SetIter(spell_lists) do
                 table.insert(dump_lists_by_class[class_uuid], sl_uuid)
             end
         end
@@ -407,8 +407,8 @@ function ModifyLists()
 
             local mod_name = mod_cache[stats.OriginalModId]
             if mod_name == nil then
-                mod_name = Ext.Mod.GetMod(stats.OriginalModId).Info.Name
-                mod_cache[stats.OriginalModId] = mod_name
+                local modobj = Ext.Mod.GetMod(stats.OriginalModId)
+                mod_cache[stats.OriginalModId] = modobj and modobj.Info.Name or "???"
             end
 
             dump_spells_mods[name] = {
@@ -471,7 +471,7 @@ function ModifyLists()
         if config.dump_lists then
             dump_before_spell_lists[uuid] = {}
             for _, spell_name in pairs(sl.Spells) do
-                table.insert(dump_before_spell_lists, spell_name)
+                table.insert(dump_before_spell_lists[uuid], spell_name)
             end
         end
 
@@ -483,7 +483,7 @@ function ModifyLists()
         if config.dump_lists then
             dump_after_spell_lists[uuid] = {}
             for _, spell_name in pairs(sl.Spells) do
-                table.insert(dump_after_spell_lists, spell_name)
+                table.insert(dump_after_spell_lists[uuid], spell_name)
             end
         end
 
