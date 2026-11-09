@@ -102,6 +102,7 @@ local broken_warn_formats = {
     InvalidSpellLevel = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid level",
     InvalidSpellContainerID = "[AutomaticMagicalSecretsExtender] The spell named %s has an invalid container ID specified",
     MissingSpell = "[AutomaticMagicalSecretsExtender] Spell list %s contained a spell that isn't defined named %s",
+    InvalidSpellName = "[AutomaticMagicalSecretsExtender] Spell list: %s contains an invalid spell name",
 }
 
 ---@param name string
@@ -205,7 +206,7 @@ local function get_spell_skip_pcalls(name, list_guid)
 
     local modlisttype = spell.ModifierList
 
-    if not (modlisttype and modlisttype ~= "SpellData") then
+    if not (modlisttype and modlisttype == "SpellData") then
         Ext.Utils.PrintWarning(broken_warn_formats.NotSpell:format(list_guid, name))
         has_warned_broken[name] = true
         return nil
