@@ -408,7 +408,8 @@ function ModifyLists()
             local mod_name = mod_cache[stats.OriginalModId]
             if mod_name == nil then
                 local modobj = Ext.Mod.GetMod(stats.OriginalModId)
-                mod_cache[stats.OriginalModId] = modobj and modobj.Info.Name or "???"
+                mod_name = modobj and modobj.Info.Name or "???"
+                mod_cache[stats.OriginalModId] = mod_name
             end
 
             dump_spells_mods[name] = {
