@@ -1,4 +1,4 @@
-// uses modified cantrip scaling, adjusted to a d6
+// d8 cantrip
 // changed to a charisma save
 // lasts until end of target's next turn (or end of combat) instead of on next attack roll.
 // applys a -3 penalty rather than Disadvantage
@@ -9,10 +9,11 @@ type "SpellData"
 data "SpellType" "Target"
 using "Target_ViciousMockery"
 data "SpellRoll" "not SavingThrow(Ability.Charisma, SourceSpellDC())"
-data "SpellSuccess" "ApplyStatus(VICIOUSMOCKERY,100,1);DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Psychic,Magical)"
-data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage((LevelMapValue(YASRM_D6Cantrip)+2)/2,Psychic,Magical);IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL,100,0)"
+data "SpellSuccess" "ApplyStatus(VICIOUSMOCKERY,100,1);DealDamage(LevelMapValue(D8Cantrip),Psychic,Magical)"
+data "SpellFail" "IF(HasPassive('PotentCantrip',context.Source)):DealDamage(LevelMapValue(D8Cantrip)/2,Psychic,Magical);IF(not HasPassive('PotentCantrip',context.Source)):ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL,100,0)"
+data "TargetConditions" "Character() and not Ally()"
+data "TooltipDamageList" "DealDamage(LevelMapValue(D8Cantrip),Psychic)"
 data "Description" "h37242afcgfda9g4c1bg93aege165fedb3c36;1"
-data "TooltipDamageList" "DealDamage(LevelMapValue(YASRM_D6Cantrip)+2,Psychic)"
 data "TooltipAttackSave" "Charisma"
 data "SpellFlags" "IsSpell;HasVerbalComponent;IsHarmful;IgnoreVisionBlock"
 
