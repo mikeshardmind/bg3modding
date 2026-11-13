@@ -117,9 +117,11 @@ local function GetActiveRules(config)
         end
     end
 
-    for rule in ModRulesIterator(config) do
-        table.insert(working_table, rule)
-    end
+    -- disabled until ready for public documentation
+
+    -- for rule in ModRulesIterator(config) do
+    --     table.insert(working_table, rule)
+    -- end
 
     return working_table
 end
